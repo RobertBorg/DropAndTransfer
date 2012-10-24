@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.osgi_3.7.2.v20120110-1415.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.osgi_3.7.2.v20120110-1415.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.core.runtime_3.7.0.v20110110.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.core.runtime_3.7.0.v20110110.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.text_3.5.101.v20110928-1504.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.text_3.5.101.v20110928-1504.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.swt.win32.win32.x86_64_3.7.2.v3740f.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.swt.win32.win32.x86_64_3.7.2.v3740f.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.jface_3.7.0.v20110928-1505.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.jface.text_3.7.2.v20111213-1208.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.jface.text_3.7.2.v20111213-1208.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/com.ibm.icu_4.4.2.v20110823.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/com.ibm.icu_4.4.2.v20110823.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/eclipse-indigo/plugins/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar" sourcepath="C:/Program Files/eclipse-indigo/plugins/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar"/>
+	<classpathentry kind="lib" path="libs/cling-core-2.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="libs/cling-core-2.0-SNAPSHOT.jar" sourcepath="C:/Users/RauBan/Downloads/cling-distribution-2.0-SNAPSHOT/cling-distribution-2.0-SNAPSHOT/core/src/main/java"/>
+	<classpathentry kind="lib" path="libs/seamless-http-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/seamless-util-1.0-20111017.170503-1.jar"/>
+	<classpathentry kind="lib" path="libs/seamless-xml-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -32,6 +32,8 @@ public class Network extends Observable{
 	private RegistryListener listener;
 	private UpnpService upnpService;
 	private ServerSocket ss;
+	private Thread fileTransferServerThread;
+	private FileTransferServer fileTransferServer;
 	public Network(){
 		try {
 			ss = new ServerSocket();
@@ -100,7 +102,15 @@ public class Network extends Observable{
         };
 	}
 	public void stop() {
-		upnpService.shutdown();		
+		upnpService.shutdown();
+		fileTransferServer.die();
+		fileTransferServerThread.interrupt();
+		try {
+			fileTransferServerThread.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void start() {
 		System.out.println("Starting Cling...");
@@ -129,7 +139,10 @@ public class Network extends Observable{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
+        
+        fileTransferServerThread = new Thread(fileTransferServer);
+        fileTransferServerThread.start();
 	}
 	private LocalDevice createDevice()
 	        throws ValidationException, LocalServiceBindingException, IOException {

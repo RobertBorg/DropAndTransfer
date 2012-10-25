@@ -5,11 +5,3 @@ message FileDropHeader {
 	required bool isDir = 2;
 	required string resourceName = 3;
 }
-message FileDropFile {
-	required bytes data = 1;
-}
-
-message FileDropMessage {
-	optional FileDropFile  data = 1;
-	optional FileDropHeader header = 2;
-}

@@ -1,7 +1,8 @@
-package com.rauban.filedropper.protocol;
+package com.rauban.dropandtransfer.protocol;
 
 message FileDropHeader {
 	required uint64 size = 1;
 	required bool isDir = 2;
 	required string resourceName = 3;
 }
+

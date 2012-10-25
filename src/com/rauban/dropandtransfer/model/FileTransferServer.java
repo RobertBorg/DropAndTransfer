@@ -56,9 +56,11 @@ public class FileTransferServer implements Runnable {
 			}
 			byte[] headerBuf = new byte[size];
 			int read = 0;
-			while(read < size || read != -1){
+			int readThisTime = 0;
+			while(read < size && readThisTime != -1){
 				try {
-					read += is.read(headerBuf);
+					readThisTime = is.read(headerBuf);
+					read += readThisTime;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

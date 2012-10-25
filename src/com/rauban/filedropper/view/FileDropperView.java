@@ -1,4 +1,4 @@
-package view;
+package com.rauban.filedropper.view;
 
 import java.util.Observable;
 import java.util.Observer;

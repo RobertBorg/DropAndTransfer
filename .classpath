@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="libs/seamless-http-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="libs/seamless-util-1.0-20111017.170503-1.jar"/>
 	<classpathentry kind="lib" path="libs/seamless-xml-1.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="libs/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

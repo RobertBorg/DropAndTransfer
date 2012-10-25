@@ -1,0 +1,15 @@
+package com.rauban.filedropper.protocol;
+
+message FileDropHeader {
+	required uint64 size = 1;
+	required bool isDir = 2;
+	required string resourceName = 3;
+}
+message FileDropFile {
+	required bytes data = 1;
+}
+
+message FileDropMessage {
+	optional FileDropFile  data = 1;
+	optional FileDropHeader header = 2;
+}

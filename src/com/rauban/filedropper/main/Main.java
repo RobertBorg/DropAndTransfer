@@ -1,8 +1,7 @@
-package main;
+package com.rauban.filedropper.main;
 import java.util.Observable;
 import java.util.Observer;
 
-import model.Network;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.StatusLineManager;
@@ -20,8 +19,10 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-import controller.DiscoveryHandler;
 import org.eclipse.swt.widgets.Table;
+
+import com.rauban.filedropper.controller.DiscoveryHandler;
+import com.rauban.filedropper.model.Network;
 
 
 public class Main extends ApplicationWindow implements Observer {

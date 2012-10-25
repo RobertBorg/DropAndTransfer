@@ -1,4 +1,4 @@
-package model;
+package com.rauban.filedropper.model;
 
 import java.io.File;
 import java.io.IOException;

@@ -18,18 +18,20 @@ public class FileTransferServer implements Runnable {
 	private ServerSocket ss;
 	private boolean isRunning;
 	private String baseDownloadDir;
-	public FileTransferServer(String baseDownloadDir){
+	private int port;
+	public FileTransferServer(String baseDownloadDir, int port){
 		this.baseDownloadDir = baseDownloadDir;
-		try {
-			ss = new ServerSocket();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.port = port;
 	}
 	@Override
 	public void run() {
 		isRunning = true;
+		try {
+			ss = new ServerSocket(port);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		Socket s = null;
 		while(isRunning) {
 			try {

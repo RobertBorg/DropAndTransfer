@@ -8,8 +8,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
@@ -20,28 +26,33 @@ public class FileTransferServer implements Runnable {
 	private boolean isRunning;
 	private String baseDownloadDir;
 	private int port;
-	public FileTransferServer(String baseDownloadDir, int port){
+	public FileTransferServer(String baseDownloadDir){
 		this.baseDownloadDir = baseDownloadDir;
-		this.port = port;
 	}
 	@Override
 	public void run() {
 		isRunning = true;
 		try {
-			ss = new ServerSocket(port);
+			ss = new ServerSocket(0);
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
+		port = ss.getLocalPort();
 		Socket s = null;
 		while(isRunning) {
 			try {
 				s = ss.accept();
-			} catch (IOException e) {
+			}catch(SocketException se){
+				//silently ignore
+			}
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			handleConnection(s);
+			if( s != null){
+				handleConnection(s);
+			}
 		}
 	}
 	private void handleConnection(Socket s) {
@@ -117,6 +128,24 @@ public class FileTransferServer implements Runnable {
 	}
 	public void die() {
 		isRunning = false;
+		try {
+			ss.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public int getPort() {
+		return port;
+	}
+	public String getLocalAddress() {
+		try {
+			return Inet4Address.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

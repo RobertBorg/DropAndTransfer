@@ -1,5 +1,6 @@
 package com.rauban.dropandtransfer.model;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,70 +41,78 @@ public class FileTransferServer implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			InputStream is = null;
+			handleConnection(s);
+		}
+	}
+	private void handleConnection(Socket s) {
+		InputStream is = null;
+		try {
+			is = s.getInputStream();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		short size = 0;
+		try {
+			size = (short) (0xFF & is.read());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		byte[] headerBuf = new byte[size];
+		int read = 0;
+		int readThisTime = 0;
+		while(read < size && readThisTime != -1){
 			try {
-				is = s.getInputStream();
-			} catch (IOException e1) {
+				readThisTime = is.read(headerBuf);
+				read += readThisTime;
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
+				read = -1;
 			}
-			short size = 0;
+		}
+		FileDropHeader fdh = null;
+		try {
+			fdh = FileDropHeader.parseFrom(headerBuf);
+		} catch (InvalidProtocolBufferException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		File outFile = new File(baseDownloadDir + fdh.getResourceName());
+		OutputStream os = null;
+		try {
+			os = new FileOutputStream(outFile);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		read = 0;
+		BufferedInputStream bis = new BufferedInputStream(is);
+		byte[] toFileBuf = new byte[FILE_WRITE_BUFFER];
+		int readNow = 0; 
+		while(read < fdh.getSize() && readNow != -1){
 			try {
-				size = (short) (0xFF & is.read());
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			byte[] headerBuf = new byte[size];
-			int read = 0;
-			int readThisTime = 0;
-			while(read < size && readThisTime != -1){
-				try {
-					readThisTime = is.read(headerBuf);
-					read += readThisTime;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					read = -1;
-				}
-			}
-			FileDropHeader fdh = null;
-			try {
-				fdh = FileDropHeader.parseFrom(headerBuf);
-			} catch (InvalidProtocolBufferException e) {
+				readNow = bis.read(toFileBuf);
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			File outFile = new File(baseDownloadDir + fdh.getResourceName());
-			OutputStream os = null;
-			try {
-				os = new FileOutputStream(outFile);
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			read = 0;
-			byte[] toFileBuf = new byte[FILE_WRITE_BUFFER];
-			int readNow = 0; 
-			while(read < fdh.getSize() && readNow != -1){
+			if(readNow != -1){
+				read += readNow;
 				try {
-					readNow = is.read(toFileBuf);
+					os.write(toFileBuf, 0, readNow);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(readNow != -1){
-					read += readNow;
-					try {
-						os.write(toFileBuf, 0, readNow);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 			}
-			
-
+		}
+		try {
+			os.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	public void die() {

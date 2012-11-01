@@ -88,6 +88,13 @@ public class FileTransferClient extends Thread {
 			}
 			
 		}
+		try {
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Random;
 
@@ -34,7 +35,15 @@ public class Network extends Observable{
 	private ServerSocket ss;
 	private Thread fileTransferServerThread;
 	private FileTransferServer fileTransferServer;
+	
+	private NetworkState state;
+	
+	
+	public void notifyObservers(){
+		notifyObservers(state.clone());
+	}
 	public Network(){
+		state = new NetworkState();
 		listener = new RegistryListener() {
 
 			public void remoteDeviceDiscoveryStarted(Registry registry,
@@ -53,44 +62,44 @@ public class Network extends Observable{
 			}
 
 			public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
-				System.out.println(
-						"Remote device available: " + device.getDisplayString() + " " + device.getDetails().getPresentationURI() 
-						);
+				if(!state.remoteDevices.contains(device)){
+					state.remoteDevices.add(device);
+					notifyObservers();
+				}
 			}
 
 			public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
-				System.out.println(
-						"Remote device updated: " + device.getDisplayString()
-						);
+				if(state.remoteDevices.remove(device)){
+					//XXX should we care?
+				}
+				state.remoteDevices.add(device);
+				notifyObservers();
+				
 			}
 
 			public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
-				System.out.println(
-						"Remote device removed: " + device.getDisplayString()
-						);
+				if(state.remoteDevices.remove(device)){
+					//XXX should we care?
+				}
+				notifyObservers();
 			}
 
 			public void localDeviceAdded(Registry registry, LocalDevice device) {
-				System.out.println(
-						"Local device added: " + device.getDisplayString()
-						);
+				//XXX should we care?
 			}
 
 			public void localDeviceRemoved(Registry registry, LocalDevice device) {
-				System.out.println(
-						"Local device removed: " + device.getDisplayString()
-						);
+				// XXX should we care?
 			}
 
 			public void beforeShutdown(Registry registry) {
-				System.out.println(
-						"Before shutdown, the registry has devices: "
-								+ registry.getDevices().size()
-						);
+				state.clear();
+				notifyObservers();
 			}
 
 			public void afterShutdown() {
 				System.out.println("Shutdown of registry complete!");
+				
 
 			}
 		};
@@ -110,7 +119,8 @@ public class Network extends Observable{
 		fileTransferServer = new FileTransferServer("./Received");
 		fileTransferServerThread = new Thread(fileTransferServer);
 		fileTransferServerThread.start();
-		System.out.println("Starting Cling...");
+		
+		
 		upnpService = new UpnpServiceImpl(listener);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
@@ -166,15 +176,26 @@ public class Network extends Observable{
 		new Icon(
 				"image/png", 48, 48, 8,new File("assets/icon.png"));
 
-		LocalService switchPowerService = null;
-
-		return new LocalDevice(identity, type, details, icon, switchPowerService);
+		return new LocalDevice(identity, type, details, icon, (LocalService)null);
 
 
 	}
 	public void search() {
-		System.out.println("searching...");
 		upnpService.getControlPoint().search(new STAllHeader());		
+	}
+	public class NetworkState implements Cloneable{
+		public LinkedList<RemoteDevice> remoteDevices;
+		public NetworkState(){
+			remoteDevices = new LinkedList<RemoteDevice>();
+		}
+		public void clear() {
+			remoteDevices.clear();
+		}
+		protected Object clone() {
+			NetworkState clone = new NetworkState();
+			clone.remoteDevices = (LinkedList<RemoteDevice>) this.remoteDevices.clone(); //XXX only uses shallow copy
+			return clone;
+		}
 	}
 }
 

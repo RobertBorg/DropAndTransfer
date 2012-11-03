@@ -194,8 +194,8 @@ public class Network extends ModelBaseImpl<NetworkSpeaker>{
 		}
 	}
 	public FileTransferClient transferResource(String connectionAddress,
-			String... path) {
-		FileTransferClient ftc = new FileTransferClient(connectionAddress, path);
+			String... paths) {
+		FileTransferClient ftc = new FileTransferClient(connectionAddress, paths);
 		
 		return  ftc;
 	}

@@ -1,6 +1,8 @@
 package com.rauban.dropandtransfer.controller;
 
 
+import java.util.Observer;
+
 import com.rauban.dropandtransfer.model.Network;
 
 public class DiscoveryHandler {
@@ -18,5 +20,11 @@ public class DiscoveryHandler {
 	
 	public void search() {
 		model.search();
+	}
+	
+	public FileTransferClientController startTransfer(Observer obs, String connectionAddress, String...pathToSend){
+		model.startNewClient(obs,connectionAddress, pathToSend);
+		//XXX implement
+		return null;
 	}
 }

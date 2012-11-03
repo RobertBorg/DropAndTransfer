@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import org.fourthline.cling.UpnpService;
@@ -32,7 +33,6 @@ import org.fourthline.cling.registry.RegistryListener;
 public class Network extends Observable{
 	private RegistryListener listener;
 	private UpnpService upnpService;
-	private ServerSocket ss;
 	private Thread fileTransferServerThread;
 	private FileTransferServer fileTransferServer;
 	
@@ -183,7 +183,7 @@ public class Network extends Observable{
 	public void search() {
 		upnpService.getControlPoint().search(new STAllHeader());		
 	}
-	public class NetworkState implements Cloneable{
+	public static class NetworkState implements Cloneable{
 		public LinkedList<RemoteDevice> remoteDevices;
 		public NetworkState(){
 			remoteDevices = new LinkedList<RemoteDevice>();
@@ -196,6 +196,11 @@ public class Network extends Observable{
 			clone.remoteDevices = (LinkedList<RemoteDevice>) this.remoteDevices.clone(); //XXX only uses shallow copy
 			return clone;
 		}
+	}
+	public void startNewClient(Observer obs, String connectionAddress,
+			String... path) {
+		//XXX implement
+		
 	}
 }
 

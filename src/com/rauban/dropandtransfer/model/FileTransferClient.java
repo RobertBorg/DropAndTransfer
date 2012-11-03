@@ -9,17 +9,23 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.rauban.dropandtransfer.model.speaker.FileTransferClientSpeakerBaseImpl;
 import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
 
-public class FileTransferClient extends Thread {
+public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implements Runnable{
 	private static final int BUFFER_SIZE = 4096;
 	private String pathToResource;
 	private String remoteIp;
 	private String remotePort;
-	public FileTransferClient(String pathToResource, String ip, String port) {
+	public FileTransferClient(String pathToResource, String addressAndPort) {
 		this.pathToResource = pathToResource;
-		this.remoteIp = ip;
-		this.remotePort = port;
+		String[] ipAndPort = addressAndPort.split(":");
+		if(ipAndPort.length == 2){
+			this.remoteIp = ipAndPort[0];
+			this.remotePort = ipAndPort[1];
+		} else {
+			//XXX state= bad Address
+		}
 	}
 	public void run(){
 		Socket s = null;

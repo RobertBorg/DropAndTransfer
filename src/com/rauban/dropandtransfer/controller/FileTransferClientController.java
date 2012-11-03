@@ -1,14 +1,10 @@
 package com.rauban.dropandtransfer.controller;
 
 import com.rauban.dropandtransfer.model.FileTransferClient;
-import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
+import com.rauban.speaker_listener_pattern.controller.ControllerBaseImpl;
 
-public class FileTransferClientController {
-	private FileTransferClient ftc;
+public class FileTransferClientController extends ControllerBaseImpl<FileTransferClient> {
 	public FileTransferClientController(FileTransferClient ftc){
-		this.ftc = ftc;
+		super(ftc);
 	}
-	public void addFileTransferClientListener(FileTransferClientListener lis){
-//		ftc.addListener(lis);
-	} 
 }

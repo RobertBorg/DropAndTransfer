@@ -17,7 +17,7 @@ public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implem
 	private String pathToResource;
 	private String remoteIp;
 	private String remotePort;
-	public FileTransferClient(String pathToResource, String addressAndPort) {
+	protected FileTransferClient(String pathToResource, String addressAndPort) {
 		this.pathToResource = pathToResource;
 		String[] ipAndPort = addressAndPort.split(":");
 		if(ipAndPort.length == 2){

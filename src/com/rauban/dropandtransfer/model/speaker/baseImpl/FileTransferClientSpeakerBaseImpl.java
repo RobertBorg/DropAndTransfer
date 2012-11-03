@@ -4,9 +4,9 @@ import java.io.File;
 
 import com.rauban.dropandtransfer.model.speaker.FileTransferClientSpeaker;
 import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
-import com.rauban.speaker_listener_pattern.speaker.SpeakerBaseImpl;
+import com.rauban.speaker_listener_pattern.model.ModelBaseImpl;
 
-public class FileTransferClientSpeakerBaseImpl extends SpeakerBaseImpl<FileTransferClientListener> implements FileTransferClientSpeaker  {
+public class FileTransferClientSpeakerBaseImpl extends ModelBaseImpl<FileTransferClientListener> implements FileTransferClientSpeaker  {
 
 	@Override
 	public void transferStarted(File resource) {

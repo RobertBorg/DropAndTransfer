@@ -2,11 +2,7 @@ package com.rauban.dropandtransfer.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.LinkedList;
-import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
@@ -145,6 +141,7 @@ public class Network{
 		}
 
 	}
+	@SuppressWarnings("rawtypes")
 	private LocalDevice createDevice()
 			throws ValidationException, LocalServiceBindingException, IOException {
 
@@ -187,6 +184,7 @@ public class Network{
 		public void clear() {
 			remoteDevices.clear();
 		}
+		@SuppressWarnings("unchecked")
 		protected Object clone() {
 			NetworkState clone = new NetworkState();
 			clone.remoteDevices = (LinkedList<RemoteDevice>) this.remoteDevices.clone(); //XXX only uses shallow copy

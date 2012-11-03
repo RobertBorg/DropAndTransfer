@@ -1,7 +1,6 @@
 package com.rauban.dropandtransfer.model;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,13 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
@@ -26,7 +22,7 @@ public class FileTransferServer implements Runnable {
 	private boolean isRunning;
 	private String baseDownloadDir;
 	private int port;
-	public FileTransferServer(String baseDownloadDir){
+	protected FileTransferServer(String baseDownloadDir){
 		this.baseDownloadDir = baseDownloadDir;
 	}
 	@Override

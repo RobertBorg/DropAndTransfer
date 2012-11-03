@@ -21,6 +21,13 @@ public class FileTransferClientSpeakerBaseImpl extends SpeakerBaseImpl<FileTrans
 			l.transferComplete(resource);
 		}		
 	}
+
+	@Override
+	public void updateReceivedAmount(long numBytes) {
+		for(FileTransferClientListener l: listeners){
+			l.updateReceivedAmount(numBytes);
+		}	
+	}
 	
 
 }

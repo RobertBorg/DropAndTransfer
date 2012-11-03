@@ -5,10 +5,10 @@ import java.util.Observer;
 
 import com.rauban.dropandtransfer.model.Network;
 
-public class DiscoveryHandler {
+public class NetworkController {
 	private Network model;
 	
-	public DiscoveryHandler(Network model){
+	public NetworkController(Network model){
 		this.model = model;
 	}
 	public void start() {

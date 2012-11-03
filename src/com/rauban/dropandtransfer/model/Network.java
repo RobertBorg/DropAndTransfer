@@ -30,7 +30,7 @@ import org.fourthline.cling.registry.RegistrationException;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
 
-public class Network extends Observable{
+public class Network{
 	private RegistryListener listener;
 	private UpnpService upnpService;
 	private Thread fileTransferServerThread;
@@ -39,9 +39,6 @@ public class Network extends Observable{
 	private NetworkState state;
 	
 	
-	public void notifyObservers(){
-		notifyObservers(state.clone());
-	}
 	public Network(){
 		state = new NetworkState();
 		listener = new RegistryListener() {
@@ -64,8 +61,8 @@ public class Network extends Observable{
 			public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
 				if(!state.remoteDevices.contains(device)){
 					state.remoteDevices.add(device);
-					notifyObservers();
 				}
+				//XXX update view
 			}
 
 			public void remoteDeviceUpdated(Registry registry, RemoteDevice device) {
@@ -73,15 +70,14 @@ public class Network extends Observable{
 					//XXX should we care?
 				}
 				state.remoteDevices.add(device);
-				notifyObservers();
-				
+				//XXX update view
 			}
 
 			public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
 				if(state.remoteDevices.remove(device)){
 					//XXX should we care?
 				}
-				notifyObservers();
+				//XXX update view
 			}
 
 			public void localDeviceAdded(Registry registry, LocalDevice device) {
@@ -94,7 +90,7 @@ public class Network extends Observable{
 
 			public void beforeShutdown(Registry registry) {
 				state.clear();
-				notifyObservers();
+				//XXX update view
 			}
 
 			public void afterShutdown() {

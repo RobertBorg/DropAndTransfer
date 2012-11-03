@@ -21,20 +21,20 @@ import org.eclipse.swt.events.SelectionEvent;
 
 import org.eclipse.swt.widgets.Table;
 
-import com.rauban.dropandtransfer.controller.DiscoveryHandler;
+import com.rauban.dropandtransfer.controller.NetworkController;
 import com.rauban.dropandtransfer.model.Network;
 
 
-public class MainView extends ApplicationWindow implements Observer {
+public class MainView extends ApplicationWindow {
 	
 	//controllers
-	private DiscoveryHandler nh;
+	private NetworkController nh;
 	//gui elements
 	private List availableHosts;
 	/**
 	 * Create the application window.
 	 */
-	public MainView(DiscoveryHandler nh) {
+	public MainView(NetworkController nh) {
 		super(null);
 		setShellStyle(SWT.DIALOG_TRIM);
 		this.nh = nh;
@@ -145,10 +145,5 @@ public class MainView extends ApplicationWindow implements Observer {
 		return new Point(450, 300);
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

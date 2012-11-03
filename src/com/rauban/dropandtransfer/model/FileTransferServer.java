@@ -14,7 +14,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
+import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader;
 
 public class FileTransferServer implements Runnable {
 	private static final int FILE_WRITE_BUFFER = 4096;

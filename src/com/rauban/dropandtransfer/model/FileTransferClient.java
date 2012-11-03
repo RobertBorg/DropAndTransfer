@@ -9,8 +9,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader;
 import com.rauban.dropandtransfer.model.speaker.baseImpl.FileTransferClientSpeakerBaseImpl;
-import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
 
 public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implements Runnable{
 	private static final int BUFFER_SIZE = 4096;
@@ -82,7 +82,12 @@ public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implem
 		byte[] buf = new byte[BUFFER_SIZE];
 		while (read < size && readNow != -1){
 			try {
-				readNow = bis.read(buf);
+				long toRead = size - read;
+				if( toRead > buf.length){
+					readNow = bis.read(buf);
+				} else {
+					readNow = bis.read(buf,0,(int) toRead);
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

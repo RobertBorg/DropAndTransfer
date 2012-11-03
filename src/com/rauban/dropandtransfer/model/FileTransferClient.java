@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.rauban.dropandtransfer.model.io.policy.ResourceInputStream;
 import com.rauban.dropandtransfer.model.speaker.baseImpl.FileTransferClientSpeakerBaseImpl;
 
 public class FileTransferClient extends FileTransferClientSpeakerBaseImpl{

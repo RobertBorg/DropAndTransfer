@@ -4,7 +4,8 @@ import com.rauban.dropandtransfer.model.FileTransferClient;
 import com.rauban.speaker_listener_pattern.controller.ControllerBaseImpl;
 
 public class FileTransferClientController extends ControllerBaseImpl<FileTransferClient> {
-	public FileTransferClientController(FileTransferClient ftc){
-		super(ftc);
+
+	public FileTransferClientController(FileTransferClient model) {
+		super(model);
 	}
 }

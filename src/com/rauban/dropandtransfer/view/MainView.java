@@ -1,6 +1,4 @@
 package com.rauban.dropandtransfer.view;
-import java.util.Observable;
-import java.util.Observer;
 
 
 import org.eclipse.jface.action.MenuManager;
@@ -11,7 +9,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -19,16 +16,14 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-import org.eclipse.swt.widgets.Table;
 
 import com.rauban.dropandtransfer.controller.NetworkController;
-import com.rauban.dropandtransfer.model.Network;
 
 
 public class MainView extends ApplicationWindow {
 	
 	//controllers
-	private NetworkController nh;
+	private NetworkController nc;
 	//gui elements
 	private List availableHosts;
 	/**
@@ -37,7 +32,7 @@ public class MainView extends ApplicationWindow {
 	public MainView(NetworkController nh) {
 		super(null);
 		setShellStyle(SWT.DIALOG_TRIM);
-		this.nh = nh;
+		this.nc = nh;
 		createActions();
 		addToolBar(SWT.FLAT | SWT.WRAP);
 		addMenuBar();
@@ -61,7 +56,7 @@ public class MainView extends ApplicationWindow {
 			btnSearch.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					nh.search();
+					nc.search();
 				}
 			});
 			btnSearch.setText("search");
@@ -71,7 +66,7 @@ public class MainView extends ApplicationWindow {
 			btnStart.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					nh.start();
+					nc.start();
 				}
 			});
 			btnStart.setText("start");
@@ -81,7 +76,7 @@ public class MainView extends ApplicationWindow {
 			btnStop.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					nh.stop();
+					nc.stop();
 				}
 			});
 			btnStop.setText("stop");

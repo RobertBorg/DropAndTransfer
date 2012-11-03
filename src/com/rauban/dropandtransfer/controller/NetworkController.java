@@ -1,15 +1,14 @@
 package com.rauban.dropandtransfer.controller;
 
 
-import java.util.Observer;
 
 import com.rauban.dropandtransfer.model.Network;
+import com.rauban.speaker_listener_pattern.controller.ControllerBaseImpl;
 
-public class NetworkController {
-	private Network model;
+public class NetworkController extends ControllerBaseImpl<Network> {
 	
 	public NetworkController(Network model){
-		this.model = model;
+		super(model);
 	}
 	public void start() {
 		model.start();
@@ -22,9 +21,7 @@ public class NetworkController {
 		model.search();
 	}
 	
-	public FileTransferClientController startTransfer(Observer obs, String connectionAddress, String...pathToSend){
-		model.startNewClient(obs,connectionAddress, pathToSend);
-		//XXX implement
-		return null;
+	public FileTransferClientController transferResource(String connectionAddress, String...pathToSend){
+		return new FileTransferClientController(model.transferResource(connectionAddress, pathToSend));
 	}
 }

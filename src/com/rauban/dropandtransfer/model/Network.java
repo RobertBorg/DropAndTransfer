@@ -3,7 +3,6 @@ package com.rauban.dropandtransfer.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Observer;
 import java.util.Random;
 
 import org.fourthline.cling.UpnpService;
@@ -26,7 +25,10 @@ import org.fourthline.cling.registry.RegistrationException;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
 
-public class Network{
+import com.rauban.dropandtransfer.model.speaker.NetworkSpeaker;
+import com.rauban.speaker_listener_pattern.model.ModelBaseImpl;
+
+public class Network extends ModelBaseImpl<NetworkSpeaker>{
 	private RegistryListener listener;
 	private UpnpService upnpService;
 	private Thread fileTransferServerThread;
@@ -191,10 +193,11 @@ public class Network{
 			return clone;
 		}
 	}
-	public void startNewClient(Observer obs, String connectionAddress,
+	public FileTransferClient transferResource(String connectionAddress,
 			String... path) {
-		//XXX implement
+		FileTransferClient ftc = new FileTransferClient(connectionAddress, path);
 		
+		return  ftc;
 	}
 }
 

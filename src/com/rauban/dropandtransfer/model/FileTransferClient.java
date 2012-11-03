@@ -14,11 +14,11 @@ import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
 
 public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implements Runnable{
 	private static final int BUFFER_SIZE = 4096;
-	private String pathToResource;
+	private String[] pathToResources;
 	private String remoteIp;
 	private String remotePort;
-	protected FileTransferClient(String pathToResource, String addressAndPort) {
-		this.pathToResource = pathToResource;
+	protected FileTransferClient(String addressAndPort, String... pathToResources) {
+		this.pathToResources = pathToResources;
 		String[] ipAndPort = addressAndPort.split(":");
 		if(ipAndPort.length == 2){
 			this.remoteIp = ipAndPort[0];
@@ -41,7 +41,15 @@ public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implem
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		for(String pathToResource : pathToResources ){
+			transferResource(s, pathToResource);
+		}
+
+
+	}
+	private void transferResource(Socket socket, String pathToResource) {
 		File f = new File(pathToResource);
+		transferStarted(f);
 		BufferedInputStream bis = null;
 		try {
 			bis = new BufferedInputStream(new FileInputStream(f));
@@ -49,19 +57,19 @@ public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implem
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		
+
 		long size = f.length();
-		
+
 		FileDropHeader fdh = FileDropHeader.newBuilder().setResourceName(f.getName()).setIsDir(f.isDirectory()).setSize(size).build();
 		OutputStream os = null;
 		try {
-			os = s.getOutputStream();
+			os = socket.getOutputStream();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		byte[] headerBuf= fdh.toByteArray();
-		
+
 		try {
 			os.write(headerBuf.length);
 			os.write(headerBuf);
@@ -88,11 +96,11 @@ public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implem
 				readNow = -1;
 				continue;
 			}
-			
+
 			if(readNow != -1){
 				read += readNow;
 			}
-			
+
 		}
 		try {
 			os.flush();
@@ -100,8 +108,12 @@ public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implem
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if(read == size){
+				transferSuccess(f);
+			} else {
+				transferFail(f); //XXX might be incorrect if flush fails.
+			}
 		}
-		
-		
 	}
 }

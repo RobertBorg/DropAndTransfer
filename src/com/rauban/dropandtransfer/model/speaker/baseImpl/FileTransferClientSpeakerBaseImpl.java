@@ -16,9 +16,9 @@ public class FileTransferClientSpeakerBaseImpl extends ModelBaseImpl<FileTransfe
 	}
 
 	@Override
-	public void transferComplete(File resource) {
+	public void transferSuccess(File resource) {
 		for(FileTransferClientListener l: listeners){
-			l.transferComplete(resource);
+			l.transferSuccess(resource);
 		}		
 	}
 
@@ -27,6 +27,13 @@ public class FileTransferClientSpeakerBaseImpl extends ModelBaseImpl<FileTransfe
 		for(FileTransferClientListener l: listeners){
 			l.updateReceivedAmount(numBytes);
 		}	
+	}
+
+	@Override
+	public void transferFail(File resource) {
+		for(FileTransferClientListener l: listeners){
+			l.transferFail(resource);
+		}			
 	}
 	
 

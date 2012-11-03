@@ -3,9 +3,10 @@ package com.rauban.dropandtransfer.controller;
 
 
 import com.rauban.dropandtransfer.model.Network;
+import com.rauban.dropandtransfer.view.listener.NetworkListener;
 import com.rauban.speaker_listener_pattern.controller.ControllerBaseImpl;
 
-public class NetworkController extends ControllerBaseImpl<Network> {
+public class NetworkController extends ControllerBaseImpl<Network,NetworkListener> {
 	
 	public NetworkController(Network model){
 		super(model);

@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.rauban.dropandtransfer.model.speaker.base.FileTransferClientSpeakerBaseImpl;
+import com.rauban.dropandtransfer.model.speaker.baseImpl.FileTransferClientSpeakerBaseImpl;
 import com.rauban.dropandtransfer.protocol.FileTransfer.FileDropHeader;
 
 public class FileTransferClient extends FileTransferClientSpeakerBaseImpl implements Runnable{

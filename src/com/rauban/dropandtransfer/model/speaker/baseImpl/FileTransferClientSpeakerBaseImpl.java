@@ -1,9 +1,9 @@
-package com.rauban.dropandtransfer.model.speaker.base;
+package com.rauban.dropandtransfer.model.speaker.baseImpl;
 
 import java.io.File;
 
-import com.rauban.dropandtransfer.model.listener.FileTransferClientListener;
 import com.rauban.dropandtransfer.model.speaker.FileTransferClientSpeaker;
+import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
 import com.rauban.speaker_listener_pattern.speaker.SpeakerBaseImpl;
 
 public class FileTransferClientSpeakerBaseImpl extends SpeakerBaseImpl<FileTransferClientListener> implements FileTransferClientSpeaker  {

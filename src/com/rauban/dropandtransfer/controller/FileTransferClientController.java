@@ -1,7 +1,7 @@
 package com.rauban.dropandtransfer.controller;
 
 import com.rauban.dropandtransfer.model.FileTransferClient;
-import com.rauban.dropandtransfer.model.listener.FileTransferClientListener;
+import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
 
 public class FileTransferClientController {
 	private FileTransferClient ftc;

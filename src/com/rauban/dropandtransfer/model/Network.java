@@ -34,7 +34,7 @@ public class Network implements Speaker<NetworkListener>, NetworkListener{
 	private RegistryListener listener;
 	private UpnpService upnpService;
 	private Thread fileTransferServerThread;
-	private FileTransferServer fileTransferServer;
+	private ResourceTransferServer fileTransferServer;
 	
 	private NetworkState state;
 	private AudienceHolder audience;
@@ -113,7 +113,7 @@ public class Network implements Speaker<NetworkListener>, NetworkListener{
 		}
 	}
 	public void start() {
-		fileTransferServer = new FileTransferServer("./Received");
+		fileTransferServer = new ResourceTransferServer("./Received");
 		fileTransferServerThread = new Thread(fileTransferServer);
 		fileTransferServerThread.start();
 		
@@ -196,9 +196,9 @@ public class Network implements Speaker<NetworkListener>, NetworkListener{
 			return clone;
 		}
 	}
-	public FileTransferClient transferResource(String connectionAddress,
+	public ResourceTransferBase transferResource(String connectionAddress,
 			String... paths) {
-		FileTransferClient ftc = new FileTransferClient(connectionAddress, paths);
+		ResourceTransferBase ftc = new ResourceTransferOutbound(connectionAddress, paths);
 		
 		return  ftc;
 	}

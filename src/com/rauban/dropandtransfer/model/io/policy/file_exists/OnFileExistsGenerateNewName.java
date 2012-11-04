@@ -1,4 +1,7 @@
-package com.rauban.dropandtransfer.model.io.policy;
+package com.rauban.dropandtransfer.model.io.policy.file_exists;
+
+import com.rauban.dropandtransfer.model.io.policy.FileExistsPolicy;
+
 /**
  * not thread safe!
  * @author RauBan

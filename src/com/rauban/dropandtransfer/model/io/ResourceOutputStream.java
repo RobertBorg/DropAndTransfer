@@ -30,7 +30,7 @@ public class ResourceOutputStream extends OutputStream {
 	
 	private long toSkip;
 	
-	protected <T extends FileExistsPolicy> ResourceOutputStream(Class<T> fep, String baseDirectory){
+	public <T extends FileExistsPolicy> ResourceOutputStream(Class<T> fep, String baseDirectory){
 		try {
 			this.fep =fep.newInstance();
 		} catch (InstantiationException e) {

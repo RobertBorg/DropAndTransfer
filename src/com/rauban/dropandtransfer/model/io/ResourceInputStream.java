@@ -55,7 +55,7 @@ public class ResourceInputStream extends InputStream {
 			headerInputStream = new ByteArrayInputStream(fdh.toByteArray()); //XXX creates need for garbage collection, reuse same buffer?
 			resourceInputStream = new FileInputStream(currentResourceFile); //XXX no support for directories
 		} else {
-			throw new IOException("Directories are currently not supported");
+			throw new IOException("Directories are currently not supported"); //XXX replace with appropriate signal
 		}
 		incState();
 	}

@@ -1,4 +1,4 @@
-package com.rauban.dropandtransfer.model;
+package com.rauban.dropandtransfer.model.io;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,10 +9,10 @@ public class DataStreamer implements Runnable{
 	private InputStream is;
 	private OutputStream os;
 	private int bufferSize;
-	protected DataStreamer(InputStream is, OutputStream os){
+	public DataStreamer(InputStream is, OutputStream os){
 		this(is,os,1024);
 	}
-	protected DataStreamer(InputStream is, OutputStream os,int bufferSize){
+	public  DataStreamer(InputStream is, OutputStream os,int bufferSize){
 		this.is = is;
 		this.os = os;
 		this.bufferSize = bufferSize;

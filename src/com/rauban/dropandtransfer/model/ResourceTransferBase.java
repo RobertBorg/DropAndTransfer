@@ -1,50 +1,31 @@
 package com.rauban.dropandtransfer.model;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.List;
 
-import com.rauban.dropandtransfer.model.io.ResourceInputStream;
+import com.rauban.dropandtransfer.model.io.DataStreamer;
 import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
-public class FileTransferClient implements Speaker<FileTransferClientListener>, FileTransferClientListener{
+public abstract class ResourceTransferBase implements Speaker<FileTransferClientListener>, FileTransferClientListener{
 	AudienceHolder audience;
-	private String[] pathToResources;
-	private String addressAndPort;
 	
-	private Socket socket = null;
+	// used by subclasses
+	protected Socket socket = null;
+	protected DataStreamer ds;
 	
-	private DataStreamer ds;
 	private Thread dsThread;
-	protected FileTransferClient(String addressAndPort, String... pathToResources) {
+	protected ResourceTransferBase() {
 		audience = new AudienceHolder();
-		this.pathToResources = pathToResources;
-		this.addressAndPort = addressAndPort;
 	}
 	public void start(){
-		String[] splitaddr = addressAndPort.split(":");
-		
-		try {
-			socket = new Socket(splitaddr[0], Integer.parseInt(splitaddr[1]));
-		} catch (NumberFormatException e) {
-			fatalUnableToParseAddress(addressAndPort);
-		} catch (UnknownHostException e) {
-			fatalUnableToParseAddress(addressAndPort); // XXX maybe we should have like incorrectAddress instead?
-		} catch (IOException e) {
-			fatalUnableToOpenSocket();
-		}
-		try {
-			ds = new DataStreamer(new ResourceInputStream(pathToResources), socket.getOutputStream());
-		} catch (IOException e) {
-			fatalUnableToGetOutputStreamOfSocket();
-		}
+		setUp();
 		dsThread = new Thread(ds);
 		dsThread.start();
 	}
+	protected abstract void setUp();
 	@Override
 	public void addListener(FileTransferClientListener arg0) {
 		audience.addToAudience(arg0, FileTransferClientListener.class);

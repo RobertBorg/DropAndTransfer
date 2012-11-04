@@ -1,7 +1,11 @@
 package com.rauban.dropandtransfer.view.listener;
 
-import com.rauban.dropandtransfer.model.speaker.NetworkSpeaker;
+import org.fourthline.cling.model.meta.RemoteDevice;
 
-public interface NetworkListener extends NetworkSpeaker {
+import com.rauban.speaker_listener_pattern.listener.Listener;
 
+
+public interface NetworkListener extends Listener {
+	public void discoveryStarted();
+	public void discoveryRemoteDeviceAdded(RemoteDevice rd);
 }

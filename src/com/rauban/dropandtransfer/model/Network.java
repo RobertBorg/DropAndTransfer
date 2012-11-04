@@ -3,6 +3,7 @@ package com.rauban.dropandtransfer.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import org.fourthline.cling.UpnpService;
@@ -25,19 +26,21 @@ import org.fourthline.cling.registry.RegistrationException;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.registry.RegistryListener;
 
-import com.rauban.dropandtransfer.model.speaker.NetworkSpeaker;
-import com.rauban.speaker_listener_pattern.model.ModelBaseImpl;
+import com.rauban.dropandtransfer.view.listener.NetworkListener;
+import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
+import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
-public class Network extends ModelBaseImpl<NetworkSpeaker>{
+public class Network implements Speaker<NetworkListener>, NetworkListener{
 	private RegistryListener listener;
 	private UpnpService upnpService;
 	private Thread fileTransferServerThread;
 	private FileTransferServer fileTransferServer;
 	
 	private NetworkState state;
-	
+	private AudienceHolder audience;
 	
 	public Network(){
+		audience = new AudienceHolder();
 		state = new NetworkState();
 		listener = new RegistryListener() {
 
@@ -198,6 +201,24 @@ public class Network extends ModelBaseImpl<NetworkSpeaker>{
 		FileTransferClient ftc = new FileTransferClient(connectionAddress, paths);
 		
 		return  ftc;
+	}
+	@Override
+	public void addListener(NetworkListener arg0) {
+		audience.addToAudience(arg0, NetworkListener.class);
+	}
+	@Override
+	public void discoveryStarted() {
+		List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
+		for(NetworkListener nl : nll){
+			nl.discoveryStarted();
+		}
+	}
+	@Override
+	public void discoveryRemoteDeviceAdded(RemoteDevice rd) {
+		List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
+		for(NetworkListener nl : nll){
+			nl.discoveryRemoteDeviceAdded(rd);
+		}		
 	}
 }
 

@@ -8,10 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader;
+import com.rauban.dropandtransfer.view.listener.ResourceInputStreamListener;
+import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
+import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
-public class ResourceInputStream extends InputStream {
+public class ResourceInputStream extends InputStream implements Speaker<ResourceInputStreamListener>, ResourceInputStreamListener {
 	private Iterator<String> resourceIterator;
 	
 	//states
@@ -27,6 +31,8 @@ public class ResourceInputStream extends InputStream {
 	private InputStream resourceInputStream;
 
 	private boolean stopAfterCurrentFile;
+
+	private AudienceHolder audience;
 	public ResourceInputStream(String... resourcePaths) {
 		resourceIterator = Arrays.asList(resourcePaths).iterator();
 	}
@@ -56,13 +62,14 @@ public class ResourceInputStream extends InputStream {
 			state = END_OF_STREAM;
 		}
 		currentResourceFile = new File(resourceIterator.next());
+		FileDropHeader fdh = FileDropHeader.newBuilder().setResourceName(currentResourceFile.getName()).setIsDir(currentResourceFile.isDirectory()).setSize(currentResourceFile.length()).build();
 		if(!currentResourceFile.isDirectory()){
-			FileDropHeader fdh = FileDropHeader.newBuilder().setResourceName(currentResourceFile.getName()).setIsDir(currentResourceFile.isDirectory()).setSize(currentResourceFile.length()).build();
 			headerInputStream = new ByteArrayInputStream(fdh.toByteArray()); //XXX creates need for garbage collection, reuse same buffer?
 			resourceInputStream = new FileInputStream(currentResourceFile); //XXX no support for directories
 		} else {
 			throw new IOException("Directories are currently not supported"); //XXX replace with appropriate signal
 		}
+		onNewOutboundResource(fdh.getResourceName(), fdh.getSize(), fdh.getIsDir());
 		incState();
 	}
 
@@ -76,6 +83,11 @@ public class ResourceInputStream extends InputStream {
 
 	private void incState() {
 		state = (state + 1) % 4;
+		switch (state) {
+		case START_OF_RESOURCE:
+			
+			break;
+		}
 	}
 
 	public void stopAfterCurrentFile(boolean b) {
@@ -85,6 +97,30 @@ public class ResourceInputStream extends InputStream {
 	public void stopNow() {
 		state = -2; //XXX not thread safe!
 		
+	}
+
+	@Override
+	public void addListener(ResourceInputStreamListener arg0) {
+		audience.addToAudience(arg0, ResourceInputStreamListener.class);
+		
+	}
+
+	@Override
+	public void onNewOutboundResource(String resource, long size,
+			boolean isDirectory) {
+		List<ResourceInputStreamListener> risll = audience.getAudience(ResourceInputStreamListener.class);
+		for(ResourceInputStreamListener risl:risll ){
+			risl.onNewOutboundResource(resource, size, isDirectory);
+		}
+		
+	}
+
+	@Override
+	public void onResourceTransferEnded() {
+		List<ResourceInputStreamListener> risll = audience.getAudience(ResourceInputStreamListener.class);
+		for(ResourceInputStreamListener risl:risll ){
+			risl.onResourceTransferEnded();
+		}		
 	}
 
 }

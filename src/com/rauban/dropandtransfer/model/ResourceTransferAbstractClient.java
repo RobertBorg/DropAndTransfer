@@ -9,7 +9,7 @@ import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
-public abstract class ResourceTransferBase implements Speaker<FileTransferClientListener>, FileTransferClientListener{
+public abstract class ResourceTransferAbstractClient implements Speaker<FileTransferClientListener>, FileTransferClientListener{
 	AudienceHolder audience;
 	
 	// used by subclasses
@@ -17,7 +17,7 @@ public abstract class ResourceTransferBase implements Speaker<FileTransferClient
 	protected DataStreamer ds;
 	
 	private Thread dsThread;
-	protected ResourceTransferBase() {
+	protected ResourceTransferAbstractClient() {
 		audience = new AudienceHolder();
 	}
 	public void start(){

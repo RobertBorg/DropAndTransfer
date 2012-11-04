@@ -52,7 +52,7 @@ public class ResourceTransferServer implements Runnable, Speaker<ResourceTransfe
 		}
 	}
 	private void handleConnection(Socket s) {
-		ResourceTransferInbound rti = new ResourceTransferInbound(s, baseDownloadDir);
+		ResourceTransferInboundClient rti = new ResourceTransferInboundClient(s, baseDownloadDir);
 		
 		
 	}

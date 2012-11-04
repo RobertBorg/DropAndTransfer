@@ -196,9 +196,9 @@ public class Network implements Speaker<NetworkListener>, NetworkListener{
 			return clone;
 		}
 	}
-	public ResourceTransferBase transferResource(String connectionAddress,
+	public ResourceTransferAbstractClient transferResource(String connectionAddress,
 			String... paths) {
-		ResourceTransferBase ftc = new ResourceTransferOutbound(connectionAddress, paths);
+		ResourceTransferAbstractClient ftc = new ResourceTransferOutboundClient(connectionAddress, paths);
 		
 		return  ftc;
 	}

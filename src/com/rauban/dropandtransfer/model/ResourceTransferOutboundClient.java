@@ -7,12 +7,12 @@ import java.net.UnknownHostException;
 import com.rauban.dropandtransfer.model.io.DataStreamer;
 import com.rauban.dropandtransfer.model.io.ResourceInputStream;
 
-public class ResourceTransferOutbound extends ResourceTransferBase {
+public class ResourceTransferOutboundClient extends ResourceTransferAbstractClient {
 	private String addressAndPort;
 	private String[] pathToResources;
 	private ResourceInputStream ris;
 
-	protected ResourceTransferOutbound(String addressAndPort,
+	protected ResourceTransferOutboundClient(String addressAndPort,
 			String[] pathToResources) {
 		super();
 		this.addressAndPort = addressAndPort;
@@ -41,14 +41,12 @@ public class ResourceTransferOutbound extends ResourceTransferBase {
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-		
+		ris.stopAfterCurrentFile(true);
 	}
 
 	@Override
 	public void abort() {
-		// TODO Auto-generated method stub
-		
+		ris.stopNow();
 	}
 
 }

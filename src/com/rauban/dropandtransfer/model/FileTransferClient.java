@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import com.rauban.dropandtransfer.model.io.policy.ResourceInputStream;
+import com.rauban.dropandtransfer.model.io.ResourceInputStream;
 import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
@@ -31,20 +31,16 @@ public class FileTransferClient implements Speaker<FileTransferClientListener>, 
 		try {
 			socket = new Socket(splitaddr[0], Integer.parseInt(splitaddr[1]));
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fatalUnableToParseAddress(addressAndPort);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fatalUnableToParseAddress(addressAndPort); // XXX maybe we should have like incorrectAddress instead?
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fatalUnableToOpenSocket();
 		}
 		try {
 			ds = new DataStreamer(new ResourceInputStream(pathToResources), socket.getOutputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			fatalUnableToGetOutputStreamOfSocket();
 		}
 		dsThread = new Thread(ds);
 		dsThread.start();
@@ -79,6 +75,28 @@ public class FileTransferClient implements Speaker<FileTransferClientListener>, 
 		List<FileTransferClientListener> ftcll = audience.getAudience(FileTransferClientListener.class);
 		for(FileTransferClientListener ftcl: ftcll){
 			ftcl.updateReceivedAmount(numBytes);
+		}		
+	}
+	@Override
+	public void fatalUnableToParseAddress(String addressAndPort) {
+		List<FileTransferClientListener> ftcll = audience.getAudience(FileTransferClientListener.class);
+		for(FileTransferClientListener ftcl: ftcll){
+			ftcl.fatalUnableToParseAddress(addressAndPort);
+		}		
+		
+	}
+	@Override
+	public void fatalUnableToOpenSocket() {
+		List<FileTransferClientListener> ftcll = audience.getAudience(FileTransferClientListener.class);
+		for(FileTransferClientListener ftcl: ftcll){
+			ftcl.fatalUnableToOpenSocket();
+		}		
+	}
+	@Override
+	public void fatalUnableToGetOutputStreamOfSocket() {
+		List<FileTransferClientListener> ftcll = audience.getAudience(FileTransferClientListener.class);
+		for(FileTransferClientListener ftcl: ftcll){
+			ftcl.fatalUnableToGetOutputStreamOfSocket();
 		}		
 	}
 }

@@ -1,4 +1,4 @@
-package com.rauban.dropandtransfer.model.io.policy;
+package com.rauban.dropandtransfer.model.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

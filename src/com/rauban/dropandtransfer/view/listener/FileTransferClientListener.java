@@ -11,4 +11,8 @@ public interface FileTransferClientListener extends Listener {
 	public void transferFail(File resource);
 	
 	public void updateReceivedAmount(long numBytes);
+	
+	public void fatalUnableToParseAddress(String addressAndPort);
+	public void fatalUnableToOpenSocket();
+	public void fatalUnableToGetOutputStreamOfSocket();
 }

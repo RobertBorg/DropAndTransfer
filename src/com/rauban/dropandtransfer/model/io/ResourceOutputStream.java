@@ -1,4 +1,4 @@
-package com.rauban.dropandtransfer.model.io.policy;
+package com.rauban.dropandtransfer.model.io;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
+import com.rauban.dropandtransfer.model.io.policy.FileExistsPolicy;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader;
 
 public class ResourceOutputStream extends OutputStream {

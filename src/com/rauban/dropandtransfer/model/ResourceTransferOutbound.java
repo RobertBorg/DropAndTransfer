@@ -10,6 +10,7 @@ import com.rauban.dropandtransfer.model.io.ResourceInputStream;
 public class ResourceTransferOutbound extends ResourceTransferBase {
 	private String addressAndPort;
 	private String[] pathToResources;
+	private ResourceInputStream ris;
 
 	protected ResourceTransferOutbound(String addressAndPort,
 			String[] pathToResources) {
@@ -30,11 +31,24 @@ public class ResourceTransferOutbound extends ResourceTransferBase {
 		} catch (IOException e) {
 			fatalUnableToOpenSocket();
 		}
+		ris = new ResourceInputStream(pathToResources);
 		try {
-			ds = new DataStreamer(new ResourceInputStream(pathToResources), socket.getOutputStream());
+			ds = new DataStreamer(ris, socket.getOutputStream());
 		} catch (IOException e) {
 			fatalUnableToGetOutputStreamOfSocket();
 		}
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void abort() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -6,7 +6,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.List;
 
+import com.rauban.dropandtransfer.controller.ResourceTransferClientController;
 import com.rauban.dropandtransfer.view.listener.ResourceTransferServerListener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
@@ -52,6 +54,7 @@ public class ResourceTransferServer implements Runnable, Speaker<ResourceTransfe
 	private void handleConnection(Socket s) {
 		ResourceTransferInbound rti = new ResourceTransferInbound(s, baseDownloadDir);
 		
+		
 	}
 	public void die() {
 		isRunning = false;
@@ -78,8 +81,15 @@ public class ResourceTransferServer implements Runnable, Speaker<ResourceTransfe
 	}
 	@Override
 	public void addListener(ResourceTransferServerListener arg0) {
-		// TODO Auto-generated method stub
+		audience.addToAudience(arg0, ResourceTransferServerListener.class);
 		
+	}
+	@Override
+	public void onNewInboundTransfer(ResourceTransferClientController rtcc) {
+		List<ResourceTransferServerListener> rtsll = audience.getAudience(ResourceTransferServerListener.class);
+		for(ResourceTransferServerListener rtsl : rtsll){
+			rtsl.onNewInboundTransfer(rtcc);
+		}
 	}
 
 }

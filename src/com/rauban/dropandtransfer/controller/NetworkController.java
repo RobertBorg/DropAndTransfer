@@ -21,7 +21,7 @@ public class NetworkController extends ControllerBaseImpl<Network> {
 		model.search();
 	}
 	
-	public FileTransferClientController transferResource(String connectionAddress, String...pathToSend){
-		return new FileTransferClientController(model.transferResource(connectionAddress, pathToSend));
+	public ResourceTransferClientController transferResource(String connectionAddress, String...pathToSend){
+		return new ResourceTransferClientController(model.transferResource(connectionAddress, pathToSend));
 	}
 }

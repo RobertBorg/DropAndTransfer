@@ -25,6 +25,8 @@ public class ResourceInputStream extends InputStream {
 	private File currentResourceFile;
 	private InputStream headerInputStream;
 	private InputStream resourceInputStream;
+
+	private boolean stopAfterCurrentFile;
 	public ResourceInputStream(String... resourcePaths) {
 		resourceIterator = Arrays.asList(resourcePaths).iterator();
 	}
@@ -33,6 +35,10 @@ public class ResourceInputStream extends InputStream {
 	public int read() throws IOException {
 		switch(state){
 		case START_OF_RESOURCE:
+			if(stopAfterCurrentFile){
+				state = END_OF_STREAM;
+				return -1;
+			}
 			processStartOfResource();
 			return headerInputStream.available();
 		case HEADER_BODY:
@@ -70,6 +76,15 @@ public class ResourceInputStream extends InputStream {
 
 	private void incState() {
 		state = (state + 1) % 4;
+	}
+
+	public void stopAfterCurrentFile(boolean b) {
+		stopAfterCurrentFile = b;
+	}
+
+	public void stopNow() {
+		state = -2; //XXX not thread safe!
+		
 	}
 
 }

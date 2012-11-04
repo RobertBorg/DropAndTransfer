@@ -13,7 +13,8 @@ import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader;
 public class ResourceOutputStream extends OutputStream {
 	private FileExistsPolicy fep;
 	private String baseDirectory;
-	
+	//
+	boolean stopAfterCurrentFile = false;
 	//States
 	private static final int START_OF_RESOURCE = 0;
 	private static final int HEADER_BODY = 1;
@@ -76,7 +77,11 @@ public class ResourceOutputStream extends OutputStream {
 			if(--resourceRemaining == 0){
 				resourceOutputStream.flush();
 				resourceOutputStream.close();
-				incState();
+				if(stopAfterCurrentFile){
+					state = END_OF_STREAM;
+				}else {
+					incState();
+				}
 			}
 			break;
 		case SKIP:
@@ -85,12 +90,18 @@ public class ResourceOutputStream extends OutputStream {
 			}
 			break;
 		default:
-			throw new IOException("undefined State!");
+			throw new IOException("undefined State!"); //XXX add handling for EOS
 		}
 		
 	}
 	private void incState() {
 		state = (state +1) %3;
+	}
+	public void setStopAfterCurrentFile(boolean b) {
+		stopAfterCurrentFile = b;
+	}
+	public void stopNow() {
+		state = -2; //XXX not thread safe, fix.
 	}
 
 }

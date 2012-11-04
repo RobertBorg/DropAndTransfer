@@ -80,4 +80,6 @@ public abstract class ResourceTransferBase implements Speaker<FileTransferClient
 			ftcl.fatalUnableToGetOutputStreamOfSocket();
 		}		
 	}
+	abstract public void stop();
+	abstract public void abort();
 }

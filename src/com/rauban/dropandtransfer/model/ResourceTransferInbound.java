@@ -10,6 +10,8 @@ import com.rauban.dropandtransfer.model.io.policy.file_exists.OnFileExistsGenera
 
 public class ResourceTransferInbound extends ResourceTransferBase {
 	private String downloadPath;
+	private InputStream is = null;
+	private ResourceOutputStream ros = null;
 	public ResourceTransferInbound(Socket socket, String downloadPath) {
 		super();
 		this.socket = socket; 
@@ -18,14 +20,25 @@ public class ResourceTransferInbound extends ResourceTransferBase {
 
 	@Override
 	protected void setUp() {
-		InputStream is = null;
 		try {
 			is = socket.getInputStream();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ds = new DataStreamer(is, new ResourceOutputStream(OnFileExistsGenerateNewName.class,downloadPath));
+		ros = new ResourceOutputStream(OnFileExistsGenerateNewName.class,downloadPath);
+		ds = new DataStreamer(is, ros);
+	}
+
+	@Override
+	public void stop() {
+		ros.setStopAfterCurrentFile(true);
+		
+	}
+
+	@Override
+	public void abort() {
+		ros.stopNow();
 	}
 
 }

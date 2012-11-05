@@ -85,7 +85,7 @@ public class ResourceInputStream extends InputStream implements Speaker<Resource
 		state = (state + 1) % 4;
 		switch (state) {
 		case START_OF_RESOURCE:
-			
+			onResourceTransferEnded(); //XXX close resource handle!?
 			break;
 		}
 	}
@@ -112,7 +112,6 @@ public class ResourceInputStream extends InputStream implements Speaker<Resource
 		for(ResourceInputStreamListener risl:risll ){
 			risl.onNewOutboundResource(resource, size, isDirectory);
 		}
-		
 	}
 
 	@Override

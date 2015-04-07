@@ -48,27 +48,6 @@ public class MainWindow extends JFrame implements NetworkListener
         panel.removeAll();
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panel.setLayout(new GridBagLayout());
-        //        JButton searchButton = new JButton("Search");
-        //        searchButton.addActionListener(new ActionListener()
-        //        {
-        //            @Override
-        //            public void actionPerformed(ActionEvent e)
-        //            {
-        //                controller.search();
-        //            }
-        //        });
-        //        panel.add(searchButton);
-
-        //        JButton stopButton = new JButton("Stop");
-        //        stopButton.addActionListener(new ActionListener()
-        //        {
-        //            @Override
-        //            public void actionPerformed(ActionEvent e)
-        //            {
-        //                controller.stop();
-        //            }
-        //        });
-        //        panel.add(stopButton);
 
         JButton selectFileButton = new JButton("Select File");
         selectFileButton.addActionListener(new ActionListener()

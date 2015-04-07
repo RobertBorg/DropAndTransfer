@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class Network implements Speaker<NetworkListener>, NetworkListener
+public class Network implements Speaker<NetworkListener>
 {
     private RegistryListener listener;
     private UpnpService upnpService;
@@ -41,17 +41,12 @@ public class Network implements Speaker<NetworkListener>, NetworkListener
 
             public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device)
             {
-                System.out.println("Discovery started: " + device.getDisplayString());
-                List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
-                for (NetworkListener nl : nll)
-                {
-                    nl.discoveryStarted();
-                }
+                //This method does the same as remoteDeviceAdded and should be ignored
             }
 
             public void remoteDeviceDiscoveryFailed(Registry registry, RemoteDevice device, Exception ex)
             {
-                System.out.println("Discovery failed: " + device.getDisplayString() + " => " + ex);
+                System.err.println("Discovery failed: " + device.getDisplayString() + " => " + ex);
             }
 
             public void remoteDeviceAdded(Registry registry, RemoteDevice device)
@@ -59,8 +54,12 @@ public class Network implements Speaker<NetworkListener>, NetworkListener
                 if (!state.remoteDevices.contains(device))
                 {
                     state.remoteDevices.add(device);
+                    List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
+                    for (NetworkListener nl : nll)
+                    {
+                        nl.discoveryRemoteDeviceAdded(device);
+                    }
                 }
-                //XXX update view
             }
 
             public void remoteDeviceUpdated(Registry registry, RemoteDevice device)
@@ -226,30 +225,16 @@ public class Network implements Speaker<NetworkListener>, NetworkListener
         return ftc;
     }
 
+    public List<RemoteDevice> getRemotes()
+    {
+        return state.remoteDevices;
+    }
+
     @Override
     public void addListener(NetworkListener arg0)
     {
         audience.addToAudience(arg0, NetworkListener.class);
     }
 
-    @Override
-    public void discoveryStarted()
-    {
-        List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
-        for (NetworkListener nl : nll)
-        {
-            nl.discoveryStarted();
-        }
-    }
-
-    @Override
-    public void discoveryRemoteDeviceAdded(RemoteDevice rd)
-    {
-        List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
-        for (NetworkListener nl : nll)
-        {
-            nl.discoveryRemoteDeviceAdded(rd);
-        }
-    }
 }
 

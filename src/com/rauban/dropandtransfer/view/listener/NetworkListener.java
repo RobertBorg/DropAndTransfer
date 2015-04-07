@@ -9,4 +9,6 @@ public interface NetworkListener extends Listener
 
     void discoveryRemoteDeviceAdded(RemoteDevice rd);
 
+    void discoveryRemoteDeviceRemoved();
+
 }

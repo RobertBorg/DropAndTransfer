@@ -1,6 +1,7 @@
 package com.rauban.dropandtransfer.view;
 
 import com.rauban.dropandtransfer.controller.NetworkController;
+import com.rauban.dropandtransfer.controller.ResourceTransferClientController;
 import com.rauban.dropandtransfer.view.listener.NetworkListener;
 import org.fourthline.cling.model.meta.RemoteDevice;
 
@@ -8,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindow extends JFrame implements NetworkListener
 {
@@ -16,6 +20,7 @@ public class MainWindow extends JFrame implements NetworkListener
     private boolean uiInitialized = false;
 
     private JPanel panel;
+    private JList<String> hosts;
 
     public MainWindow(NetworkController controller)
     {
@@ -23,7 +28,7 @@ public class MainWindow extends JFrame implements NetworkListener
         controller.addListener(this);
 
         setTitle("FileDropper");
-        setSize(300, 200);
+        setSize(1024, 768);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         panel = new JPanel();
@@ -42,30 +47,80 @@ public class MainWindow extends JFrame implements NetworkListener
             return;
         panel.removeAll();
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        panel.setLayout(new GridLayout(5, 5, 5, 5));
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(new ActionListener()
+        panel.setLayout(new GridBagLayout());
+        //        JButton searchButton = new JButton("Search");
+        //        searchButton.addActionListener(new ActionListener()
+        //        {
+        //            @Override
+        //            public void actionPerformed(ActionEvent e)
+        //            {
+        //                controller.search();
+        //            }
+        //        });
+        //        panel.add(searchButton);
+
+        //        JButton stopButton = new JButton("Stop");
+        //        stopButton.addActionListener(new ActionListener()
+        //        {
+        //            @Override
+        //            public void actionPerformed(ActionEvent e)
+        //            {
+        //                controller.stop();
+        //            }
+        //        });
+        //        panel.add(stopButton);
+
+        JButton selectFileButton = new JButton("Select File");
+        selectFileButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                controller.search();
+                JFileChooser chooser = new JFileChooser();
+                File f = new File("Desktop");
+                chooser.setCurrentDirectory(f);
+                chooser.setMultiSelectionEnabled(true);
+                int returnVal = chooser.showOpenDialog(null);
+
+                List<String> selectedPaths = new ArrayList<String>();
+                if (returnVal == JFileChooser.APPROVE_OPTION && hosts.getSelectedIndex() >= 0)
+                {
+                    for (File file : chooser.getSelectedFiles())
+                    {
+                        selectedPaths.add(file.getAbsolutePath());
+                    }
+                    RemoteDevice device = controller.getRemotes().get(hosts.getSelectedIndex());
+                    if (device != null)
+                    {
+                        System.out.println("Selected device: " + device.getIdentity().getDescriptorURL().toString() + " " + device.getDisplayString());
+                        //Somehow get the correct URL
+                        ResourceTransferClientController transferClientController = controller.transferResource("", selectedPaths.toArray(new String[selectedPaths.size()]));
+                        transferClientController.start();
+                    }
+                }
             }
         });
-        panel.add(searchButton);
+        panel.add(selectFileButton);
 
-        JButton stopButton = new JButton("Stop");
-        stopButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                controller.stop();
-            }
-        });
-        panel.add(stopButton);
-
+        hosts = new JList<String>();
+        hosts.setLayoutOrientation(JList.VERTICAL);
+        hosts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane listScroller = new JScrollPane(hosts);
+        panel.add(listScroller);
+        this.updateRemotes();
+        controller.search();
         this.uiInitialized = true;
+    }
+
+    private void updateRemotes()
+    {
+        List<RemoteDevice> remoteDevices = controller.getRemotes();
+        String[] labels = new String[remoteDevices.size()];
+        for (int i = 0; i < remoteDevices.size(); i++)
+        {
+            labels[i] = remoteDevices.get(i).getDisplayString();
+        }
+        hosts.setListData(labels);
     }
 
     @Override
@@ -77,6 +132,12 @@ public class MainWindow extends JFrame implements NetworkListener
     @Override
     public void discoveryRemoteDeviceAdded(RemoteDevice rd)
     {
-        System.out.println("Discovered " + rd.getDisplayString());
+        updateRemotes();
+    }
+
+    @Override
+    public void discoveryRemoteDeviceRemoved()
+    {
+        updateRemotes();
     }
 }

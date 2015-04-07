@@ -80,9 +80,10 @@ public class MainWindow extends JFrame implements NetworkListener
                     RemoteDevice device = controller.getRemotes().get(hosts.getSelectedIndex());
                     if (device != null)
                     {
+                    	
                         System.out.println("Selected device: " + device.getIdentity().getDescriptorURL().toString() + " " + device.getDisplayString());
                         //Somehow get the correct URL
-                        ResourceTransferClientController transferClientController = controller.transferResource("", selectedPaths.toArray(new String[selectedPaths.size()]));
+                        ResourceTransferClientController transferClientController = controller.transferResource(device.getDetails().getBaseURL().getHost().toString(), selectedPaths.toArray(new String[selectedPaths.size()]));
                         transferClientController.start();
                     }
                 }

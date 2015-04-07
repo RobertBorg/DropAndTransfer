@@ -1,5 +1,6 @@
 package com.rauban.dropandtransfer.main;
 
+import com.rauban.dropandtransfer.view.newui.MainWindow;
 import org.eclipse.swt.widgets.Display;
 
 import com.rauban.dropandtransfer.controller.NetworkController;
@@ -16,11 +17,13 @@ public class Main  {
 		try {
 			Network model = new Network();
 			NetworkController nh = new NetworkController(model);
-			MainView window = new MainView(nh);
-			window.setBlockOnOpen(true);
+			MainWindow mainWindow = new MainWindow(nh);
+			mainWindow.setVisible(true);
+//			MainView window = new MainView(nh);
+//			window.setBlockOnOpen(true);
 			//XXX update view
-			window.open();
-			Display.getCurrent().dispose();
+//			window.open();
+//			Display.getCurrent().dispose();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

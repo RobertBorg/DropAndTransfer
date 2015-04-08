@@ -1,19 +1,23 @@
 package com.rauban.dropandtransfer.view.listener;
 
-import java.io.File;
-
 import com.rauban.speaker_listener_pattern.listener.Listener;
 
+import java.io.File;
 
-public interface FileTransferClientListener extends Listener {
-	public void transferStarted(File resource);
-	public void transferSuccess(File resource);
-	public void transferFail(File resource);
-	
-	public void updateReceivedAmount(long numBytes);
-	
-	public void fatalUnableToParseAddress(String addressAndPort);
-	public void fatalUnableToOpenSocket();
-	public void fatalUnableToGetOutputStreamOfSocket();
-	
+public interface FileTransferClientListener extends Listener
+{
+    void transferStarted(File resource);
+
+    void transferSuccess(File resource);
+
+    void transferFail(File resource);
+
+    void updateReceivedAmount(long numBytes);
+
+    void fatalUnableToParseAddress(String addressAndPort);
+
+    void fatalUnableToOpenSocket();
+
+    void fatalUnableToGetOutputStreamOfSocket();
+
 }

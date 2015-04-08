@@ -2,7 +2,9 @@ package com.rauban.dropandtransfer.view;
 
 import com.rauban.dropandtransfer.controller.NetworkController;
 import com.rauban.dropandtransfer.controller.ResourceTransferClientController;
+import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
 import com.rauban.dropandtransfer.view.listener.NetworkListener;
+import com.rauban.dropandtransfer.view.listener.ResourceTransferServerListener;
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 import javax.swing.BorderFactory;
@@ -11,8 +13,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import java.awt.GridBagLayout;
@@ -22,13 +26,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainWindow extends JFrame implements NetworkListener
+public class MainWindow extends JFrame implements NetworkListener, ResourceTransferServerListener, FileTransferClientListener
 {
     private NetworkController controller;
 
     private boolean uiInitialized = false;
 
     private JPanel panel;
+    JTextArea logWindow;
     private JList<String> hosts;
 
     public MainWindow(NetworkController controller)
@@ -58,7 +63,10 @@ public class MainWindow extends JFrame implements NetworkListener
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panel.setLayout(new GridBagLayout());
 
+        logWindow = new JTextArea();
+        panel.add(logWindow);
         JButton selectFileButton = new JButton("Select File");
+        final MainWindow view = this;
         selectFileButton.addActionListener(new ActionListener()
         {
             @Override
@@ -80,16 +88,26 @@ public class MainWindow extends JFrame implements NetworkListener
                     RemoteDevice device = controller.getRemotes().get(hosts.getSelectedIndex());
                     if (device != null)
                     {
-                    	
-                        System.out.println("Selected device: " + device.getIdentity().getDescriptorURL().toString() + " " + device.getDisplayString());
-                        //Somehow get the correct URL
-                        ResourceTransferClientController transferClientController = controller.transferResource(device.getDetails().getBaseURL().getHost().toString(), selectedPaths.toArray(new String[selectedPaths.size()]));
+                        ResourceTransferClientController transferClientController = controller
+                                .transferResource(device.getDetails().getBaseURL().getHost(), selectedPaths.toArray(new String[selectedPaths.size()]));
+                        transferClientController.addListener(view);
                         transferClientController.start();
                     }
                 }
             }
         });
         panel.add(selectFileButton);
+
+        JButton sendMessageButton = new JButton("Send Message");
+        sendMessageButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                JOptionPane.showMessageDialog(null, "Ze buttons, zey do nothing!");
+            }
+        });
+        panel.add(sendMessageButton);
 
         hosts = new JList<String>();
         hosts.setLayoutOrientation(JList.VERTICAL);
@@ -112,10 +130,16 @@ public class MainWindow extends JFrame implements NetworkListener
         hosts.setListData(labels);
     }
 
+    private void log(String message)
+    {
+        logWindow.append(message + '\n');
+    }
+
     @Override
     public void discoveryStarted()
     {
         initializeUI();
+        log("Service started");
     }
 
     @Override
@@ -128,5 +152,58 @@ public class MainWindow extends JFrame implements NetworkListener
     public void discoveryRemoteDeviceRemoved()
     {
         updateRemotes();
+    }
+
+    @Override
+    public void onNewInboundTransfer(ResourceTransferClientController rtcc)
+    {
+        int answer = JOptionPane.showOptionDialog(null, "Do you want to accept the file?", "Inbound Transfer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        rtcc.addListener(this);
+        if (answer == 0)
+            rtcc.start();
+        else
+            rtcc.stop();
+    }
+
+    @Override
+    public void transferStarted(File resource)
+    {
+        log("Transfer started: " + resource.getName());
+    }
+
+    @Override
+    public void transferSuccess(File resource)
+    {
+        log("Transfer completed: " + resource.getName());
+    }
+
+    @Override
+    public void transferFail(File resource)
+    {
+        log("Transfer failed: " + resource.getName());
+    }
+
+    @Override
+    public void updateReceivedAmount(long numBytes)
+    {
+        log(String.format("Transfered %d bytes", numBytes));
+    }
+
+    @Override
+    public void fatalUnableToParseAddress(String addressAndPort)
+    {
+        log("Failed to parse address " + addressAndPort);
+    }
+
+    @Override
+    public void fatalUnableToOpenSocket()
+    {
+        log("Failed to open socket");
+    }
+
+    @Override
+    public void fatalUnableToGetOutputStreamOfSocket()
+    {
+        log("Fatal fuckup");
     }
 }

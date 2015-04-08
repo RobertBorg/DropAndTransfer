@@ -3,6 +3,7 @@ package com.rauban.dropandtransfer.model;
 import com.rauban.dropandtransfer.view.listener.NetworkListener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
+
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.binding.LocalServiceBindingException;
@@ -18,6 +19,8 @@ import org.fourthline.cling.registry.RegistryListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -174,15 +177,18 @@ public class Network implements Speaker<NetworkListener>
     {
 
         DeviceIdentity identity = new DeviceIdentity(
-                //	                    UDN.uniqueSystemIdentifier("Demo Binary Light")
                 UDN.uniqueSystemIdentifier(Long.toString((new Random()).nextLong())));
 
-        DeviceType type = new UDADeviceType("BinaryLight", 1);
+        DeviceType type = new UDADeviceType("DropNTransfer", 1);
 
         DeviceDetails details = null;
-        details = new DeviceDetails("Friendly Binary Light", new ManufacturerDetails("ACME"),
-                new ModelDetails("BinLight2000", "A demo light with on/off switch.", String.format("%s:%d", fileTransferServer.getLocalAddress(), fileTransferServer.getPort())));
-
+        try {
+			details = new DeviceDetails(System.getProperty("user.name"), new ManufacturerDetails("EDA095"), new ModelDetails("DropNTransfer"), new URI(null, null, fileTransferServer.getLocalAddress(), fileTransferServer.getPort(), null, null, null));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         Icon icon = null;
         new Icon("image/png", 48, 48, 8, new File("assets/icon.png"));
 

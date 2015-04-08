@@ -74,6 +74,8 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                RemoteDevice device = localDevices.get(hosts.getSelectedIndex());
+                System.out.println("Picked device: " + device.getDisplayString());
                 JFileChooser chooser = new JFileChooser();
                 File f = new File("Desktop");
                 chooser.setCurrentDirectory(f);
@@ -81,21 +83,16 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
                 int returnVal = chooser.showOpenDialog(null);
 
                 List<String> selectedPaths = new ArrayList<String>();
-                if (returnVal == JFileChooser.APPROVE_OPTION && hosts.getSelectedIndex() >= 0)
+                if (returnVal == JFileChooser.APPROVE_OPTION)
                 {
                     for (File file : chooser.getSelectedFiles())
                     {
                         selectedPaths.add(file.getAbsolutePath());
                     }
-                    RemoteDevice device = localDevices.get(hosts.getSelectedIndex());
-                    if (device != null)
-                    {
-                        //TODO Missing port number, how do we get it?
-                        ResourceTransferClientController transferClientController = controller
-                                .transferResource(device.getDetails().getModelDetails().getModelNumber(), selectedPaths.toArray(new String[selectedPaths.size()]));
-                        transferClientController.addListener(view);
-                        transferClientController.start();
-                    }
+                    ResourceTransferClientController transferClientController = controller
+                            .transferResource(device.getDetails().getModelDetails().getModelNumber(), selectedPaths.toArray(new String[selectedPaths.size()]));
+                    transferClientController.addListener(view);
+                    transferClientController.start();
                 }
             }
         });
@@ -122,16 +119,18 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
         this.uiInitialized = true;
     }
 
-    private void updateRemotes()
+    private synchronized void updateRemotes()
     {
-        List<RemoteDevice> remoteDevices = controller.getRemotes();
-        localDevices = remoteDevices;
-        String[] labels = new String[remoteDevices.size()];
-        for (int i = 0; i < remoteDevices.size(); i++)
+        localDevices = new ArrayList<RemoteDevice>(controller.getRemotes());
+        int selection = hosts.getSelectedIndex();
+        hosts.clearSelection();
+        String[] labels = new String[localDevices.size()];
+        for (int i = 0; i < localDevices.size(); i++)
         {
-            labels[i] = remoteDevices.get(i).getDisplayString();
+            labels[i] = localDevices.get(i).getDisplayString();
         }
         hosts.setListData(labels);
+        hosts.setSelectedIndex(selection);
     }
 
     private void log(String message)

@@ -90,7 +90,7 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
                     {
                         //TODO Missing port number, how do we get it?
                         ResourceTransferClientController transferClientController = controller
-                                .transferResource(device.getDetails().getBaseURL().getHost()+":1337", selectedPaths.toArray(new String[selectedPaths.size()]));
+                                .transferResource(device.getDetails().getModelDetails().getModelNumber(), selectedPaths.toArray(new String[selectedPaths.size()]));
                         transferClientController.addListener(view);
                         transferClientController.start();
                     }

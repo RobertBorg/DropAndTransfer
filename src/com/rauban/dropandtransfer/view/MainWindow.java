@@ -36,6 +36,8 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
     JTextArea logWindow;
     private JList<String> hosts;
 
+    private List<RemoteDevice> localDevices;
+
     public MainWindow(NetworkController controller)
     {
         this.controller = controller;
@@ -85,7 +87,7 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
                     {
                         selectedPaths.add(file.getAbsolutePath());
                     }
-                    RemoteDevice device = controller.getRemotes().get(hosts.getSelectedIndex());
+                    RemoteDevice device = localDevices.get(hosts.getSelectedIndex());
                     if (device != null)
                     {
                         //TODO Missing port number, how do we get it?
@@ -123,6 +125,7 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
     private void updateRemotes()
     {
         List<RemoteDevice> remoteDevices = controller.getRemotes();
+        localDevices = remoteDevices;
         String[] labels = new String[remoteDevices.size()];
         for (int i = 0; i < remoteDevices.size(); i++)
         {

@@ -1,4 +1,4 @@
-package com.rauban.dropandtransfer.protocol;
+package com.rauban.dropandtransfer.model.protocol;
 
 message FileDropHeader {
 	required uint64 size = 1;
@@ -6,3 +6,22 @@ message FileDropHeader {
 	required string resourceName = 3;
 }
 
+message TransferOffer {
+	required uint64 offerId = 1;
+	required uint32 ttl = 2;
+	repeated FileDropHeader resources = 3;	
+}
+
+message TransferResponse {
+	required uint64 offerId = 1;
+	required bool accept = 2;
+}
+
+message Chat {
+	required string message = 1;
+}
+
+message FileData {
+	required uint64 offerId = 1;
+	required bytes data = 2;
+}

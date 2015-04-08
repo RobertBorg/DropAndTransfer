@@ -89,8 +89,10 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
                     {
                         selectedPaths.add(file.getAbsolutePath());
                     }
+
                     ResourceTransferClientController transferClientController = controller
-                            .transferResource(device.getDetails().getModelDetails().getModelNumber(), selectedPaths.toArray(new String[selectedPaths.size()]));
+                            .transferResource(device.getDetails().getPresentationURI().getHost() + ':' + device.getDetails().getPresentationURI().getPort(),
+                                    selectedPaths.toArray(new String[selectedPaths.size()]));
                     transferClientController.addListener(view);
                     transferClientController.start();
                 }

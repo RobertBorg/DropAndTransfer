@@ -88,8 +88,9 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
                     RemoteDevice device = controller.getRemotes().get(hosts.getSelectedIndex());
                     if (device != null)
                     {
+                        //TODO Missing port number, how do we get it?
                         ResourceTransferClientController transferClientController = controller
-                                .transferResource(device.getDetails().getBaseURL().getHost(), selectedPaths.toArray(new String[selectedPaths.size()]));
+                                .transferResource(device.getDetails().getBaseURL().getHost()+":1337", selectedPaths.toArray(new String[selectedPaths.size()]));
                         transferClientController.addListener(view);
                         transferClientController.start();
                     }

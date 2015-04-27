@@ -114,15 +114,16 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		try {
 			bis = new BufferedInputStream(socket.getInputStream());
 			cis = CodedInputStream.newInstance(bis);
+
+			bos = new BufferedOutputStream(socket.getOutputStream());
+			cos = CodedOutputStream.newInstance(bos);
 		} catch (IOException e) {
 			sessionDisconnected();
 			e.printStackTrace();
 		}
 		try {
-			Builder b = Packet.newBuilder();
-			while(!cis.isAtEnd()) {
-				cis.readMessage(b, null);
-				Packet p = b.build();
+			while(!socket.isClosed()) {
+				Packet p = Packet.parseDelimitedFrom(bis);
 				switch(p.getType()) {
 				case OFFER:
 					TransferOffer to = p.getTransferOffer();
@@ -185,7 +186,8 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		bb.setType(Type.CHAT);
 		Packet p = bb.build();
 		try {
-			p.writeTo(cos);
+			p.writeDelimitedTo(bos);
+			bos.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

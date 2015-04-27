@@ -44,6 +44,7 @@ public class MainWindow extends JFrame implements NetworkListener, FileTransferL
 	private NetworkController networkController;
 	private SessionServerController serverSessionController;
 	private SessionController sessionController;
+	private SessionWindow sessionWindow;
 
     private boolean uiInitialized = false;
     
@@ -266,9 +267,11 @@ public class MainWindow extends JFrame implements NetworkListener, FileTransferL
 	@Override
 	public void sessionAdded(SessionController s) {
 		// TODO Auto-generated method stub
-		s.addListener(this);
 		log("session added..");
+		s.addListener(this);
 		sessionController = s;
+		sessionWindow = new SessionWindow(s);
+		sessionWindow.setVisible(true);
 		
 	}
 

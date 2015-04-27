@@ -15,5 +15,9 @@ public class SessionController extends ControllerBaseImpl<Session>
     public void sendTransferOffer(TransferOffer.Builder tob) {
     	model.sendTransferOffer(tob);
     }
+    
+    public void sendChat(String message) {
+    	model.sendChat(message);
+    }
 
 }

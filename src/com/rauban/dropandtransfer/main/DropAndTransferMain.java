@@ -5,7 +5,7 @@ import com.rauban.dropandtransfer.view.MainWindow;
 import com.rauban.dropandtransfer.controller.NetworkController;
 import com.rauban.dropandtransfer.model.Network;
 
-public class Main  {
+public class DropAndTransferMain  {
 	
 	/**
 	 * Launch the application.

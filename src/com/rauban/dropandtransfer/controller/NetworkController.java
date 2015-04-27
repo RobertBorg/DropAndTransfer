@@ -2,6 +2,7 @@ package com.rauban.dropandtransfer.controller;
 
 import com.rauban.dropandtransfer.model.Network;
 import com.rauban.speaker_listener_pattern.controller.ControllerBaseImpl;
+
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 import java.util.ArrayList;
@@ -33,11 +34,6 @@ public class NetworkController extends ControllerBaseImpl<Network>
     public List<RemoteDevice> getRemotes()
     {
         return model.getRemotes();
-    }
-
-    public ResourceTransferClientController transferResource(String connectionAddress, String... pathToSend)
-    {
-        return new ResourceTransferClientController(model.transferResource(connectionAddress, pathToSend));
     }
 
 }

@@ -1,10 +1,16 @@
 package com.rauban.dropandtransfer.view;
 
 import com.rauban.dropandtransfer.controller.NetworkController;
-import com.rauban.dropandtransfer.controller.ResourceTransferClientController;
-import com.rauban.dropandtransfer.view.listener.FileTransferClientListener;
+import com.rauban.dropandtransfer.controller.SessionController;
+import com.rauban.dropandtransfer.controller.SessionServerController;
+import com.rauban.dropandtransfer.model.SessionServer;
+import com.rauban.dropandtransfer.model.io.FileTransfer;
+import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
+import com.rauban.dropandtransfer.view.listener.FileTransferListener;
 import com.rauban.dropandtransfer.view.listener.NetworkListener;
-import com.rauban.dropandtransfer.view.listener.ResourceTransferServerListener;
+import com.rauban.dropandtransfer.view.listener.SessionListener;
+import com.rauban.dropandtransfer.view.listener.SessionServerListener;
+
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 import javax.swing.BorderFactory;
@@ -19,18 +25,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
+
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainWindow extends JFrame implements NetworkListener, ResourceTransferServerListener, FileTransferClientListener
+public class MainWindow extends JFrame implements NetworkListener, FileTransferListener, SessionListener, SessionServerListener
 {
-    private NetworkController controller;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 333514456134424836L;
+
+	private NetworkController networkController;
+	private SessionServerController serverSessionController;
+	private SessionController sessionController;
 
     private boolean uiInitialized = false;
+    
 
     private JPanel panel;
     JTextArea logWindow;
@@ -40,7 +56,7 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
 
     public MainWindow(NetworkController controller)
     {
-        this.controller = controller;
+        this.networkController = controller;
         controller.addListener(this);
 
         setTitle("FileDropper");
@@ -90,23 +106,31 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
                         selectedPaths.add(file.getAbsolutePath());
                     }
 
-                    ResourceTransferClientController transferClientController = controller
-                            .transferResource(device.getDetails().getPresentationURI().getHost() + ':' + device.getDetails().getPresentationURI().getPort(),
-                                    selectedPaths.toArray(new String[selectedPaths.size()]));
-                    transferClientController.addListener(view);
-                    transferClientController.start();
+                    if (device != null)
+                    {
+                        //TODO Missing port number, how do we get it?
+                    	//TODO send transfer offer
+                        
+//                        transferClientController.addListener(view);
+//                        transferClientController.start();
+                    }
                 }
             }
         });
         panel.add(selectFileButton);
 
-        JButton sendMessageButton = new JButton("Send Message");
+        JButton sendMessageButton = new JButton("Connect");
         sendMessageButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                JOptionPane.showMessageDialog(null, "Ze buttons, zey do nothing!");
+            	if(hosts.getSelectedIndex() >= 0) {
+            		RemoteDevice device = localDevices.get(hosts.getSelectedIndex());
+            		URI uri = device.getDetails().getPresentationURI();
+            		serverSessionController.startSession(uri);
+            		log("Starting session...");
+            	}
             }
         });
         panel.add(sendMessageButton);
@@ -117,13 +141,13 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
         JScrollPane listScroller = new JScrollPane(hosts);
         panel.add(listScroller);
         this.updateRemotes();
-        controller.search();
+        networkController.search();
         this.uiInitialized = true;
     }
 
     private synchronized void updateRemotes()
     {
-        localDevices = new ArrayList<RemoteDevice>(controller.getRemotes());
+        localDevices = new ArrayList<RemoteDevice>(networkController.getRemotes());
         int selection = hosts.getSelectedIndex();
         hosts.clearSelection();
         String[] labels = new String[localDevices.size()];
@@ -137,7 +161,9 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
 
     private void log(String message)
     {
-        logWindow.append(message + '\n');
+
+    	if(logWindow != null) //TODO fix ?
+    		logWindow.append(message + '\n');
     }
 
     @Override
@@ -159,56 +185,96 @@ public class MainWindow extends JFrame implements NetworkListener, ResourceTrans
         updateRemotes();
     }
 
-    @Override
-    public void onNewInboundTransfer(ResourceTransferClientController rtcc)
-    {
-        int answer = JOptionPane.showOptionDialog(null, "Do you want to accept the file?", "Inbound Transfer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-        rtcc.addListener(this);
-        if (answer == 0)
-            rtcc.start();
-        else
-            rtcc.stop();
-    }
+//    @Override
+//    public void onNewInboundTransfer(ResourceTransferClientController rtcc)
+//    {
+//        int answer = JOptionPane.showOptionDialog(null, "Do you want to accept the file?", "Inbound Transfer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+//        rtcc.addListener(this);
+//        if (answer == 0)
+//            rtcc.start();
+//        else
+//            rtcc.stop();
+//    }
 
-    @Override
-    public void transferStarted(File resource)
-    {
-        log("Transfer started: " + resource.getName());
-    }
+   
+	@Override
+	public void sessionServerStarted(SessionServerController ss) {
+		// TODO Auto-generated method stub
+		serverSessionController = ss;
+		ss.addListener(this);
+		log("got serversessioncontroller");
+	}
 
-    @Override
-    public void transferSuccess(File resource)
-    {
-        log("Transfer completed: " + resource.getName());
-    }
+	@Override
+	public void sessionFileTransferStatusUpdate(long offerId,
+			String currentFile, float currentSpeedInKBytesPerSecond,
+			float currentAvgSpeedInKBytesPerSecond, float currentFilePercent,
+			float currentTransferPercent) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void transferFail(File resource)
-    {
-        log("Transfer failed: " + resource.getName());
-    }
+	@Override
+	public void sessionConnected() {
+		// TODO Auto-generated method stub
+		log("session connected");
+		
+	}
 
-    @Override
-    public void updateReceivedAmount(long numBytes)
-    {
-        log(String.format("Transfered %d bytes", numBytes));
-    }
+	@Override
+	public void sessionGotOffer(TransferOffer to) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void fatalUnableToParseAddress(String addressAndPort)
-    {
-        log("Failed to parse address " + addressAndPort);
-    }
+	@Override
+	public void sessionGotResponse(long offerId, boolean accept) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void fatalUnableToOpenSocket()
-    {
-        log("Failed to open socket");
-    }
+	@Override
+	public void sessionGotOfferCancel(long offerId) {
+		// TODO Auto-generated method stub
+		
+	}
 
-    @Override
-    public void fatalUnableToGetOutputStreamOfSocket()
-    {
-        log("Fatal fuckup");
-    }
+	@Override
+	public void sessionGotChat(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sessionFileTransferStarted(FileTransfer ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sessionFileTransferStopped(FileTransfer ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sessionDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sessionAdded(SessionController s) {
+		// TODO Auto-generated method stub
+		s.addListener(this);
+		log("session added..");
+		sessionController = s;
+		
+	}
+
+	@Override
+	public void sessionRemoved(SessionController s) {
+		// TODO Auto-generated method stub
+		
+	}
 }

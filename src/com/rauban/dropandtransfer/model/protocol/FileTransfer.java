@@ -8,75 +8,1263 @@ public final class FileTransfer {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface FileDropHeaderOrBuilder
+  public interface PacketOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required uint64 size = 1;
-    boolean hasSize();
-    long getSize();
+    // required .com.rauban.dropandtransfer.model.protocol.Packet.Type type = 1;
+    boolean hasType();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type getType();
     
-    // required bool isDir = 2;
-    boolean hasIsDir();
-    boolean getIsDir();
+    // optional .com.rauban.dropandtransfer.model.protocol.TransferOffer transferOffer = 2;
+    boolean hasTransferOffer();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer getTransferOffer();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOfferOrBuilder getTransferOfferOrBuilder();
     
-    // required string resourceName = 3;
-    boolean hasResourceName();
-    String getResourceName();
+    // optional .com.rauban.dropandtransfer.model.protocol.TransferResponse transferResponse = 3;
+    boolean hasTransferResponse();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse getTransferResponse();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponseOrBuilder getTransferResponseOrBuilder();
+    
+    // optional .com.rauban.dropandtransfer.model.protocol.Chat chat = 4;
+    boolean hasChat();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat getChat();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.ChatOrBuilder getChatOrBuilder();
+    
+    // optional .com.rauban.dropandtransfer.model.protocol.FileData data = 5;
+    boolean hasData();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData getData();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDataOrBuilder getDataOrBuilder();
+    
+    // optional .com.rauban.dropandtransfer.model.protocol.TransferCancel cancel = 6;
+    boolean hasCancel();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel getCancel();
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder getCancelOrBuilder();
   }
-  public static final class FileDropHeader extends
+  public static final class Packet extends
       com.google.protobuf.GeneratedMessage
-      implements FileDropHeaderOrBuilder {
-    // Use FileDropHeader.newBuilder() to construct.
-    private FileDropHeader(Builder builder) {
+      implements PacketOrBuilder {
+    // Use Packet.newBuilder() to construct.
+    private Packet(Builder builder) {
       super(builder);
     }
-    private FileDropHeader(boolean noInit) {}
+    private Packet(boolean noInit) {}
     
-    private static final FileDropHeader defaultInstance;
-    public static FileDropHeader getDefaultInstance() {
+    private static final Packet defaultInstance;
+    public static Packet getDefaultInstance() {
       return defaultInstance;
     }
     
-    public FileDropHeader getDefaultInstanceForType() {
+    public Packet getDefaultInstanceForType() {
       return defaultInstance;
     }
     
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_descriptor;
+      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_Packet_descriptor;
     }
     
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_fieldAccessorTable;
+      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_Packet_fieldAccessorTable;
+    }
+    
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      OFFER(0, 1),
+      RESPONSE(1, 2),
+      CHAT(2, 3),
+      DATA(3, 4),
+      CANCEL(4, 5),
+      ;
+      
+      public static final int OFFER_VALUE = 1;
+      public static final int RESPONSE_VALUE = 2;
+      public static final int CHAT_VALUE = 3;
+      public static final int DATA_VALUE = 4;
+      public static final int CANCEL_VALUE = 5;
+      
+      
+      public final int getNumber() { return value; }
+      
+      public static Type valueOf(int value) {
+        switch (value) {
+          case 1: return OFFER;
+          case 2: return RESPONSE;
+          case 3: return CHAT;
+          case 4: return DATA;
+          case 5: return CANCEL;
+          default: return null;
+        }
+      }
+      
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.valueOf(number);
+              }
+            };
+      
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.getDescriptor().getEnumTypes().get(0);
+      }
+      
+      private static final Type[] VALUES = {
+        OFFER, RESPONSE, CHAT, DATA, CANCEL, 
+      };
+      
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+      
+      private final int index;
+      private final int value;
+      
+      private Type(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+      
+      // @@protoc_insertion_point(enum_scope:com.rauban.dropandtransfer.model.protocol.Packet.Type)
     }
     
     private int bitField0_;
-    // required uint64 size = 1;
-    public static final int SIZE_FIELD_NUMBER = 1;
-    private long size_;
-    public boolean hasSize() {
+    // required .com.rauban.dropandtransfer.model.protocol.Packet.Type type = 1;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type type_;
+    public boolean hasType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
-    public long getSize() {
-      return size_;
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type getType() {
+      return type_;
     }
     
-    // required bool isDir = 2;
-    public static final int ISDIR_FIELD_NUMBER = 2;
-    private boolean isDir_;
-    public boolean hasIsDir() {
+    // optional .com.rauban.dropandtransfer.model.protocol.TransferOffer transferOffer = 2;
+    public static final int TRANSFEROFFER_FIELD_NUMBER = 2;
+    private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer transferOffer_;
+    public boolean hasTransferOffer() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public boolean getIsDir() {
-      return isDir_;
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer getTransferOffer() {
+      return transferOffer_;
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOfferOrBuilder getTransferOfferOrBuilder() {
+      return transferOffer_;
     }
     
-    // required string resourceName = 3;
-    public static final int RESOURCENAME_FIELD_NUMBER = 3;
+    // optional .com.rauban.dropandtransfer.model.protocol.TransferResponse transferResponse = 3;
+    public static final int TRANSFERRESPONSE_FIELD_NUMBER = 3;
+    private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse transferResponse_;
+    public boolean hasTransferResponse() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse getTransferResponse() {
+      return transferResponse_;
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponseOrBuilder getTransferResponseOrBuilder() {
+      return transferResponse_;
+    }
+    
+    // optional .com.rauban.dropandtransfer.model.protocol.Chat chat = 4;
+    public static final int CHAT_FIELD_NUMBER = 4;
+    private com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat chat_;
+    public boolean hasChat() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat getChat() {
+      return chat_;
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.ChatOrBuilder getChatOrBuilder() {
+      return chat_;
+    }
+    
+    // optional .com.rauban.dropandtransfer.model.protocol.FileData data = 5;
+    public static final int DATA_FIELD_NUMBER = 5;
+    private com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData data_;
+    public boolean hasData() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData getData() {
+      return data_;
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDataOrBuilder getDataOrBuilder() {
+      return data_;
+    }
+    
+    // optional .com.rauban.dropandtransfer.model.protocol.TransferCancel cancel = 6;
+    public static final int CANCEL_FIELD_NUMBER = 6;
+    private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel cancel_;
+    public boolean hasCancel() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel getCancel() {
+      return cancel_;
+    }
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder getCancelOrBuilder() {
+      return cancel_;
+    }
+    
+    private void initFields() {
+      type_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type.OFFER;
+      transferOffer_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.getDefaultInstance();
+      transferResponse_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.getDefaultInstance();
+      chat_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.getDefaultInstance();
+      data_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.getDefaultInstance();
+      cancel_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasTransferOffer()) {
+        if (!getTransferOffer().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasTransferResponse()) {
+        if (!getTransferResponse().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasChat()) {
+        if (!getChat().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasData()) {
+        if (!getData().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasCancel()) {
+        if (!getCancel().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, type_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, transferOffer_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, transferResponse_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeMessage(4, chat_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeMessage(5, data_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeMessage(6, cancel_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, transferOffer_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, transferResponse_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, chat_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, data_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, cancel_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.rauban.dropandtransfer.model.protocol.FileTransfer.PacketOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_Packet_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_Packet_fieldAccessorTable;
+      }
+      
+      // Construct using com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getTransferOfferFieldBuilder();
+          getTransferResponseFieldBuilder();
+          getChatFieldBuilder();
+          getDataFieldBuilder();
+          getCancelFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        type_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type.OFFER;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (transferOfferBuilder_ == null) {
+          transferOffer_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.getDefaultInstance();
+        } else {
+          transferOfferBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (transferResponseBuilder_ == null) {
+          transferResponse_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.getDefaultInstance();
+        } else {
+          transferResponseBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (chatBuilder_ == null) {
+          chat_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.getDefaultInstance();
+        } else {
+          chatBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        if (dataBuilder_ == null) {
+          data_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.getDefaultInstance();
+        } else {
+          dataBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        if (cancelBuilder_ == null) {
+          cancel_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance();
+        } else {
+          cancelBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.getDescriptor();
+      }
+      
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet getDefaultInstanceForType() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.getDefaultInstance();
+      }
+      
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet build() {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet buildPartial() {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet result = new com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (transferOfferBuilder_ == null) {
+          result.transferOffer_ = transferOffer_;
+        } else {
+          result.transferOffer_ = transferOfferBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (transferResponseBuilder_ == null) {
+          result.transferResponse_ = transferResponse_;
+        } else {
+          result.transferResponse_ = transferResponseBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        if (chatBuilder_ == null) {
+          result.chat_ = chat_;
+        } else {
+          result.chat_ = chatBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        if (dataBuilder_ == null) {
+          result.data_ = data_;
+        } else {
+          result.data_ = dataBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        if (cancelBuilder_ == null) {
+          result.cancel_ = cancel_;
+        } else {
+          result.cancel_ = cancelBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet) {
+          return mergeFrom((com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet other) {
+        if (other == com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasTransferOffer()) {
+          mergeTransferOffer(other.getTransferOffer());
+        }
+        if (other.hasTransferResponse()) {
+          mergeTransferResponse(other.getTransferResponse());
+        }
+        if (other.hasChat()) {
+          mergeChat(other.getChat());
+        }
+        if (other.hasData()) {
+          mergeData(other.getData());
+        }
+        if (other.hasCancel()) {
+          mergeCancel(other.getCancel());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasType()) {
+          
+          return false;
+        }
+        if (hasTransferOffer()) {
+          if (!getTransferOffer().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasTransferResponse()) {
+          if (!getTransferResponse().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasChat()) {
+          if (!getChat().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasData()) {
+          if (!getData().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasCancel()) {
+          if (!getCancel().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type value = com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = value;
+              }
+              break;
+            }
+            case 18: {
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.newBuilder();
+              if (hasTransferOffer()) {
+                subBuilder.mergeFrom(getTransferOffer());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setTransferOffer(subBuilder.buildPartial());
+              break;
+            }
+            case 26: {
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.newBuilder();
+              if (hasTransferResponse()) {
+                subBuilder.mergeFrom(getTransferResponse());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setTransferResponse(subBuilder.buildPartial());
+              break;
+            }
+            case 34: {
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.newBuilder();
+              if (hasChat()) {
+                subBuilder.mergeFrom(getChat());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setChat(subBuilder.buildPartial());
+              break;
+            }
+            case 42: {
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.newBuilder();
+              if (hasData()) {
+                subBuilder.mergeFrom(getData());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setData(subBuilder.buildPartial());
+              break;
+            }
+            case 50: {
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.newBuilder();
+              if (hasCancel()) {
+                subBuilder.mergeFrom(getCancel());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setCancel(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required .com.rauban.dropandtransfer.model.protocol.Packet.Type type = 1;
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type type_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type.OFFER;
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type getType() {
+        return type_;
+      }
+      public Builder setType(com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type.OFFER;
+        onChanged();
+        return this;
+      }
+      
+      // optional .com.rauban.dropandtransfer.model.protocol.TransferOffer transferOffer = 2;
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer transferOffer_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOfferOrBuilder> transferOfferBuilder_;
+      public boolean hasTransferOffer() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer getTransferOffer() {
+        if (transferOfferBuilder_ == null) {
+          return transferOffer_;
+        } else {
+          return transferOfferBuilder_.getMessage();
+        }
+      }
+      public Builder setTransferOffer(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer value) {
+        if (transferOfferBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transferOffer_ = value;
+          onChanged();
+        } else {
+          transferOfferBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      public Builder setTransferOffer(
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder builderForValue) {
+        if (transferOfferBuilder_ == null) {
+          transferOffer_ = builderForValue.build();
+          onChanged();
+        } else {
+          transferOfferBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      public Builder mergeTransferOffer(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer value) {
+        if (transferOfferBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              transferOffer_ != com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.getDefaultInstance()) {
+            transferOffer_ =
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.newBuilder(transferOffer_).mergeFrom(value).buildPartial();
+          } else {
+            transferOffer_ = value;
+          }
+          onChanged();
+        } else {
+          transferOfferBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      public Builder clearTransferOffer() {
+        if (transferOfferBuilder_ == null) {
+          transferOffer_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.getDefaultInstance();
+          onChanged();
+        } else {
+          transferOfferBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder getTransferOfferBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getTransferOfferFieldBuilder().getBuilder();
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOfferOrBuilder getTransferOfferOrBuilder() {
+        if (transferOfferBuilder_ != null) {
+          return transferOfferBuilder_.getMessageOrBuilder();
+        } else {
+          return transferOffer_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOfferOrBuilder> 
+          getTransferOfferFieldBuilder() {
+        if (transferOfferBuilder_ == null) {
+          transferOfferBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOfferOrBuilder>(
+                  transferOffer_,
+                  getParentForChildren(),
+                  isClean());
+          transferOffer_ = null;
+        }
+        return transferOfferBuilder_;
+      }
+      
+      // optional .com.rauban.dropandtransfer.model.protocol.TransferResponse transferResponse = 3;
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse transferResponse_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponseOrBuilder> transferResponseBuilder_;
+      public boolean hasTransferResponse() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse getTransferResponse() {
+        if (transferResponseBuilder_ == null) {
+          return transferResponse_;
+        } else {
+          return transferResponseBuilder_.getMessage();
+        }
+      }
+      public Builder setTransferResponse(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse value) {
+        if (transferResponseBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          transferResponse_ = value;
+          onChanged();
+        } else {
+          transferResponseBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      public Builder setTransferResponse(
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder builderForValue) {
+        if (transferResponseBuilder_ == null) {
+          transferResponse_ = builderForValue.build();
+          onChanged();
+        } else {
+          transferResponseBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      public Builder mergeTransferResponse(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse value) {
+        if (transferResponseBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              transferResponse_ != com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.getDefaultInstance()) {
+            transferResponse_ =
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.newBuilder(transferResponse_).mergeFrom(value).buildPartial();
+          } else {
+            transferResponse_ = value;
+          }
+          onChanged();
+        } else {
+          transferResponseBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      public Builder clearTransferResponse() {
+        if (transferResponseBuilder_ == null) {
+          transferResponse_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.getDefaultInstance();
+          onChanged();
+        } else {
+          transferResponseBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder getTransferResponseBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getTransferResponseFieldBuilder().getBuilder();
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponseOrBuilder getTransferResponseOrBuilder() {
+        if (transferResponseBuilder_ != null) {
+          return transferResponseBuilder_.getMessageOrBuilder();
+        } else {
+          return transferResponse_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponseOrBuilder> 
+          getTransferResponseFieldBuilder() {
+        if (transferResponseBuilder_ == null) {
+          transferResponseBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponseOrBuilder>(
+                  transferResponse_,
+                  getParentForChildren(),
+                  isClean());
+          transferResponse_ = null;
+        }
+        return transferResponseBuilder_;
+      }
+      
+      // optional .com.rauban.dropandtransfer.model.protocol.Chat chat = 4;
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat chat_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat, com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.ChatOrBuilder> chatBuilder_;
+      public boolean hasChat() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat getChat() {
+        if (chatBuilder_ == null) {
+          return chat_;
+        } else {
+          return chatBuilder_.getMessage();
+        }
+      }
+      public Builder setChat(com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat value) {
+        if (chatBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          chat_ = value;
+          onChanged();
+        } else {
+          chatBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      public Builder setChat(
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder builderForValue) {
+        if (chatBuilder_ == null) {
+          chat_ = builderForValue.build();
+          onChanged();
+        } else {
+          chatBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      public Builder mergeChat(com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat value) {
+        if (chatBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008) &&
+              chat_ != com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.getDefaultInstance()) {
+            chat_ =
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.newBuilder(chat_).mergeFrom(value).buildPartial();
+          } else {
+            chat_ = value;
+          }
+          onChanged();
+        } else {
+          chatBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      public Builder clearChat() {
+        if (chatBuilder_ == null) {
+          chat_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.getDefaultInstance();
+          onChanged();
+        } else {
+          chatBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder getChatBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getChatFieldBuilder().getBuilder();
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ChatOrBuilder getChatOrBuilder() {
+        if (chatBuilder_ != null) {
+          return chatBuilder_.getMessageOrBuilder();
+        } else {
+          return chat_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat, com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.ChatOrBuilder> 
+          getChatFieldBuilder() {
+        if (chatBuilder_ == null) {
+          chatBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat, com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.ChatOrBuilder>(
+                  chat_,
+                  getParentForChildren(),
+                  isClean());
+          chat_ = null;
+        }
+        return chatBuilder_;
+      }
+      
+      // optional .com.rauban.dropandtransfer.model.protocol.FileData data = 5;
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData data_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDataOrBuilder> dataBuilder_;
+      public boolean hasData() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData getData() {
+        if (dataBuilder_ == null) {
+          return data_;
+        } else {
+          return dataBuilder_.getMessage();
+        }
+      }
+      public Builder setData(com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData value) {
+        if (dataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          data_ = value;
+          onChanged();
+        } else {
+          dataBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      public Builder setData(
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder builderForValue) {
+        if (dataBuilder_ == null) {
+          data_ = builderForValue.build();
+          onChanged();
+        } else {
+          dataBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      public Builder mergeData(com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData value) {
+        if (dataBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              data_ != com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.getDefaultInstance()) {
+            data_ =
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.newBuilder(data_).mergeFrom(value).buildPartial();
+          } else {
+            data_ = value;
+          }
+          onChanged();
+        } else {
+          dataBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      public Builder clearData() {
+        if (dataBuilder_ == null) {
+          data_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.getDefaultInstance();
+          onChanged();
+        } else {
+          dataBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder getDataBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getDataFieldBuilder().getBuilder();
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDataOrBuilder getDataOrBuilder() {
+        if (dataBuilder_ != null) {
+          return dataBuilder_.getMessageOrBuilder();
+        } else {
+          return data_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDataOrBuilder> 
+          getDataFieldBuilder() {
+        if (dataBuilder_ == null) {
+          dataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDataOrBuilder>(
+                  data_,
+                  getParentForChildren(),
+                  isClean());
+          data_ = null;
+        }
+        return dataBuilder_;
+      }
+      
+      // optional .com.rauban.dropandtransfer.model.protocol.TransferCancel cancel = 6;
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel cancel_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder> cancelBuilder_;
+      public boolean hasCancel() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel getCancel() {
+        if (cancelBuilder_ == null) {
+          return cancel_;
+        } else {
+          return cancelBuilder_.getMessage();
+        }
+      }
+      public Builder setCancel(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel value) {
+        if (cancelBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          cancel_ = value;
+          onChanged();
+        } else {
+          cancelBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      public Builder setCancel(
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder builderForValue) {
+        if (cancelBuilder_ == null) {
+          cancel_ = builderForValue.build();
+          onChanged();
+        } else {
+          cancelBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      public Builder mergeCancel(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel value) {
+        if (cancelBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+              cancel_ != com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance()) {
+            cancel_ =
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.newBuilder(cancel_).mergeFrom(value).buildPartial();
+          } else {
+            cancel_ = value;
+          }
+          onChanged();
+        } else {
+          cancelBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000020;
+        return this;
+      }
+      public Builder clearCancel() {
+        if (cancelBuilder_ == null) {
+          cancel_ = com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance();
+          onChanged();
+        } else {
+          cancelBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000020);
+        return this;
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder getCancelBuilder() {
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return getCancelFieldBuilder().getBuilder();
+      }
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder getCancelOrBuilder() {
+        if (cancelBuilder_ != null) {
+          return cancelBuilder_.getMessageOrBuilder();
+        } else {
+          return cancel_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder> 
+          getCancelFieldBuilder() {
+        if (cancelBuilder_ == null) {
+          cancelBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder>(
+                  cancel_,
+                  getParentForChildren(),
+                  isClean());
+          cancel_ = null;
+        }
+        return cancelBuilder_;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:com.rauban.dropandtransfer.model.protocol.Packet)
+    }
+    
+    static {
+      defaultInstance = new Packet(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:com.rauban.dropandtransfer.model.protocol.Packet)
+  }
+  
+  public interface ResourceHeaderOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required string resourceName = 1;
+    boolean hasResourceName();
+    String getResourceName();
+    
+    // required bool isDir = 2;
+    boolean hasIsDir();
+    boolean getIsDir();
+    
+    // optional int64 size = 3;
+    boolean hasSize();
+    long getSize();
+  }
+  public static final class ResourceHeader extends
+      com.google.protobuf.GeneratedMessage
+      implements ResourceHeaderOrBuilder {
+    // Use ResourceHeader.newBuilder() to construct.
+    private ResourceHeader(Builder builder) {
+      super(builder);
+    }
+    private ResourceHeader(boolean noInit) {}
+    
+    private static final ResourceHeader defaultInstance;
+    public static ResourceHeader getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public ResourceHeader getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required string resourceName = 1;
+    public static final int RESOURCENAME_FIELD_NUMBER = 1;
     private java.lang.Object resourceName_;
     public boolean hasResourceName() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     public String getResourceName() {
       java.lang.Object ref = resourceName_;
@@ -104,25 +1292,41 @@ public final class FileTransfer {
       }
     }
     
+    // required bool isDir = 2;
+    public static final int ISDIR_FIELD_NUMBER = 2;
+    private boolean isDir_;
+    public boolean hasIsDir() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public boolean getIsDir() {
+      return isDir_;
+    }
+    
+    // optional int64 size = 3;
+    public static final int SIZE_FIELD_NUMBER = 3;
+    private long size_;
+    public boolean hasSize() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    public long getSize() {
+      return size_;
+    }
+    
     private void initFields() {
-      size_ = 0L;
-      isDir_ = false;
       resourceName_ = "";
+      isDir_ = false;
+      size_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
-      if (!hasSize()) {
+      if (!hasResourceName()) {
         memoizedIsInitialized = 0;
         return false;
       }
       if (!hasIsDir()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasResourceName()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -134,13 +1338,13 @@ public final class FileTransfer {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, size_);
+        output.writeBytes(1, getResourceNameBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBool(2, isDir_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getResourceNameBytes());
+        output.writeInt64(3, size_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -153,7 +1357,7 @@ public final class FileTransfer {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, size_);
+          .computeBytesSize(1, getResourceNameBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -161,7 +1365,7 @@ public final class FileTransfer {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getResourceNameBytes());
+          .computeInt64Size(3, size_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -175,41 +1379,41 @@ public final class FileTransfer {
       return super.writeReplace();
     }
     
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(byte[] data)
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(java.io.InputStream input)
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input, extensionRegistry)
                .buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseDelimitedFrom(java.io.InputStream input)
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       Builder builder = newBuilder();
       if (builder.mergeDelimitedFrom(input)) {
@@ -218,7 +1422,7 @@ public final class FileTransfer {
         return null;
       }
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseDelimitedFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -229,12 +1433,12 @@ public final class FileTransfer {
         return null;
       }
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader parseFrom(
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -244,7 +1448,7 @@ public final class FileTransfer {
     
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader prototype) {
+    public static Builder newBuilder(com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -257,18 +1461,18 @@ public final class FileTransfer {
     }
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder {
+       implements com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_descriptor;
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_descriptor;
       }
       
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_fieldAccessorTable;
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_fieldAccessorTable;
       }
       
-      // Construct using com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.newBuilder()
+      // Construct using com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -287,11 +1491,11 @@ public final class FileTransfer {
       
       public Builder clear() {
         super.clear();
-        size_ = 0L;
+        resourceName_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         isDir_ = false;
         bitField0_ = (bitField0_ & ~0x00000002);
-        resourceName_ = "";
+        size_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
@@ -302,24 +1506,24 @@ public final class FileTransfer {
       
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.getDescriptor();
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.getDescriptor();
       }
       
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader getDefaultInstanceForType() {
-        return com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.getDefaultInstance();
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader getDefaultInstanceForType() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.getDefaultInstance();
       }
       
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader build() {
-        com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader result = buildPartial();
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader build() {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
       
-      private com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader buildParsed()
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
-        com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader result = buildPartial();
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(
             result).asInvalidProtocolBufferException();
@@ -327,14 +1531,14 @@ public final class FileTransfer {
         return result;
       }
       
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader buildPartial() {
-        com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader result = new com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader(this);
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader buildPartial() {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader result = new com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.size_ = size_;
+        result.resourceName_ = resourceName_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -342,46 +1546,42 @@ public final class FileTransfer {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.resourceName_ = resourceName_;
+        result.size_ = size_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
       
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader) {
-          return mergeFrom((com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader)other);
+        if (other instanceof com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader) {
+          return mergeFrom((com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
       
-      public Builder mergeFrom(com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader other) {
-        if (other == com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.getDefaultInstance()) return this;
-        if (other.hasSize()) {
-          setSize(other.getSize());
+      public Builder mergeFrom(com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader other) {
+        if (other == com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.getDefaultInstance()) return this;
+        if (other.hasResourceName()) {
+          setResourceName(other.getResourceName());
         }
         if (other.hasIsDir()) {
           setIsDir(other.getIsDir());
         }
-        if (other.hasResourceName()) {
-          setResourceName(other.getResourceName());
+        if (other.hasSize()) {
+          setSize(other.getSize());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
       
       public final boolean isInitialized() {
-        if (!hasSize()) {
+        if (!hasResourceName()) {
           
           return false;
         }
         if (!hasIsDir()) {
-          
-          return false;
-        }
-        if (!hasResourceName()) {
           
           return false;
         }
@@ -411,9 +1611,9 @@ public final class FileTransfer {
               }
               break;
             }
-            case 8: {
+            case 10: {
               bitField0_ |= 0x00000001;
-              size_ = input.readUInt64();
+              resourceName_ = input.readBytes();
               break;
             }
             case 16: {
@@ -421,9 +1621,9 @@ public final class FileTransfer {
               isDir_ = input.readBool();
               break;
             }
-            case 26: {
+            case 24: {
               bitField0_ |= 0x00000004;
-              resourceName_ = input.readBytes();
+              size_ = input.readInt64();
               break;
             }
           }
@@ -432,25 +1632,40 @@ public final class FileTransfer {
       
       private int bitField0_;
       
-      // required uint64 size = 1;
-      private long size_ ;
-      public boolean hasSize() {
+      // required string resourceName = 1;
+      private java.lang.Object resourceName_ = "";
+      public boolean hasResourceName() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
-      public long getSize() {
-        return size_;
+      public String getResourceName() {
+        java.lang.Object ref = resourceName_;
+        if (!(ref instanceof String)) {
+          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+          resourceName_ = s;
+          return s;
+        } else {
+          return (String) ref;
+        }
       }
-      public Builder setSize(long value) {
-        bitField0_ |= 0x00000001;
-        size_ = value;
+      public Builder setResourceName(String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        resourceName_ = value;
         onChanged();
         return this;
       }
-      public Builder clearSize() {
+      public Builder clearResourceName() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        size_ = 0L;
+        resourceName_ = getDefaultInstance().getResourceName();
         onChanged();
         return this;
+      }
+      void setResourceName(com.google.protobuf.ByteString value) {
+        bitField0_ |= 0x00000001;
+        resourceName_ = value;
+        onChanged();
       }
       
       // required bool isDir = 2;
@@ -474,72 +1689,53 @@ public final class FileTransfer {
         return this;
       }
       
-      // required string resourceName = 3;
-      private java.lang.Object resourceName_ = "";
-      public boolean hasResourceName() {
+      // optional int64 size = 3;
+      private long size_ ;
+      public boolean hasSize() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
-      public String getResourceName() {
-        java.lang.Object ref = resourceName_;
-        if (!(ref instanceof String)) {
-          String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
-          resourceName_ = s;
-          return s;
-        } else {
-          return (String) ref;
-        }
+      public long getSize() {
+        return size_;
       }
-      public Builder setResourceName(String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        resourceName_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearResourceName() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        resourceName_ = getDefaultInstance().getResourceName();
-        onChanged();
-        return this;
-      }
-      void setResourceName(com.google.protobuf.ByteString value) {
+      public Builder setSize(long value) {
         bitField0_ |= 0x00000004;
-        resourceName_ = value;
+        size_ = value;
         onChanged();
+        return this;
+      }
+      public Builder clearSize() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        size_ = 0L;
+        onChanged();
+        return this;
       }
       
-      // @@protoc_insertion_point(builder_scope:com.rauban.dropandtransfer.model.protocol.FileDropHeader)
+      // @@protoc_insertion_point(builder_scope:com.rauban.dropandtransfer.model.protocol.ResourceHeader)
     }
     
     static {
-      defaultInstance = new FileDropHeader(true);
+      defaultInstance = new ResourceHeader(true);
       defaultInstance.initFields();
     }
     
-    // @@protoc_insertion_point(class_scope:com.rauban.dropandtransfer.model.protocol.FileDropHeader)
+    // @@protoc_insertion_point(class_scope:com.rauban.dropandtransfer.model.protocol.ResourceHeader)
   }
   
   public interface TransferOfferOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required uint64 offerId = 1;
+    // required int64 offerId = 1;
     boolean hasOfferId();
     long getOfferId();
     
-    // required uint32 ttl = 2;
-    boolean hasTtl();
-    int getTtl();
-    
-    // repeated .com.rauban.dropandtransfer.model.protocol.FileDropHeader resources = 3;
-    java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader> 
+    // repeated .com.rauban.dropandtransfer.model.protocol.ResourceHeader resources = 3;
+    java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader> 
         getResourcesList();
-    com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader getResources(int index);
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader getResources(int index);
     int getResourcesCount();
-    java.util.List<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder> 
+    java.util.List<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder> 
         getResourcesOrBuilderList();
-    com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder getResourcesOrBuilder(
+    com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder getResourcesOrBuilder(
         int index);
   }
   public static final class TransferOffer extends
@@ -571,7 +1767,7 @@ public final class FileTransfer {
     }
     
     private int bitField0_;
-    // required uint64 offerId = 1;
+    // required int64 offerId = 1;
     public static final int OFFERID_FIELD_NUMBER = 1;
     private long offerId_;
     public boolean hasOfferId() {
@@ -581,40 +1777,29 @@ public final class FileTransfer {
       return offerId_;
     }
     
-    // required uint32 ttl = 2;
-    public static final int TTL_FIELD_NUMBER = 2;
-    private int ttl_;
-    public boolean hasTtl() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    public int getTtl() {
-      return ttl_;
-    }
-    
-    // repeated .com.rauban.dropandtransfer.model.protocol.FileDropHeader resources = 3;
+    // repeated .com.rauban.dropandtransfer.model.protocol.ResourceHeader resources = 3;
     public static final int RESOURCES_FIELD_NUMBER = 3;
-    private java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader> resources_;
-    public java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader> getResourcesList() {
+    private java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader> resources_;
+    public java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader> getResourcesList() {
       return resources_;
     }
-    public java.util.List<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder> 
+    public java.util.List<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder> 
         getResourcesOrBuilderList() {
       return resources_;
     }
     public int getResourcesCount() {
       return resources_.size();
     }
-    public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader getResources(int index) {
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader getResources(int index) {
       return resources_.get(index);
     }
-    public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder getResourcesOrBuilder(
+    public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder getResourcesOrBuilder(
         int index) {
       return resources_.get(index);
     }
     
     private void initFields() {
       offerId_ = 0L;
-      ttl_ = 0;
       resources_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
@@ -623,10 +1808,6 @@ public final class FileTransfer {
       if (isInitialized != -1) return isInitialized == 1;
       
       if (!hasOfferId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTtl()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -644,10 +1825,7 @@ public final class FileTransfer {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, offerId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeUInt32(2, ttl_);
+        output.writeInt64(1, offerId_);
       }
       for (int i = 0; i < resources_.size(); i++) {
         output.writeMessage(3, resources_.get(i));
@@ -663,11 +1841,7 @@ public final class FileTransfer {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, offerId_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(2, ttl_);
+          .computeInt64Size(1, offerId_);
       }
       for (int i = 0; i < resources_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -800,11 +1974,9 @@ public final class FileTransfer {
         super.clear();
         offerId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
-        ttl_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         if (resourcesBuilder_ == null) {
           resources_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           resourcesBuilder_.clear();
         }
@@ -850,14 +2022,10 @@ public final class FileTransfer {
           to_bitField0_ |= 0x00000001;
         }
         result.offerId_ = offerId_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.ttl_ = ttl_;
         if (resourcesBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
             resources_ = java.util.Collections.unmodifiableList(resources_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.resources_ = resources_;
         } else {
@@ -882,14 +2050,11 @@ public final class FileTransfer {
         if (other.hasOfferId()) {
           setOfferId(other.getOfferId());
         }
-        if (other.hasTtl()) {
-          setTtl(other.getTtl());
-        }
         if (resourcesBuilder_ == null) {
           if (!other.resources_.isEmpty()) {
             if (resources_.isEmpty()) {
               resources_ = other.resources_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureResourcesIsMutable();
               resources_.addAll(other.resources_);
@@ -902,7 +2067,7 @@ public final class FileTransfer {
               resourcesBuilder_.dispose();
               resourcesBuilder_ = null;
               resources_ = other.resources_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000002);
               resourcesBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getResourcesFieldBuilder() : null;
@@ -917,10 +2082,6 @@ public final class FileTransfer {
       
       public final boolean isInitialized() {
         if (!hasOfferId()) {
-          
-          return false;
-        }
-        if (!hasTtl()) {
           
           return false;
         }
@@ -958,16 +2119,11 @@ public final class FileTransfer {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              offerId_ = input.readUInt64();
-              break;
-            }
-            case 16: {
-              bitField0_ |= 0x00000002;
-              ttl_ = input.readUInt32();
+              offerId_ = input.readInt64();
               break;
             }
             case 26: {
-              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.newBuilder();
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder subBuilder = com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.newBuilder();
               input.readMessage(subBuilder, extensionRegistry);
               addResources(subBuilder.buildPartial());
               break;
@@ -978,7 +2134,7 @@ public final class FileTransfer {
       
       private int bitField0_;
       
-      // required uint64 offerId = 1;
+      // required int64 offerId = 1;
       private long offerId_ ;
       public boolean hasOfferId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
@@ -999,41 +2155,20 @@ public final class FileTransfer {
         return this;
       }
       
-      // required uint32 ttl = 2;
-      private int ttl_ ;
-      public boolean hasTtl() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      public int getTtl() {
-        return ttl_;
-      }
-      public Builder setTtl(int value) {
-        bitField0_ |= 0x00000002;
-        ttl_ = value;
-        onChanged();
-        return this;
-      }
-      public Builder clearTtl() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        ttl_ = 0;
-        onChanged();
-        return this;
-      }
-      
-      // repeated .com.rauban.dropandtransfer.model.protocol.FileDropHeader resources = 3;
-      private java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader> resources_ =
+      // repeated .com.rauban.dropandtransfer.model.protocol.ResourceHeader resources = 3;
+      private java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader> resources_ =
         java.util.Collections.emptyList();
       private void ensureResourcesIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-          resources_ = new java.util.ArrayList<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader>(resources_);
-          bitField0_ |= 0x00000004;
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          resources_ = new java.util.ArrayList<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader>(resources_);
+          bitField0_ |= 0x00000002;
          }
       }
       
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder> resourcesBuilder_;
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder> resourcesBuilder_;
       
-      public java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader> getResourcesList() {
+      public java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader> getResourcesList() {
         if (resourcesBuilder_ == null) {
           return java.util.Collections.unmodifiableList(resources_);
         } else {
@@ -1047,7 +2182,7 @@ public final class FileTransfer {
           return resourcesBuilder_.getCount();
         }
       }
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader getResources(int index) {
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader getResources(int index) {
         if (resourcesBuilder_ == null) {
           return resources_.get(index);
         } else {
@@ -1055,7 +2190,7 @@ public final class FileTransfer {
         }
       }
       public Builder setResources(
-          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader value) {
+          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader value) {
         if (resourcesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1069,7 +2204,7 @@ public final class FileTransfer {
         return this;
       }
       public Builder setResources(
-          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder builderForValue) {
+          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder builderForValue) {
         if (resourcesBuilder_ == null) {
           ensureResourcesIsMutable();
           resources_.set(index, builderForValue.build());
@@ -1079,7 +2214,7 @@ public final class FileTransfer {
         }
         return this;
       }
-      public Builder addResources(com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader value) {
+      public Builder addResources(com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader value) {
         if (resourcesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1093,7 +2228,7 @@ public final class FileTransfer {
         return this;
       }
       public Builder addResources(
-          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader value) {
+          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader value) {
         if (resourcesBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -1107,7 +2242,7 @@ public final class FileTransfer {
         return this;
       }
       public Builder addResources(
-          com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder builderForValue) {
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder builderForValue) {
         if (resourcesBuilder_ == null) {
           ensureResourcesIsMutable();
           resources_.add(builderForValue.build());
@@ -1118,7 +2253,7 @@ public final class FileTransfer {
         return this;
       }
       public Builder addResources(
-          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder builderForValue) {
+          int index, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder builderForValue) {
         if (resourcesBuilder_ == null) {
           ensureResourcesIsMutable();
           resources_.add(index, builderForValue.build());
@@ -1129,7 +2264,7 @@ public final class FileTransfer {
         return this;
       }
       public Builder addAllResources(
-          java.lang.Iterable<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader> values) {
+          java.lang.Iterable<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader> values) {
         if (resourcesBuilder_ == null) {
           ensureResourcesIsMutable();
           super.addAll(values, resources_);
@@ -1142,7 +2277,7 @@ public final class FileTransfer {
       public Builder clearResources() {
         if (resourcesBuilder_ == null) {
           resources_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           resourcesBuilder_.clear();
@@ -1159,18 +2294,18 @@ public final class FileTransfer {
         }
         return this;
       }
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder getResourcesBuilder(
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder getResourcesBuilder(
           int index) {
         return getResourcesFieldBuilder().getBuilder(index);
       }
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder getResourcesOrBuilder(
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder getResourcesOrBuilder(
           int index) {
         if (resourcesBuilder_ == null) {
           return resources_.get(index);  } else {
           return resourcesBuilder_.getMessageOrBuilder(index);
         }
       }
-      public java.util.List<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder> 
+      public java.util.List<? extends com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder> 
            getResourcesOrBuilderList() {
         if (resourcesBuilder_ != null) {
           return resourcesBuilder_.getMessageOrBuilderList();
@@ -1178,27 +2313,27 @@ public final class FileTransfer {
           return java.util.Collections.unmodifiableList(resources_);
         }
       }
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder addResourcesBuilder() {
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder addResourcesBuilder() {
         return getResourcesFieldBuilder().addBuilder(
-            com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.getDefaultInstance());
+            com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.getDefaultInstance());
       }
-      public com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder addResourcesBuilder(
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder addResourcesBuilder(
           int index) {
         return getResourcesFieldBuilder().addBuilder(
-            index, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.getDefaultInstance());
+            index, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.getDefaultInstance());
       }
-      public java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder> 
+      public java.util.List<com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder> 
            getResourcesBuilderList() {
         return getResourcesFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder> 
+          com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder> 
           getResourcesFieldBuilder() {
         if (resourcesBuilder_ == null) {
           resourcesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeaderOrBuilder>(
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder, com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeaderOrBuilder>(
                   resources_,
-                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
                   isClean());
           resources_ = null;
@@ -1220,7 +2355,7 @@ public final class FileTransfer {
   public interface TransferResponseOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required uint64 offerId = 1;
+    // required int64 offerId = 1;
     boolean hasOfferId();
     long getOfferId();
     
@@ -1257,7 +2392,7 @@ public final class FileTransfer {
     }
     
     private int bitField0_;
-    // required uint64 offerId = 1;
+    // required int64 offerId = 1;
     public static final int OFFERID_FIELD_NUMBER = 1;
     private long offerId_;
     public boolean hasOfferId() {
@@ -1302,7 +2437,7 @@ public final class FileTransfer {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, offerId_);
+        output.writeInt64(1, offerId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBool(2, accept_);
@@ -1318,7 +2453,7 @@ public final class FileTransfer {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, offerId_);
+          .computeInt64Size(1, offerId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1561,7 +2696,7 @@ public final class FileTransfer {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              offerId_ = input.readUInt64();
+              offerId_ = input.readInt64();
               break;
             }
             case 16: {
@@ -1575,7 +2710,7 @@ public final class FileTransfer {
       
       private int bitField0_;
       
-      // required uint64 offerId = 1;
+      // required int64 offerId = 1;
       private long offerId_ ;
       public boolean hasOfferId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
@@ -1626,6 +2761,352 @@ public final class FileTransfer {
     }
     
     // @@protoc_insertion_point(class_scope:com.rauban.dropandtransfer.model.protocol.TransferResponse)
+  }
+  
+  public interface TransferCancelOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required int64 offerId = 1;
+    boolean hasOfferId();
+    long getOfferId();
+  }
+  public static final class TransferCancel extends
+      com.google.protobuf.GeneratedMessage
+      implements TransferCancelOrBuilder {
+    // Use TransferCancel.newBuilder() to construct.
+    private TransferCancel(Builder builder) {
+      super(builder);
+    }
+    private TransferCancel(boolean noInit) {}
+    
+    private static final TransferCancel defaultInstance;
+    public static TransferCancel getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public TransferCancel getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required int64 offerId = 1;
+    public static final int OFFERID_FIELD_NUMBER = 1;
+    private long offerId_;
+    public boolean hasOfferId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public long getOfferId() {
+      return offerId_;
+    }
+    
+    private void initFields() {
+      offerId_ = 0L;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasOfferId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt64(1, offerId_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, offerId_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancelOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_fieldAccessorTable;
+      }
+      
+      // Construct using com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        offerId_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDescriptor();
+      }
+      
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel getDefaultInstanceForType() {
+        return com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance();
+      }
+      
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel build() {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel buildPartial() {
+        com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel result = new com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.offerId_ = offerId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel) {
+          return mergeFrom((com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel other) {
+        if (other == com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.getDefaultInstance()) return this;
+        if (other.hasOfferId()) {
+          setOfferId(other.getOfferId());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasOfferId()) {
+          
+          return false;
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              offerId_ = input.readInt64();
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required int64 offerId = 1;
+      private long offerId_ ;
+      public boolean hasOfferId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public long getOfferId() {
+        return offerId_;
+      }
+      public Builder setOfferId(long value) {
+        bitField0_ |= 0x00000001;
+        offerId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearOfferId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        offerId_ = 0L;
+        onChanged();
+        return this;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:com.rauban.dropandtransfer.model.protocol.TransferCancel)
+    }
+    
+    static {
+      defaultInstance = new TransferCancel(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:com.rauban.dropandtransfer.model.protocol.TransferCancel)
   }
   
   public interface ChatOrBuilder
@@ -2014,13 +3495,13 @@ public final class FileTransfer {
   public interface FileDataOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required uint64 offerId = 1;
+    // required int64 offerId = 1;
     boolean hasOfferId();
     long getOfferId();
     
-    // required bytes data = 2;
-    boolean hasData();
-    com.google.protobuf.ByteString getData();
+    // required int32 numBytes = 2;
+    boolean hasNumBytes();
+    int getNumBytes();
   }
   public static final class FileData extends
       com.google.protobuf.GeneratedMessage
@@ -2051,7 +3532,7 @@ public final class FileTransfer {
     }
     
     private int bitField0_;
-    // required uint64 offerId = 1;
+    // required int64 offerId = 1;
     public static final int OFFERID_FIELD_NUMBER = 1;
     private long offerId_;
     public boolean hasOfferId() {
@@ -2061,19 +3542,19 @@ public final class FileTransfer {
       return offerId_;
     }
     
-    // required bytes data = 2;
-    public static final int DATA_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString data_;
-    public boolean hasData() {
+    // required int32 numBytes = 2;
+    public static final int NUMBYTES_FIELD_NUMBER = 2;
+    private int numBytes_;
+    public boolean hasNumBytes() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
-    public com.google.protobuf.ByteString getData() {
-      return data_;
+    public int getNumBytes() {
+      return numBytes_;
     }
     
     private void initFields() {
       offerId_ = 0L;
-      data_ = com.google.protobuf.ByteString.EMPTY;
+      numBytes_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2084,7 +3565,7 @@ public final class FileTransfer {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasData()) {
+      if (!hasNumBytes()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -2096,10 +3577,10 @@ public final class FileTransfer {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeUInt64(1, offerId_);
+        output.writeInt64(1, offerId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, data_);
+        output.writeInt32(2, numBytes_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2112,11 +3593,11 @@ public final class FileTransfer {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt64Size(1, offerId_);
+          .computeInt64Size(1, offerId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, data_);
+          .computeInt32Size(2, numBytes_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2244,7 +3725,7 @@ public final class FileTransfer {
         super.clear();
         offerId_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
-        data_ = com.google.protobuf.ByteString.EMPTY;
+        numBytes_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -2291,7 +3772,7 @@ public final class FileTransfer {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.data_ = data_;
+        result.numBytes_ = numBytes_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2311,8 +3792,8 @@ public final class FileTransfer {
         if (other.hasOfferId()) {
           setOfferId(other.getOfferId());
         }
-        if (other.hasData()) {
-          setData(other.getData());
+        if (other.hasNumBytes()) {
+          setNumBytes(other.getNumBytes());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2323,7 +3804,7 @@ public final class FileTransfer {
           
           return false;
         }
-        if (!hasData()) {
+        if (!hasNumBytes()) {
           
           return false;
         }
@@ -2355,12 +3836,12 @@ public final class FileTransfer {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              offerId_ = input.readUInt64();
+              offerId_ = input.readInt64();
               break;
             }
-            case 18: {
+            case 16: {
               bitField0_ |= 0x00000002;
-              data_ = input.readBytes();
+              numBytes_ = input.readInt32();
               break;
             }
           }
@@ -2369,7 +3850,7 @@ public final class FileTransfer {
       
       private int bitField0_;
       
-      // required uint64 offerId = 1;
+      // required int64 offerId = 1;
       private long offerId_ ;
       public boolean hasOfferId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
@@ -2390,26 +3871,23 @@ public final class FileTransfer {
         return this;
       }
       
-      // required bytes data = 2;
-      private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
-      public boolean hasData() {
+      // required int32 numBytes = 2;
+      private int numBytes_ ;
+      public boolean hasNumBytes() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
-      public com.google.protobuf.ByteString getData() {
-        return data_;
+      public int getNumBytes() {
+        return numBytes_;
       }
-      public Builder setData(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        data_ = value;
+      public Builder setNumBytes(int value) {
+        bitField0_ |= 0x00000002;
+        numBytes_ = value;
         onChanged();
         return this;
       }
-      public Builder clearData() {
+      public Builder clearNumBytes() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        data_ = getDefaultInstance().getData();
+        numBytes_ = 0;
         onChanged();
         return this;
       }
@@ -2426,10 +3904,15 @@ public final class FileTransfer {
   }
   
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_descriptor;
+    internal_static_com_rauban_dropandtransfer_model_protocol_Packet_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_fieldAccessorTable;
+      internal_static_com_rauban_dropandtransfer_model_protocol_Packet_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_com_rauban_dropandtransfer_model_protocol_TransferOffer_descriptor;
   private static
@@ -2440,6 +3923,11 @@ public final class FileTransfer {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_rauban_dropandtransfer_model_protocol_TransferResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_com_rauban_dropandtransfer_model_protocol_Chat_descriptor;
   private static
@@ -2460,47 +3948,77 @@ public final class FileTransfer {
   static {
     java.lang.String[] descriptorData = {
       "\n\033protocol/FileTransfer.proto\022)com.rauba" +
-      "n.dropandtransfer.model.protocol\"C\n\016File" +
-      "DropHeader\022\014\n\004size\030\001 \002(\004\022\r\n\005isDir\030\002 \002(\010\022" +
-      "\024\n\014resourceName\030\003 \002(\t\"{\n\rTransferOffer\022\017" +
-      "\n\007offerId\030\001 \002(\004\022\013\n\003ttl\030\002 \002(\r\022L\n\tresource" +
-      "s\030\003 \003(\01329.com.rauban.dropandtransfer.mod" +
-      "el.protocol.FileDropHeader\"3\n\020TransferRe" +
-      "sponse\022\017\n\007offerId\030\001 \002(\004\022\016\n\006accept\030\002 \002(\010\"" +
-      "\027\n\004Chat\022\017\n\007message\030\001 \002(\t\")\n\010FileData\022\017\n\007" +
-      "offerId\030\001 \002(\004\022\014\n\004data\030\002 \002(\014"
+      "n.dropandtransfer.model.protocol\"\204\004\n\006Pac" +
+      "ket\022D\n\004type\030\001 \002(\01626.com.rauban.dropandtr" +
+      "ansfer.model.protocol.Packet.Type\022O\n\rtra" +
+      "nsferOffer\030\002 \001(\01328.com.rauban.dropandtra" +
+      "nsfer.model.protocol.TransferOffer\022U\n\020tr" +
+      "ansferResponse\030\003 \001(\0132;.com.rauban.dropan" +
+      "dtransfer.model.protocol.TransferRespons" +
+      "e\022=\n\004chat\030\004 \001(\0132/.com.rauban.dropandtran" +
+      "sfer.model.protocol.Chat\022A\n\004data\030\005 \001(\01323",
+      ".com.rauban.dropandtransfer.model.protoc" +
+      "ol.FileData\022I\n\006cancel\030\006 \001(\01329.com.rauban" +
+      ".dropandtransfer.model.protocol.Transfer" +
+      "Cancel\"?\n\004Type\022\t\n\005OFFER\020\001\022\014\n\010RESPONSE\020\002\022" +
+      "\010\n\004CHAT\020\003\022\010\n\004DATA\020\004\022\n\n\006CANCEL\020\005\"C\n\016Resou" +
+      "rceHeader\022\024\n\014resourceName\030\001 \002(\t\022\r\n\005isDir" +
+      "\030\002 \002(\010\022\014\n\004size\030\003 \001(\003\"n\n\rTransferOffer\022\017\n" +
+      "\007offerId\030\001 \002(\003\022L\n\tresources\030\003 \003(\01329.com." +
+      "rauban.dropandtransfer.model.protocol.Re" +
+      "sourceHeader\"3\n\020TransferResponse\022\017\n\007offe",
+      "rId\030\001 \002(\003\022\016\n\006accept\030\002 \002(\010\"!\n\016TransferCan" +
+      "cel\022\017\n\007offerId\030\001 \002(\003\"\027\n\004Chat\022\017\n\007message\030" +
+      "\001 \002(\t\"-\n\010FileData\022\017\n\007offerId\030\001 \002(\003\022\020\n\010nu" +
+      "mBytes\030\002 \002(\005"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_descriptor =
+          internal_static_com_rauban_dropandtransfer_model_protocol_Packet_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_fieldAccessorTable = new
+          internal_static_com_rauban_dropandtransfer_model_protocol_Packet_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_com_rauban_dropandtransfer_model_protocol_FileDropHeader_descriptor,
-              new java.lang.String[] { "Size", "IsDir", "ResourceName", },
-              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.class,
-              com.rauban.dropandtransfer.model.protocol.FileTransfer.FileDropHeader.Builder.class);
-          internal_static_com_rauban_dropandtransfer_model_protocol_TransferOffer_descriptor =
+              internal_static_com_rauban_dropandtransfer_model_protocol_Packet_descriptor,
+              new java.lang.String[] { "Type", "TransferOffer", "TransferResponse", "Chat", "Data", "Cancel", },
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.class,
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Builder.class);
+          internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_descriptor =
             getDescriptor().getMessageTypes().get(1);
+          internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_rauban_dropandtransfer_model_protocol_ResourceHeader_descriptor,
+              new java.lang.String[] { "ResourceName", "IsDir", "Size", },
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.class,
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader.Builder.class);
+          internal_static_com_rauban_dropandtransfer_model_protocol_TransferOffer_descriptor =
+            getDescriptor().getMessageTypes().get(2);
           internal_static_com_rauban_dropandtransfer_model_protocol_TransferOffer_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_rauban_dropandtransfer_model_protocol_TransferOffer_descriptor,
-              new java.lang.String[] { "OfferId", "Ttl", "Resources", },
+              new java.lang.String[] { "OfferId", "Resources", },
               com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.class,
               com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer.Builder.class);
           internal_static_com_rauban_dropandtransfer_model_protocol_TransferResponse_descriptor =
-            getDescriptor().getMessageTypes().get(2);
+            getDescriptor().getMessageTypes().get(3);
           internal_static_com_rauban_dropandtransfer_model_protocol_TransferResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_rauban_dropandtransfer_model_protocol_TransferResponse_descriptor,
               new java.lang.String[] { "OfferId", "Accept", },
               com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.class,
               com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse.Builder.class);
+          internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_descriptor =
+            getDescriptor().getMessageTypes().get(4);
+          internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_com_rauban_dropandtransfer_model_protocol_TransferCancel_descriptor,
+              new java.lang.String[] { "OfferId", },
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.class,
+              com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel.Builder.class);
           internal_static_com_rauban_dropandtransfer_model_protocol_Chat_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(5);
           internal_static_com_rauban_dropandtransfer_model_protocol_Chat_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_rauban_dropandtransfer_model_protocol_Chat_descriptor,
@@ -2508,11 +4026,11 @@ public final class FileTransfer {
               com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.class,
               com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat.Builder.class);
           internal_static_com_rauban_dropandtransfer_model_protocol_FileData_descriptor =
-            getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(6);
           internal_static_com_rauban_dropandtransfer_model_protocol_FileData_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_com_rauban_dropandtransfer_model_protocol_FileData_descriptor,
-              new java.lang.String[] { "OfferId", "Data", },
+              new java.lang.String[] { "OfferId", "NumBytes", },
               com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.class,
               com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData.Builder.class);
           return null;

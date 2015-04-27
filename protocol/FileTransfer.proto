@@ -1,20 +1,41 @@
 package com.rauban.dropandtransfer.model.protocol;
 
-message FileDropHeader {
-	required uint64 size = 1;
+message Packet {
+	enum Type {
+		OFFER = 1;
+		RESPONSE = 2;
+		CHAT = 3;
+		DATA = 4;
+		CANCEL = 5;
+	}
+	
+	required Type type = 1;
+	
+	optional TransferOffer transferOffer = 2;
+	optional TransferResponse transferResponse = 3;
+	optional Chat chat = 4;
+	optional FileData data = 5;
+	optional TransferCancel cancel = 6;
+}
+
+message ResourceHeader {
+	required string resourceName = 1;
 	required bool isDir = 2;
-	required string resourceName = 3;
+	optional int64 size = 3;
 }
 
 message TransferOffer {
-	required uint64 offerId = 1;
-	required uint32 ttl = 2;
-	repeated FileDropHeader resources = 3;	
+	required int64 offerId = 1;
+	repeated ResourceHeader resources = 3;	
 }
 
 message TransferResponse {
-	required uint64 offerId = 1;
+	required int64 offerId = 1;
 	required bool accept = 2;
+}
+
+message TransferCancel {
+	required int64 offerId = 1;
 }
 
 message Chat {
@@ -22,6 +43,6 @@ message Chat {
 }
 
 message FileData {
-	required uint64 offerId = 1;
-	required bytes data = 2;
+	required int64 offerId = 1;
+	required int32 numBytes = 2;
 }

@@ -1,5 +1,6 @@
 package com.rauban.dropandtransfer.model;
 
+import com.rauban.dropandtransfer.controller.SessionServerController;
 import com.rauban.dropandtransfer.view.listener.NetworkListener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
@@ -29,8 +30,8 @@ public class Network implements Speaker<NetworkListener>
 {
     private RegistryListener listener;
     private UpnpService upnpService;
-    private Thread fileTransferServerThread;
-    private ResourceTransferServer fileTransferServer;
+    private Thread sessionServerThread;
+    private SessionServer sessionServer;
 
     private NetworkState state;
     private AudienceHolder audience;
@@ -116,11 +117,11 @@ public class Network implements Speaker<NetworkListener>
     public void stop()
     {
         upnpService.shutdown();
-        fileTransferServer.die();
-        fileTransferServerThread.interrupt();
+        sessionServer.die();
+        sessionServerThread.interrupt();
         try
         {
-            fileTransferServerThread.join();
+            sessionServerThread.join();
         }
         catch (InterruptedException e)
         {
@@ -131,9 +132,11 @@ public class Network implements Speaker<NetworkListener>
 
     public void start()
     {
-        fileTransferServer = new ResourceTransferServer("./Received");
-        fileTransferServerThread = new Thread(fileTransferServer);
-        fileTransferServerThread.start();
+        sessionServer = new SessionServer("./Received");
+        sessionServerThread = new Thread(sessionServer);
+        sessionServerThread.start();
+        
+        sessionServerStarted(new SessionServerController(sessionServer));
 
         upnpService = new UpnpServiceImpl(listener);
         Runtime.getRuntime().addShutdownHook(new Thread()
@@ -183,7 +186,7 @@ public class Network implements Speaker<NetworkListener>
 
         DeviceDetails details = null;
         try {
-			details = new DeviceDetails(System.getProperty("user.name"), new ManufacturerDetails("EDA095"), new ModelDetails("DropNTransfer"), new URI(null, null, fileTransferServer.getLocalAddress(), fileTransferServer.getPort(), null, null, null));
+			details = new DeviceDetails(System.getProperty("user.name"), new ManufacturerDetails("EDA095"), new ModelDetails("DropNTransfer"), new URI(null, null, sessionServer.getLocalAddress(), sessionServer.getPort(), null, null, null));
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,13 +227,6 @@ public class Network implements Speaker<NetworkListener>
         }
     }
 
-    public ResourceTransferAbstractClient transferResource(String connectionAddress, String... paths)
-    {
-        ResourceTransferAbstractClient ftc = new ResourceTransferOutboundClient(connectionAddress, paths);
-
-        return ftc;
-    }
-
     public List<RemoteDevice> getRemotes()
     {
         return state.remoteDevices;
@@ -241,6 +237,14 @@ public class Network implements Speaker<NetworkListener>
     {
         audience.addToAudience(arg0, NetworkListener.class);
     }
+
+	public void sessionServerStarted(SessionServerController ss) {
+		List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
+        for (NetworkListener nl : nll)
+        {
+            nl.sessionServerStarted(ss);
+        }
+	}
 
 }
 

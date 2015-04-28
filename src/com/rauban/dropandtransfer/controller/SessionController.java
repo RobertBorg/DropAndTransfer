@@ -13,9 +13,14 @@ public class SessionController extends ControllerBaseImpl<Session>
     {
         super(model);
     }
-    
-    public void sendTransferOffer(File[] resources) {
-    	model.sendTransferOffer(resources);
+
+    public void createTransferOffer(File[] resources) {
+        model.createTransferOffer(resources);
+    }
+
+
+    public void sendTransferOffer(TransferOffer to) {
+        model.sendTransferOffer(to);
     }
     
     public void sendChat(String message) {

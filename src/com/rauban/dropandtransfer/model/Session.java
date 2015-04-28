@@ -103,20 +103,25 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		
 	}
 
-	public void sendTransferOffer(File[] resources) {
+	public TransferOffer createTransferOffer(File[] resources) {
 		if(resources == null || resources.length == 0)
 			return;
-		Packet.Builder pb = Packet.newBuilder();
-		pb.setType(Type.OFFER);
-		TransferOffer.Builder tob = pb.getTransferOfferBuilder();
+
+		TransferOffer.Builder tob = TransferOffer.newBuilder()
 		tob.setOfferId(nextOutGoingTransferOffferId++);
 		String base = resources[0].getParentFile().getAbsolutePath();
 		FileUtil.iterateResources(tob, resources, base);
 		TransferOffer to = tob.build();
-		outgoingOfferMap.put(to.getOfferId(),to);
-		Packet p = pb.build();
-		sendPacket(p);
+		return to;
 	}
+
+	public void sendTransferOffer(TransferOffer to) {
+		Packet.Builder pb = Packet.newBuilder();
+		pb.setType(Type.OFFER);
+		pb.setTransferOffer(to);
+		sendPacket(pb.build());
+	}
+
 	private void sendPacket(Packet p) {
 		try {
 			p.writeDelimitedTo(bos);

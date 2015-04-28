@@ -26,7 +26,6 @@ import com.rauban.dropandtransfer.view.listener.SessionListener;
 import com.rauban.speaker_listener_pattern.listener.Listener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
-import sun.plugin2.main.server.LiveConnectSupport;
 
 public class Session implements Runnable, Speaker<SessionListener>, SessionListener {
 	private Socket socket;

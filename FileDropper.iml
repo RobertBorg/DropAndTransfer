@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/libs/cling-core-2.0-SNAPSHOT-sources.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/cling-core-2.0-SNAPSHOT.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/seamless-http-1.0-SNAPSHOT.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/seamless-util-1.0-20111017.170503-1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/seamless-xml-1.0-SNAPSHOT.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/protobuf-java-2.4.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/com.ibm.icu_4.4.2.v20110823.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.core.commands_3.6.0.I20110111-0800.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.core.runtime_3.7.0.v20110110.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.equinox.common_3.6.0.v20110523.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.jface_3.7.0.v20110928-1505.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.jface.text_3.7.2.v20111213-1208.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.osgi_3.7.2.v20120110-1415.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.swt.win32.win32.x86_64_3.7.2.v3740f.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.text_3.5.101.v20110928-1504.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/speaker-pattern-0.2.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library name="cling-core-2.0-SNAPSHOT-sources.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/cling-core-2.0-SNAPSHOT-sources.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cling-core-2.0-SNAPSHOT.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/cling-core-2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://C:/Users/RauBan/Downloads/cling-distribution-2.0-SNAPSHOT/cling-distribution-2.0-SNAPSHOT/core/src/main/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="seamless-http-1.0-SNAPSHOT.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/seamless-http-1.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="seamless-util-1.0-20111017.170503-1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/seamless-util-1.0-20111017.170503-1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="seamless-xml-1.0-SNAPSHOT.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/seamless-xml-1.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="protobuf-java-2.4.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/protobuf-java-2.4.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="com.ibm.icu_4.4.2.v20110823.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/com.ibm.icu_4.4.2.v20110823.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.core.commands_3.6.0.I20110111-0800.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.core.commands_3.6.0.I20110111-0800.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.core.runtime_3.7.0.v20110110.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.core.runtime_3.7.0.v20110110.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.equinox.common_3.6.0.v20110523.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.equinox.common_3.6.0.v20110523.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.jface_3.7.0.v20110928-1505.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.jface_3.7.0.v20110928-1505.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.jface.text_3.7.2.v20111213-1208.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.jface.text_3.7.2.v20111213-1208.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.osgi_3.7.2.v20120110-1415.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.osgi_3.7.2.v20120110-1415.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.swt.win32.win32.x86_64_3.7.2.v3740f.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.swt.win32.win32.x86_64_3.7.2.v3740f.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.text_3.5.101.v20110928-1504.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.text_3.5.101.v20110928-1504.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.ui.forms_3.5.101.v20111011-1919.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.ui.forms_3.5.101.v20111011-1919.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/org.eclipse.ui.workbench_3.7.1.v20120104-1859.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="speaker-pattern-0.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/speaker-pattern-0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>

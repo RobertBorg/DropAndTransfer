@@ -3,5 +3,4 @@
 # Package Files #
 *.war
 *.ear
-.idea/
 /bin/

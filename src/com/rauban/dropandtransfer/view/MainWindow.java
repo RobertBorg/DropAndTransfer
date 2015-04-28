@@ -11,6 +11,7 @@ import com.rauban.dropandtransfer.view.listener.NetworkListener;
 import com.rauban.dropandtransfer.view.listener.SessionListener;
 import com.rauban.dropandtransfer.view.listener.SessionServerListener;
 
+import org.fourthline.cling.model.meta.DeviceDetails;
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 import javax.swing.BorderFactory;
@@ -154,7 +155,10 @@ public class MainWindow extends JFrame implements NetworkListener, FileTransferL
         String[] labels = new String[localDevices.size()];
         for (int i = 0; i < localDevices.size(); i++)
         {
-            labels[i] = localDevices.get(i).getDisplayString();
+        	RemoteDevice device = localDevices.get(i);
+        	DeviceDetails details = device.getDetails();
+        	URI uri = details.getPresentationURI();
+            labels[i] = String.format("%s %s:%s", details.getFriendlyName(), uri.getHost(), uri.getPort());
         }
         hosts.setListData(labels);
         hosts.setSelectedIndex(selection);

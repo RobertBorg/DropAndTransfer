@@ -1,18 +1,20 @@
 package com.rauban.dropandtransfer.view;
 
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.rauban.dropandtransfer.controller.SessionController;
 import com.rauban.dropandtransfer.model.io.FileTransfer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
 import com.rauban.dropandtransfer.view.listener.SessionListener;
+import org.fourthline.cling.model.meta.RemoteDevice;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+
 
 public class SessionWindow extends JFrame implements SessionListener
 {
@@ -50,21 +52,38 @@ public class SessionWindow extends JFrame implements SessionListener
         panel.add(chatInput);
 
         JButton sendChat = new JButton("Send");
-        sendChat.addActionListener(new ActionListener()
-        {
+        sendChat.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 String text = chatInput.getText();
-                if (text != null && text.length() != 0)
-                {
+                if (text != null && text.length() != 0) {
                     chatLog.append('\n' + "You:" + text);
                     sessionController.sendChat(text);
                 }
             }
         });
         panel.add(sendChat);
+
+        JButton selectFileButton = new JButton("Send Files");
+        selectFileButton.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                JFileChooser chooser = new JFileChooser();
+                File f = new File("Desktop");
+                chooser.setCurrentDirectory(f);
+                chooser.setMultiSelectionEnabled(true);
+                int returnVal = chooser.showOpenDialog(null);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION)
+                {
+                    sessionController.sendTransferOffer(chooser.getSelectedFiles());
+                }
+            }
+        });
+        panel.add(selectFileButton);
 
     }
 

@@ -4,6 +4,8 @@ import com.rauban.dropandtransfer.model.Session;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
 import com.rauban.speaker_listener_pattern.controller.ControllerBaseImpl;
 
+import java.io.File;
+
 public class SessionController extends ControllerBaseImpl<Session>
 {
 
@@ -12,8 +14,8 @@ public class SessionController extends ControllerBaseImpl<Session>
         super(model);
     }
     
-    public void sendTransferOffer(TransferOffer.Builder tob) {
-    	model.sendTransferOffer(tob);
+    public void sendTransferOffer(File[] resources) {
+    	model.sendTransferOffer(resources);
     }
     
     public void sendChat(String message) {

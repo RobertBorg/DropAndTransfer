@@ -35,6 +35,7 @@ public class Network implements Speaker<NetworkListener>
 
     private NetworkState state;
     private AudienceHolder audience;
+    private DeviceType type;
 
     public Network()
     {
@@ -55,8 +56,9 @@ public class Network implements Speaker<NetworkListener>
 
             public void remoteDeviceAdded(Registry registry, RemoteDevice device)
             {
-                if (!state.remoteDevices.contains(device))
+                if (!state.remoteDevices.contains(device) && device.getType().equals(type))
                 {
+                	
                     state.remoteDevices.add(device);
                     List<NetworkListener> nll = audience.getAudience(NetworkListener.class);
                     for (NetworkListener nl : nll)
@@ -182,7 +184,7 @@ public class Network implements Speaker<NetworkListener>
         DeviceIdentity identity = new DeviceIdentity(
                 UDN.uniqueSystemIdentifier(Long.toString((new Random()).nextLong())));
 
-        DeviceType type = new UDADeviceType("DropNTransfer", 1);
+        type = new UDADeviceType("DropNTransfer", 1);
 
         DeviceDetails details = null;
         try {

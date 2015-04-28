@@ -14,8 +14,8 @@ public class SessionController extends ControllerBaseImpl<Session>
         super(model);
     }
 
-    public void createTransferOffer(File[] resources) {
-        model.createTransferOffer(resources);
+    public TransferOffer createTransferOffer(File[] resources) {
+        return model.createTransferOffer(resources);
     }
 
 

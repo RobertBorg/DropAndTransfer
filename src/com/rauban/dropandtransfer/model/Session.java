@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
+import com.ibm.icu.text.UnicodeSet;
 import com.rauban.dropandtransfer.model.io.FileTransfer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData;
@@ -19,10 +21,12 @@ import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferResponse;
+import com.rauban.dropandtransfer.util.FileUtil;
 import com.rauban.dropandtransfer.view.listener.SessionListener;
 import com.rauban.speaker_listener_pattern.listener.Listener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
+import sun.plugin2.main.server.LiveConnectSupport;
 
 public class Session implements Runnable, Speaker<SessionListener>, SessionListener {
 	private Socket socket;
@@ -40,12 +44,17 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	private HashMap<Long, FileTransfer> activeFileTransfers;
 	
 	public Session(Socket socket) {
-		audience = new AudienceHolder();
-		this.socket = socket;
+		init(socket);
 	}
 	public Session(InetAddress address, int port) throws IOException {
+		init(new Socket(address, port));
+	}
+	private void init(Socket s) {
+		this.socket = s;
 		audience = new AudienceHolder();
-		this.socket = new Socket(address, port);
+		incommingOfferMap = new HashMap<Long, TransferOffer>();
+		outgoingOfferMap = new HashMap<Long, TransferOffer>();
+		activeFileTransfers = new HashMap<Long, FileTransfer>();
 	}
 	private void cleanUp() {
 		try {
@@ -94,20 +103,30 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		
 		
 	}
-	/**
-	 * 
-	 * @param tob with all the files to be offered set. offerId will be set by this method.
-	 */
-	public void sendTransferOffer(TransferOffer.Builder tob) {
+
+	public void sendTransferOffer(File[] resources) {
+		if(resources == null || resources.length == 0)
+			return;
+		Packet.Builder pb = Packet.newBuilder();
+		pb.setType(Type.OFFER);
+		TransferOffer.Builder tob = pb.getTransferOfferBuilder();
 		tob.setOfferId(nextOutGoingTransferOffferId++);
+		String base = resources[0].getParentFile().getAbsolutePath();
+		FileUtil.iterateResources(tob, resources, base);
 		TransferOffer to = tob.build();
+		outgoingOfferMap.put(to.getOfferId(),to);
+		Packet p = pb.build();
+		sendPacket(p);
+	}
+	private void sendPacket(Packet p) {
 		try {
-			to.writeTo(cos);
+			p.writeDelimitedTo(bos);
 		} catch (IOException e) {
 			e.printStackTrace();
 			cleanUp();
 		}
 	}
+
 	@Override
 	public void run() {
 		sessionConnected();

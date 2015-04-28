@@ -82,39 +82,7 @@ public class MainWindow extends JFrame implements NetworkListener, FileTransferL
         panel.add(logWindow);
         JButton selectFileButton = new JButton("Select File");
         final MainWindow view = this;
-        selectFileButton.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                RemoteDevice device = localDevices.get(hosts.getSelectedIndex());
-                System.out.println("Picked device: " + device.getDisplayString());
-                JFileChooser chooser = new JFileChooser();
-                File f = new File("Desktop");
-                chooser.setCurrentDirectory(f);
-                chooser.setMultiSelectionEnabled(true);
-                int returnVal = chooser.showOpenDialog(null);
 
-                List<String> selectedPaths = new ArrayList<String>();
-                if (returnVal == JFileChooser.APPROVE_OPTION)
-                {
-                    for (File file : chooser.getSelectedFiles())
-                    {
-                        selectedPaths.add(file.getAbsolutePath());
-                    }
-
-                    if (device != null)
-                    {
-                        //TODO Missing port number, how do we get it?
-                        //TODO send transfer offer
-
-                        //                        transferClientController.addListener(view);
-                        //                        transferClientController.start();
-                    }
-                }
-            }
-        });
-        panel.add(selectFileButton);
 
         JButton sendMessageButton = new JButton("Connect");
         sendMessageButton.addActionListener(new ActionListener()

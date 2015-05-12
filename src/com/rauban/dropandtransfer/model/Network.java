@@ -56,7 +56,7 @@ public class Network implements Speaker<NetworkListener>
 
             public void remoteDeviceAdded(Registry registry, RemoteDevice device)
             {
-                if (!state.remoteDevices.contains(device) && device.getType().equals(type))
+                if (!state.remoteDevices.contains(device) && device.getType().getType().equals(type.getType()) && device.getType().getVersion() == type.getVersion())
                 {
                 	
                     state.remoteDevices.add(device);
@@ -74,7 +74,7 @@ public class Network implements Speaker<NetworkListener>
                 {
                     //XXX should we care?
                 }
-                state.remoteDevices.add(device);
+                remoteDeviceAdded(registry, device);
                 //XXX update view
             }
 

@@ -79,7 +79,7 @@ public class SessionWindow extends JFrame implements SessionListener
 
                 if (returnVal == JFileChooser.APPROVE_OPTION)
                 {
-                    sessionController.sendTransferOffer(chooser.getSelectedFiles());
+                    TransferOffer to = sessionController.createTransferOffer(chooser.getSelectedFiles());
                 }
             }
         });
@@ -97,6 +97,7 @@ public class SessionWindow extends JFrame implements SessionListener
     @Override
     public void sessionGotOffer(TransferOffer to)
     {
+        to.getResourcesList()
         // TODO Auto-generated method stub
 
     }

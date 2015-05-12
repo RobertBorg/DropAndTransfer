@@ -18,13 +18,16 @@ public class SessionController extends ControllerBaseImpl<Session>
         return model.createTransferOffer(resources);
     }
 
-
     public void sendTransferOffer(TransferOffer to) {
         model.sendTransferOffer(to);
     }
     
     public void sendChat(String message) {
     	model.sendChat(message);
+    }
+
+    public void sendTransferResponse(long offerId, boolean accept) {
+        model.sendTransferResponse(offerId, accept);
     }
 
 }

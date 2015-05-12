@@ -14,7 +14,6 @@ import org.fourthline.cling.model.meta.RemoteDevice;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -26,7 +25,6 @@ import javax.swing.WindowConstants;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,8 +119,10 @@ public class MainWindow extends JFrame implements NetworkListener, FileTransferL
         {
         	RemoteDevice device = localDevices.get(i);
         	DeviceDetails details = device.getDetails();
-        	URI uri = details.getPresentationURI();
-            labels[i] = String.format("%s %s:%s", details.getFriendlyName(), uri.getHost(), uri.getPort());
+            if(details != null) {
+                URI uri = details.getPresentationURI();
+                labels[i] = String.format("%s %s:%s", details.getFriendlyName(), uri != null ? uri.getHost() : "", uri != null ? uri.getPort() : 0);
+            }
         }
         hosts.setListData(labels);
         hosts.setSelectedIndex(selection);

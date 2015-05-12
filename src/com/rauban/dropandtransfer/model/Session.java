@@ -99,15 +99,13 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 			incommingOfferMap.remove(to.getOfferId());
 		}
 		return true;
-		
-		
 	}
 
 	public TransferOffer createTransferOffer(File[] resources) {
 		if(resources == null || resources.length == 0)
-			return;
+			return null;
 
-		TransferOffer.Builder tob = TransferOffer.newBuilder()
+		TransferOffer.Builder tob = TransferOffer.newBuilder();
 		tob.setOfferId(nextOutGoingTransferOffferId++);
 		String base = resources[0].getParentFile().getAbsolutePath();
 		FileUtil.iterateResources(tob, resources, base);

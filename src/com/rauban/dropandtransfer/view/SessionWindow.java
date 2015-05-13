@@ -46,12 +46,12 @@ public class SessionWindow extends JFrame implements SessionListener
         //        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         panel.setLayout(new GridBagLayout());
 
-        chatLog = new JTextArea();
+        chatLog = new JTextArea("Hi, welcome to chat", 20, 20);
         panel.add(chatLog);
-        chatInput = new JTextField();
+        chatInput = new JTextField("Enter text", 20);
         panel.add(chatInput);
 
-        JButton sendChat = new JButton("Send");
+        JButton sendChat = new JButton("Send Chat");
         sendChat.addActionListener(new ActionListener() {
 
             @Override

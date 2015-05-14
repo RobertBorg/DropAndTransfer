@@ -105,9 +105,16 @@ public class SessionWindow extends JFrame implements SessionListener
     {
         // TODO Auto-generated method stub
     	//Start a new window?
-    	filewindow = new FileWindow(to, sessionController);
-    	filewindow.fileReceiver();
-        filewindow.setVisible(true);
+        final TransferOffer TO = to;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                filewindow = new FileWindow(TO, sessionController);
+                filewindow.fileReceiver();
+                filewindow.setVisible(true);
+            }
+        });
+
     	
     	
     }

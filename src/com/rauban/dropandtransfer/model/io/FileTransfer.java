@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData;
+import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
 import com.rauban.dropandtransfer.view.listener.FileTransferListener;
@@ -55,18 +57,22 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 		int consumed = 0;
 		final int RECV_BUFFER_SIZE = 1024*4;
 		byte[] buffer = new byte[RECV_BUFFER_SIZE];
+		if(bos == null)
+			startNextFile(null);
 		while(numBytes != consumed) {
 			int remaining = numBytes - consumed;
+			System.out.println(String.format("remaining: %d",remaining));
 			int read;
 			try {
 				read = is.read(buffer, 0, remaining < RECV_BUFFER_SIZE ? remaining : RECV_BUFFER_SIZE);
 				consumed += read;
+				System.out.println(String.format("read: %d", read));
 				if(!doTerminate)
 					bos.write(buffer, 0 , read);
 				current += numBytes;
 				currentTotal += numBytes;
-				if(current == size) {
-					startNextFile();
+				if(consumed == size) {
+					startNextFile(null);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -86,18 +92,43 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 		st.start();
 	}
 	
-	private void startNextFile() {
-		ResourceHeader rh = to.getResources(++currentFileIndex);
-		currentFile = new File(baseFolder.getAbsolutePath() + rh.getResourceName());
-			
+	private void startNextFile(OutputStream o) {
+		if(bis != null) try {
+			bis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(bos != null) try {
+			bos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (++currentFileIndex == to.getResourcesCount()) {
+			doTerminate = true;
+			return;
+		}
+
+		ResourceHeader rh = to.getResources(currentFileIndex);
+		currentFile = new File(baseFolder.getAbsolutePath() + '/' + rh.getResourceName());
+		size = rh.getSize();
+		current = 0;
 		try {
 			if(receive) {
 				bos = new BufferedOutputStream(new FileOutputStream(currentFile));
 			} else {
 				bis = new BufferedInputStream(new FileInputStream(currentFile));
+				Packet.Builder pb = Packet.newBuilder();
+				pb.setType(Packet.Type.DATA);
+				FileData.Builder fdb =  pb.getDataBuilder();
+				fdb.setOfferId(to.getOfferId());
+				fdb.setNumBytes((int) rh.getSize());
+				pb.build().writeDelimitedTo(o);
+				o.flush();
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -111,13 +142,21 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 			final int SEND_BUFFER_SIZE = 4*1024;
 			byte[] buffer = new byte[SEND_BUFFER_SIZE];
 			try {
+				if(bis == null) {
+					startNextFile(o);
+				}
 				while(!doTerminate) {
-						int read = bis.read(buffer);
-						bos.write(buffer, 0, read);
-						current+=read;
-						currentTotal+=read;
-						if(current == size)
-							startNextFile();
+					int read;
+					if( (read = bis.read(buffer)) == -1) {
+						startNextFile(o);
+						continue;
+					}
+					o.write(buffer, 0, read);
+					current+=read;
+					System.out.println(String.format("current: %d",current));
+					currentTotal+=read;
+					if(current == size)
+						startNextFile(o);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

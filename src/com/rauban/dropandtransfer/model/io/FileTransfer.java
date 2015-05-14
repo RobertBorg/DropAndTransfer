@@ -12,8 +12,11 @@ import java.io.OutputStream;
 
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
+import com.rauban.dropandtransfer.view.listener.FileTransferListener;
+import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
+import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
-public class FileTransfer  {
+public class FileTransfer implements Speaker<FileTransferListener> {
 	private TransferOffer to;
 	private File baseFolder;
 
@@ -35,13 +38,14 @@ public class FileTransfer  {
 	private SendingThread st;
 	
 	private boolean doTerminate; // needs locking; only used for sending
+	private  AudienceHolder audience;
 	
 	public FileTransfer(TransferOffer to, File baseFolder, boolean receive) {
 		this.receive = receive;
 		currentFileIndex = -1;
 		this.to = to;
 		this.baseFolder = baseFolder;
-		
+		audience = new  AudienceHolder(); 
 	}	
 	
 	public int consume(InputStream is, int numBytes) throws IOException {
@@ -121,5 +125,10 @@ public class FileTransfer  {
 			}
 		}
 	}
+
+	@Override
+	public void addListener(FileTransferListener arg0) {
+		audience.addToAudience(arg0, FileTransferListener.class);
+		}
 
 }

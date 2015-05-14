@@ -86,6 +86,7 @@ public class SessionWindow extends JFrame implements SessionListener
                     filewindow.setVisible(true);
                 	sessionController.sendTransferOffer(to);
                 }
+                
             }
         });
         panel.add(selectFileButton);

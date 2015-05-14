@@ -23,6 +23,8 @@ public class FileWindow extends JFrame implements SessionListener {
 	private JPanel panel;
 	private TransferOffer to;
 	private JTextArea fileInfo;
+	private JTextField fileNumber;
+	private JTextField fileSize; 
 	private SessionController sc;
 	
 	public FileWindow(final TransferOffer to, final SessionController sc) {
@@ -36,12 +38,18 @@ public class FileWindow extends JFrame implements SessionListener {
 		sc.addListener(this);
 		List<ResourceHeader> resourceList = to.getResourcesList();
 		StringBuilder sb = new StringBuilder();
+		long size = 0; 
 		for (int i = 0; i < resourceList.size(); i++) {
 			sb.append(to.getResourcesList().get(i).getResourceName()).append(
 					"\n");
+			size = size + to.getResourcesList().get(i).getSize(); 
 		}
 		fileInfo = new JTextArea("Filename: " + sb.toString(), 30, 30);
+		fileNumber = new JTextField("Number of files: " + to.getResourcesCount()  ,20);
+		fileSize = new JTextField("File transfere size: " +  size/1000 + "KB" , 20);
 		panel.add(fileInfo);
+		panel.add(fileNumber);
+		panel.add(fileSize);
 	}
 	public void fileReceiver(){
 

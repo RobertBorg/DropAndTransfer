@@ -11,6 +11,7 @@ import com.rauban.dropandtransfer.controller.SessionController;
 import com.rauban.dropandtransfer.model.io.FileTransfer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
 import com.rauban.dropandtransfer.view.listener.SessionListener;
+
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class SessionWindow extends JFrame implements SessionListener
     private JPanel panel;
     private JTextArea chatLog;
     private JTextField chatInput;
+    private FileWindow filewindow;
 
     public SessionWindow(SessionController sc)
     {
@@ -79,7 +81,10 @@ public class SessionWindow extends JFrame implements SessionListener
 
                 if (returnVal == JFileChooser.APPROVE_OPTION)
                 {
-                    TransferOffer to = sessionController.createTransferOffer(chooser.getSelectedFiles());
+                	TransferOffer to = sessionController.createTransferOffer(chooser.getSelectedFiles());
+                	filewindow = new FileWindow(to, sessionController);
+                    filewindow.setVisible(true);
+                	sessionController.sendTransferOffer(to);
                 }
             }
         });
@@ -98,7 +103,12 @@ public class SessionWindow extends JFrame implements SessionListener
     public void sessionGotOffer(TransferOffer to)
     {
         // TODO Auto-generated method stub
-
+    	//Start a new window?
+    	filewindow = new FileWindow(to, sessionController);
+    	filewindow.fileReceiver();
+        filewindow.setVisible(true);
+    	
+    	
     }
 
     @Override

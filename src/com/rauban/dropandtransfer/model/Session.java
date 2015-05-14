@@ -77,14 +77,14 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		TransferResponse.Builder b = TransferResponse.newBuilder();
 		b.setAccept(accept);
 		b.setOfferId(offerId);
-		TransferResponse tr = b.build();
-		
+		TransferResponse tr = b.build();	
 		TransferOffer to = incommingOfferMap.remove(tr.getOfferId());
 		if(to == null) {
 			return false;
 		}		
 		try {
 			tr.writeTo(cos);
+			cos.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,6 +123,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	private void sendPacket(Packet p) {
 		try {
 			p.writeDelimitedTo(bos);
+			bos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 			cleanUp();
@@ -157,8 +158,8 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 					}
 					break;
 				case RESPONSE:
-					TransferResponse tr = p.getTransferResponse();
 					TransferOffer tor;
+					TransferResponse tr = p.getTransferResponse();
 					if( (tor = outgoingOfferMap.remove(tr.getOfferId())) == null) {
 						//response to non-existing offer
 					} else {

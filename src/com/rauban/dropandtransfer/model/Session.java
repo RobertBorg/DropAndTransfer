@@ -79,18 +79,11 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		b.setOfferId(offerId);
 		TransferResponse tr = b.build();	
 		TransferOffer to = incommingOfferMap.remove(tr.getOfferId());
-		if(to == null) {
-			return false;
-		}		
-		try {
-			tr.writeTo(cos);
-			cos.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			cleanUp();
-			return false;
-		}
+
+		Packet.Builder p = Packet.newBuilder();
+		p.setType(Type.RESPONSE);
+		p.setTransferResponse(tr);
+		sendPacket(p.build());
 		
 		if(tr.getAccept()) {
 			FileTransfer ft = new FileTransfer(to, new File("./Received/"), true);
@@ -117,6 +110,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		Packet.Builder pb = Packet.newBuilder();
 		pb.setType(Type.OFFER);
 		pb.setTransferOffer(to);
+		outgoingOfferMap.put(to.getOfferId(), to);
 		sendPacket(pb.build());
 	}
 
@@ -154,7 +148,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 						sessionDisconnected(); 
 					} else {
 						incommingOfferMap.put(to.getOfferId(), to);
-						sessionGotOffer(to);						
+						sessionGotOffer(to);
 					}
 					break;
 				case RESPONSE:
@@ -164,7 +158,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 						//response to non-existing offer
 					} else {
 						sessionGotResponse(tr.getOfferId(), tr.getAccept());
-						FileTransfer ft = new FileTransfer(tor, new File("./Received/"), false);
+						FileTransfer ft = new FileTransfer(tor, new File("/home/rauban/Downloads"), false);
 						activeFileTransfers.put(tr.getOfferId(), ft);
 						ft.start(bos);
 					}

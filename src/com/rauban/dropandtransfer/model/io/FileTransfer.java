@@ -9,12 +9,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
 import com.rauban.dropandtransfer.view.listener.FileTransferListener;
+import com.rauban.speaker_listener_pattern.listener.Listener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
@@ -41,13 +44,15 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	
 	private boolean doTerminate; // needs locking; only used for sending
 	private  AudienceHolder audience;
+	Map <String, Long> pathOfferIdList;
 	
 	public FileTransfer(TransferOffer to, File baseFolder, boolean receive) {
 		this.receive = receive;
 		currentFileIndex = -1;
 		this.to = to;
 		this.baseFolder = baseFolder;
-		audience = new  AudienceHolder(); 
+		pathOfferIdList = new HashMap <String, Long>(); 
+		pathOfferIdList.put(baseFolder.getPath(), to.getOfferId());
 	}	
 	
 	public int consume(InputStream is, int numBytes) throws IOException {
@@ -169,5 +174,15 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	public void addListener(FileTransferListener arg0) {
 		audience.addToAudience(arg0, FileTransferListener.class);
 		}
+	public void updateListener() {
+		for (Listener l : audience.getAudience(FileTransferListener.class)) {
+			Listener ul = (FileTransferListener) l;
+			((FileTransferListener) ul).sessionFileTransferStatusUpdate(
+					to.getOfferId(), to.getResourcesList()
+							.get(currentFileIndex).getResourceName(), size,
+					current, currentTotal - current, sizeTotal - size);
+		}
+	}
+
 
 }

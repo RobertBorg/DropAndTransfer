@@ -17,15 +17,17 @@ import com.rauban.dropandtransfer.controller.SessionController;
 import com.rauban.dropandtransfer.model.io.FileTransfer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.ResourceHeader;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
+import com.rauban.dropandtransfer.view.listener.FileTransferListener;
 import com.rauban.dropandtransfer.view.listener.SessionListener;
 
-public class FileWindow extends JFrame implements SessionListener {
+public class FileWindow extends JFrame implements SessionListener, FileTransferListener {
 	private JPanel panel;
 	private TransferOffer to;
 	private JTextArea fileInfo;
 	private JTextField fileNumber;
 	private JTextField fileSize; 
 	private SessionController sc;
+	private FileTransfer ft; 
 	
 	public FileWindow(final TransferOffer to, final SessionController sc) {
 		this.to = to;
@@ -112,6 +114,8 @@ public class FileWindow extends JFrame implements SessionListener {
 
 	@Override
 	public void sessionFileTransferStarted(FileTransfer ft) {
+		this.ft = ft;
+		ft.addListener(this);
 		// TODO Auto-generated method stub
 		
 	}
@@ -124,6 +128,14 @@ public class FileWindow extends JFrame implements SessionListener {
 
 	@Override
 	public void sessionDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void sessionFileTransferStatusUpdate(long offerId,
+			String currentFile, float currentSpeedInKBytesPerSecond,
+			float currentAvgSpeedInKBytesPerSecond, float currentFilePercent,
+			float currentTransferPercent) {
 		// TODO Auto-generated method stub
 		
 	}

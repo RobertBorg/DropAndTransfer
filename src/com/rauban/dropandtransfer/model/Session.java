@@ -158,7 +158,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 						//response to non-existing offer
 					} else {
 						sessionGotResponse(tr.getOfferId(), tr.getAccept());
-						FileTransfer ft = new FileTransfer(tor, new File("/home/rauban/Downloads"), false);
+						FileTransfer ft = new FileTransfer(tor, new File("./Received/"), false);
 						activeFileTransfers.put(tr.getOfferId(), ft);
 						ft.start(bos);
 					}

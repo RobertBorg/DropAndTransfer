@@ -1,5 +1,6 @@
 package com.rauban.dropandtransfer.view;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -28,6 +30,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 	private JTextField fileSize; 
 	private SessionController sc;
 	private FileTransfer ft; 
+	private JPanel acceptPanel;
 	
 	public FileWindow(final TransferOffer to, final SessionController sc) {
 		this.to = to;
@@ -59,8 +62,8 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		acceptFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				FileInfo("File transfer accepted");
 				sc.sendTransferResponse(to.getOfferId(), true);
-				
 			}
 		});
 		panel.add(acceptFile);
@@ -70,16 +73,48 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sc.sendTransferResponse(to.getOfferId(), false);
+				FileInfo("File transfer cancel");
+	//			fileInfo = new FileInfo("File transfer cancel");
+      //          fileInfo.setVisible(true);
+
 				}
 		});
 		panel.add(cancelFile);
 		
 	}
-	public void fileSender(){
-	}
 	
-	
-	
+	public void FileInfo(String message){
+		panel.setVisible(false); 
+		acceptPanel = new JPanel();
+		setTitle("FileInfo");
+		setSize(800, 600);
+		setLocationRelativeTo(null);
+		JLabel outPutText = new JLabel();
+		outPutText.setText(message);
+		outPutText.setFont(new Font("Verdana",1,20));
+		this.add(acceptPanel);
+		acceptPanel.add(outPutText); 
+		JButton exitFile = new JButton("Exit program");
+		
+		exitFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+				}
+		});
+		acceptPanel.add(exitFile);
+		
+		JButton backFile = new JButton("Back");
+		acceptPanel.add(backFile);
+		backFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				acceptPanel.setVisible(false);
+				panel.setVisible(true); 
+				}
+		});
+		}
+		
 
 	@Override
 	public void sessionConnected() {

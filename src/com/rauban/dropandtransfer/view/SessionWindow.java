@@ -27,7 +27,7 @@ public class SessionWindow extends JFrame implements SessionListener
     private JPanel panel;
     private JTextArea chatLog;
     private JTextField chatInput;
-    private FileWindow filewindow;
+    private FileWindow fileWindow;
 
     public SessionWindow(SessionController sc)
     {
@@ -82,8 +82,8 @@ public class SessionWindow extends JFrame implements SessionListener
                 if (returnVal == JFileChooser.APPROVE_OPTION)
                 {
                 	TransferOffer to = sessionController.createTransferOffer(chooser.getSelectedFiles());
-                	filewindow = new FileWindow(to, sessionController);
-                    filewindow.setVisible(true);
+                	fileWindow = new FileWindow(to, sessionController);
+                    fileWindow.setVisible(true);
                 	sessionController.sendTransferOffer(to);
                 }
                 
@@ -109,9 +109,9 @@ public class SessionWindow extends JFrame implements SessionListener
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                filewindow = new FileWindow(TO, sessionController);
-                filewindow.fileReceiver();
-                filewindow.setVisible(true);
+                fileWindow = new FileWindow(TO, sessionController);
+                fileWindow.fileReceiver();
+                fileWindow.setVisible(true);
             }
         });
 

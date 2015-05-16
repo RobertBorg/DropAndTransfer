@@ -7,16 +7,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
-import com.ibm.icu.text.UnicodeSet;
 import com.rauban.dropandtransfer.model.io.FileTransfer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.Chat;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet;
-import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Builder;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet.Type;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferCancel;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
@@ -36,9 +33,10 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	private BufferedOutputStream bos;
 	private BufferedInputStream bis;
 	
-	long nextOutGoingTransferOffferId; 
-	private HashMap<Long, TransferOffer> incommingOfferMap;
+	long nextOutGoingTransferOfferId;
+	private HashMap<Long, TransferOffer> incomingOfferMap;
 	private HashMap<Long, TransferOffer> outgoingOfferMap;
+	private HashMap<Long, String> basePathsForOutGoingOffers;
 	
 	private HashMap<Long, FileTransfer> activeFileTransfers;
 	
@@ -51,9 +49,10 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	private void init(Socket s) {
 		this.socket = s;
 		audience = new AudienceHolder();
-		incommingOfferMap = new HashMap<Long, TransferOffer>();
+		incomingOfferMap = new HashMap<Long, TransferOffer>();
 		outgoingOfferMap = new HashMap<Long, TransferOffer>();
 		activeFileTransfers = new HashMap<Long, FileTransfer>();
+		basePathsForOutGoingOffers = new HashMap<Long, String>();
 	}
 	private void cleanUp() {
 		try {
@@ -78,7 +77,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		b.setAccept(accept);
 		b.setOfferId(offerId);
 		TransferResponse tr = b.build();	
-		TransferOffer to = incommingOfferMap.remove(tr.getOfferId());
+		TransferOffer to = incomingOfferMap.remove(tr.getOfferId());
 
 		Packet.Builder p = Packet.newBuilder();
 		p.setType(Type.RESPONSE);
@@ -89,7 +88,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 			FileTransfer ft = new FileTransfer(to, new File("./Received/"), true);
 			activeFileTransfers.put(to.getOfferId(), ft);
 			sessionFileTransferStarted(ft);
-			incommingOfferMap.remove(to.getOfferId());
+			incomingOfferMap.remove(to.getOfferId());
 		}
 		return true;
 	}
@@ -99,10 +98,11 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 			return null;
 
 		TransferOffer.Builder tob = TransferOffer.newBuilder();
-		tob.setOfferId(nextOutGoingTransferOffferId++);
+		tob.setOfferId(nextOutGoingTransferOfferId++);
 		String base = resources[0].getParentFile().getAbsolutePath();
 		FileUtil.iterateResources(tob, resources, base);
 		TransferOffer to = tob.build();
+		basePathsForOutGoingOffers.put(to.getOfferId(), base);
 		return to;
 	}
 
@@ -143,11 +143,11 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 				switch(p.getType()) {
 				case OFFER:
 					TransferOffer to = p.getTransferOffer();
-					if(incommingOfferMap.containsKey(to.getOfferId())) {
+					if(incomingOfferMap.containsKey(to.getOfferId())) {
 						socket.close();
 						sessionDisconnected(); 
 					} else {
-						incommingOfferMap.put(to.getOfferId(), to);
+						incomingOfferMap.put(to.getOfferId(), to);
 						sessionGotOffer(to);
 					}
 					break;
@@ -158,14 +158,15 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 						//response to non-existing offer
 					} else {
 						sessionGotResponse(tr.getOfferId(), tr.getAccept());
-						FileTransfer ft = new FileTransfer(tor, new File("Received/"), false);
+						String base = basePathsForOutGoingOffers.get(tr.getOfferId());
+						FileTransfer ft = new FileTransfer(tor, new File(base), false);
 						activeFileTransfers.put(tr.getOfferId(), ft);
 						ft.start(bos);
 					}
 					break;
 				case CANCEL:
 					TransferCancel tc = p.getCancel();
-					TransferOffer rto = incommingOfferMap.remove(tc.getOfferId());
+					TransferOffer rto = incomingOfferMap.remove(tc.getOfferId());
 					sessionGotOfferCancel(rto.getOfferId());
 					break;
 				case CHAT:

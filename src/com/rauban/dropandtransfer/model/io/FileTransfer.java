@@ -163,6 +163,7 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 					if(current == size)
 						startNextFile(o);
 				}
+				o.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

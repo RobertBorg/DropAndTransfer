@@ -22,6 +22,8 @@ import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
 
 public class FileTransfer implements Speaker<FileTransferListener> {
+	private long fileTransferStart;
+	private long segmentStart;
 	private TransferOffer to;
 	private File baseFolder;
 
@@ -31,6 +33,7 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 
 	private long size;
 	private long current;
+	private long currentSegmentEnd;
 
 	private long currentTotal;
 	private long sizeTotal;
@@ -47,15 +50,21 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	Map <String, Long> pathOfferIdList;
 	
 	public FileTransfer(TransferOffer to, File baseFolder, boolean receive) {
+		audience = new AudienceHolder();
 		this.receive = receive;
 		currentFileIndex = -1;
 		this.to = to;
 		this.baseFolder = baseFolder;
 		pathOfferIdList = new HashMap <String, Long>(); 
 		pathOfferIdList.put(baseFolder.getPath(), to.getOfferId());
-	}	
+		fileTransferStart = System.currentTimeMillis();
+		for(ResourceHeader rh: to.getResourcesList()) {
+			sizeTotal += rh.getSize();
+		}
+	}
 	
 	public int consume(InputStream is, int numBytes) throws IOException {
+		segmentStart = System.currentTimeMillis();
 		if(!receive) {
 			throw new IOException("FileTransfer was not initialized in receiving state.");
 		}
@@ -66,17 +75,19 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 			startNextFile(null);
 		while(numBytes != consumed) {
 			int remaining = numBytes - consumed;
-			System.out.println(String.format("remaining: %d",remaining));
 			int read;
 			try {
 				read = is.read(buffer, 0, remaining < RECV_BUFFER_SIZE ? remaining : RECV_BUFFER_SIZE);
 				consumed += read;
-				System.out.println(String.format("read: %d", read));
+				/*
+				  if we're canceling the transfer we still need to read the data, but can discard it.
+				 */
 				if(!doTerminate)
 					bos.write(buffer, 0 , read);
-				current += numBytes;
-				currentTotal += numBytes;
-				if(consumed == size) {
+				current += read;
+				currentTotal += read;
+				updateListener();
+				if(current == size) {
 					startNextFile(null);
 				}
 			} catch (IOException e) {
@@ -91,7 +102,7 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	public void start(OutputStream o) {
 		if(st != null) {
 			//terminate. attempt to restart started transfer
-			throw new RuntimeException("FileTranfer already started."); 
+			throw new RuntimeException("FileTransfer already started.");
 		}
 		st = new SendingThread(o);
 		st.start();
@@ -126,9 +137,13 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 				pb.setType(Packet.Type.DATA);
 				FileData.Builder fdb =  pb.getDataBuilder();
 				fdb.setOfferId(to.getOfferId());
+				//currently we send an entire file in one segment; for larger files this will hamper our ability
+				//to send chat and cancel an ongoing transfer.
 				fdb.setNumBytes((int) rh.getSize());
+				//this starts a new segment
 				pb.build().writeDelimitedTo(o);
-				o.flush();
+				segmentStart = System.currentTimeMillis();
+				o.flush(); //might not be needed
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -158,11 +173,12 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 					}
 					o.write(buffer, 0, read);
 					current+=read;
-					System.out.println(String.format("current: %d",current));
 					currentTotal+=read;
+					updateListener();
 					if(current == size)
 						startNextFile(o);
 				}
+				//needed to push out the last parts of the current file
 				o.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -175,13 +191,23 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	public void addListener(FileTransferListener arg0) {
 		audience.addToAudience(arg0, FileTransferListener.class);
 		}
+
+	/**
+	 * updates the status on listeners
+	 */
 	public void updateListener() {
+		long currentTime = System.currentTimeMillis();
 		for (Listener l : audience.getAudience(FileTransferListener.class)) {
 			Listener ul = (FileTransferListener) l;
+
+			float currentSpeed = (1000*current/(float)(currentTime - segmentStart))/(float)1024;
+			float currentAvgSpeed = (1000*currentTotal/(float)(currentTime - fileTransferStart))/(float)1024;
+			float currentFilePercent = 100*current/(float)size;
+			float currentTransferPercent = 100*currentTotal/(float)sizeTotal;
 			((FileTransferListener) ul).sessionFileTransferStatusUpdate(
 					to.getOfferId(), to.getResourcesList()
-							.get(currentFileIndex).getResourceName(), size,
-					current, currentTotal - current, sizeTotal - size);
+							.get(currentFileIndex).getResourceName(), currentSpeed,	currentAvgSpeed,
+					currentFilePercent, currentTransferPercent);
 		}
 	}
 

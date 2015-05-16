@@ -160,8 +160,10 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 						sessionGotResponse(tr.getOfferId(), tr.getAccept());
 						String base = basePathsForOutGoingOffers.get(tr.getOfferId());
 						FileTransfer ft = new FileTransfer(tor, new File(base), false);
+						sessionFileTransferStarted(ft);
 						activeFileTransfers.put(tr.getOfferId(), ft);
 						ft.start(bos);
+
 					}
 					break;
 				case CANCEL:

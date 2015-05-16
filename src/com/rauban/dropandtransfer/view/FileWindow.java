@@ -91,7 +91,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		setLocationRelativeTo(null);
 		JLabel outPutText = new JLabel();
 		outPutText.setText(message);
-		outPutText.setFont(new Font("Verdana",1,20));
+		outPutText.setFont(new Font("Verdana", 1, 20));
 		this.add(acceptPanel);
 		acceptPanel.add(outPutText); 
 		JButton exitFile = new JButton("Exit program");
@@ -171,12 +171,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 			String currentFile, float currentSpeedInKBytesPerSecond,
 			float currentAvgSpeedInKBytesPerSecond, float currentFilePercent,
 			float currentTransferPercent) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(String.format("%s: %02f%% %02fkB/s ", currentFile, currentFilePercent, currentSpeedInKBytesPerSecond));
+
 	}
 }
-
-// sender
-
-// receiver
-// session.Controller.sendTransfe

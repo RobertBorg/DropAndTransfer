@@ -74,6 +74,7 @@ public class SessionWindow extends JFrame implements SessionListener
             public void actionPerformed(ActionEvent e)
             {
                 JFileChooser chooser = new JFileChooser();
+                chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 File f = new File("Desktop");
                 chooser.setCurrentDirectory(f);
                 chooser.setMultiSelectionEnabled(true);

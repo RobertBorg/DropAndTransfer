@@ -126,6 +126,15 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 
 		ResourceHeader rh = to.getResources(currentFileIndex);
 		currentFile = new File(baseFolder.getAbsolutePath() + '/' + rh.getResourceName());
+		if(rh.getIsDir()){
+			if(!currentFile.exists()){
+				currentFile.mkdirs();
+			}
+			startNextFile(o);
+			return;
+		}
+
+
 		size = rh.getSize();
 		current = 0;
 		try {

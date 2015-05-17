@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="libs/org.eclipse.equinox.registry_3.5.101.R37x_v20110810-1611.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.osgi_3.7.2.v20120110-1415.jar"/>
 	<classpathentry kind="lib" path="libs/speaker-pattern-0.2.jar"/>
+	<classpathentry kind="lib" path="libs/miglayout-4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

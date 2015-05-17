@@ -30,7 +30,18 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 	private JTextField fileSize; 
 	private SessionController sc;
 	private FileTransfer ft; 
+	private String updateMessage; 
 	private JPanel acceptPanel;
+	
+	
+	private String currentFile;
+	private float currentSpeedInKBytesPerSecond;
+	private float currentAvgSpeedInKBytesPerSecond;
+	private float currentFilePercent;
+	private float currentTransferPercent;
+	
+	
+	
 	
 	public FileWindow(final TransferOffer to, final SessionController sc) {
 		this.to = to;
@@ -55,6 +66,10 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		panel.add(fileInfo);
 		panel.add(fileNumber);
 		panel.add(fileSize);
+		
+		
+		
+		
 	}
 	public void fileReceiver(){
 
@@ -62,8 +77,10 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		acceptFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileInfo("File transfer accepted");
+				fileInfo.append("File accepted ");
+			//	sc.sendChat("File accepteddddd");
 				sc.sendTransferResponse(to.getOfferId(), true);
+				System.out.println("Current speed" + currentFilePercent);
 			}
 		});
 		panel.add(acceptFile);
@@ -72,10 +89,8 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		cancelFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				fileInfo.append("File transfer cancel");
 				sc.sendTransferResponse(to.getOfferId(), false);
-				FileInfo("File transfer cancel");
-	//			fileInfo = new FileInfo("File transfer cancel");
-      //          fileInfo.setVisible(true);
 
 				}
 		});
@@ -83,7 +98,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		
 	}
 	
-	public void FileInfo(String message){
+/*	public void FileInfo(String message){
 		panel.setVisible(false); 
 		acceptPanel = new JPanel();
 		setTitle("FileInfo");
@@ -113,7 +128,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 				panel.setVisible(true); 
 				}
 		});
-		}
+		} */
 		
 
 	@Override
@@ -171,7 +186,17 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 			String currentFile, float currentSpeedInKBytesPerSecond,
 			float currentAvgSpeedInKBytesPerSecond, float currentFilePercent,
 			float currentTransferPercent) {
+		
+		this.currentFile = currentFile;
+		this.currentSpeedInKBytesPerSecond = currentSpeedInKBytesPerSecond;
+		this.currentFilePercent = currentFilePercent;
+		update();
 		System.out.println(String.format("%s: %02f%% %02fkB/s ", currentFile, currentFilePercent, currentSpeedInKBytesPerSecond));
-
+		
+	}
+	public void update(){
+		updateMessage = String.format("%s: %02f%% %02fkB/s ", currentFile, currentFilePercent, currentSpeedInKBytesPerSecond);
+		sc.sendChat(updateMessage);
+		fileInfo.append(updateMessage +  '\n');
 	}
 }

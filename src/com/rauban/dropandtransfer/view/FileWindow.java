@@ -31,8 +31,9 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 	private JTextField fileSize; 
 	private SessionController sc;
 	private FileTransfer ft; 
+	private String updateMessage; 
 	private JPanel acceptPanel;
-	
+
 	public FileWindow(final TransferOffer to, final SessionController sc, final boolean isSending) {
 		this.to = to;
 		this.sc=sc; 
@@ -55,6 +56,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		panel.add(fileInfo);
 		panel.add(fileNumber);
 		panel.add(fileSize);
+
 		final JFrame me = this;
 		JButton acceptFile = new JButton("Accept");
 		acceptFile.addActionListener(new ActionListener() {
@@ -80,7 +82,6 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		});
 		panel.add(cancelFile);
 	}
-
 
 	@Override
 	public void sessionConnected() {

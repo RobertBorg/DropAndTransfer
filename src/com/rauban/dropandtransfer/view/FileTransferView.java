@@ -55,7 +55,7 @@ public class FileTransferView extends JPanel {
                     public void run() {
                         Container parent = me.getParent();
                         parent.remove(me);
-                        parent.revalidate();
+                        parent.repaint();
                     }
                 });
             }

@@ -144,6 +144,11 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 			}
 			startNextFile(o);
 			return;
+		} else {
+			File parent = currentFile.getParentFile();
+			if(!parent.exists()) {
+				parent.mkdirs();
+			}
 		}
 
 
@@ -151,6 +156,7 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 		current = 0;
 		try {
 			if(receive) {
+				
 				bos = new BufferedOutputStream(new FileOutputStream(currentFile));
 			} else {
 				bis = new BufferedInputStream(new FileInputStream(currentFile));

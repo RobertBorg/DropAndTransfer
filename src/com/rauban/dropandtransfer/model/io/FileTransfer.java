@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.FileData;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.Packet;
@@ -33,7 +34,6 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 
 	private long size;
 	private long current;
-	private long currentSegmentEnd;
 
 	private long currentTotal;
 	private long sizeTotal;
@@ -44,11 +44,17 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	private boolean receive;
 	
 	private SendingThread st;
+
+	private Semaphore sem;
 	
 	private boolean doTerminate; // needs locking; only used for sending
 	private  AudienceHolder audience;
 	Map <String, Long> pathOfferIdList;
-	
+	private long totalSize;
+
+	public long getOfferId () {
+		return this.to.getOfferId();
+	}
 	public FileTransfer(TransferOffer to, File baseFolder, boolean receive) {
 		audience = new AudienceHolder();
 		this.receive = receive;
@@ -69,7 +75,7 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 			throw new IOException("FileTransfer was not initialized in receiving state.");
 		}
 		int consumed = 0;
-		final int RECV_BUFFER_SIZE = 1024*4;
+		final int RECV_BUFFER_SIZE = SendingThread.SEGMENT_SIZE;
 		byte[] buffer = new byte[RECV_BUFFER_SIZE];
 		if(bos == null)
 			startNextFile(null);
@@ -99,12 +105,18 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 		return consumed;
 	}
 	
-	public void start(OutputStream o) {
+	public void start(OutputStream o, Semaphore sem) {
 		if(st != null) {
 			//terminate. attempt to restart started transfer
 			throw new RuntimeException("FileTransfer already started.");
 		}
+		this.sem = sem;
 		st = new SendingThread(o);
+		try {
+			sem.acquire(); //XXX handle gracefully
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		st.start();
 	}
 	
@@ -142,17 +154,6 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 				bos = new BufferedOutputStream(new FileOutputStream(currentFile));
 			} else {
 				bis = new BufferedInputStream(new FileInputStream(currentFile));
-				Packet.Builder pb = Packet.newBuilder();
-				pb.setType(Packet.Type.DATA);
-				FileData.Builder fdb =  pb.getDataBuilder();
-				fdb.setOfferId(to.getOfferId());
-				//currently we send an entire file in one segment; for larger files this will hamper our ability
-				//to send chat and cancel an ongoing transfer.
-				fdb.setNumBytes((int) rh.getSize());
-				//this starts a new segment
-				pb.build().writeDelimitedTo(o);
-				segmentStart = System.currentTimeMillis();
-				o.flush(); //might not be needed
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -162,33 +163,79 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 		}
 	}
 
+	public long getSize() {
+		return size;
+	}
+
+	public void cancel() {
+		System.out.println("canceled");
+		doTerminate = true;
+	}
+
+	public long getTotalSize() {
+		return totalSize;
+	}
+
 	private class SendingThread extends Thread {
 		private OutputStream o;
+		public static  final int SEGMENT_SIZE = 1 << 20;
 		public SendingThread(OutputStream o) {
 			this.o = o;
 		}
+
+		private void startNextSegment() {
+			sem.release();
+			try {
+				sem.acquire(); //XXX handle gracefully please
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			try {
+				Packet.Builder pb = Packet.newBuilder();
+				pb.setType(Packet.Type.DATA);
+				FileData.Builder fdb =  pb.getDataBuilder();
+				fdb.setOfferId(to.getOfferId());
+				//currently we send an entire file in one segment; for larger files this will hamper our ability
+				//to send chat and cancel an ongoing transfer.
+				fdb.setNumBytes((int)(size - current < SEGMENT_SIZE ? size - current : SEGMENT_SIZE));
+				//this starts a new segment
+				pb.build().writeDelimitedTo(o);
+				segmentStart = System.currentTimeMillis();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		public void run() {
-			final int SEND_BUFFER_SIZE = 4*1024;
+			final int SEND_BUFFER_SIZE = SEGMENT_SIZE;
 			byte[] buffer = new byte[SEND_BUFFER_SIZE];
 			try {
 				if(bis == null) {
 					startNextFile(o);
 				}
 				while(!doTerminate) {
-					int read;
-					if( (read = bis.read(buffer)) == -1) {
-						startNextFile(o);
-						continue;
-					}
-					o.write(buffer, 0, read);
-					current+=read;
-					currentTotal+=read;
-					updateListener();
 					if(current == size)
 						startNextFile(o);
+
+					startNextSegment();
+					long segmentEnd = current + SEGMENT_SIZE >= size ? size : current + SEGMENT_SIZE;
+					while (current != segmentEnd) {
+						int remaining =(int)(segmentEnd - current);
+						int read;
+						if( (read = bis.read(buffer, 0, remaining < SEND_BUFFER_SIZE ? remaining : SEND_BUFFER_SIZE)) == -1) {
+							startNextFile(o);
+							continue;
+						}
+						o.write(buffer, 0, read);
+						current+=read;
+						currentTotal+=read;
+						updateListener();
+					}
 				}
 				//needed to push out the last parts of the current file
 				o.flush();
+				sem.release();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -197,18 +244,17 @@ public class FileTransfer implements Speaker<FileTransferListener> {
 	}
 
 	@Override
-	public void addListener(FileTransferListener arg0) {
+	public synchronized void addListener(FileTransferListener arg0) {
 		audience.addToAudience(arg0, FileTransferListener.class);
-		}
+	}
 
 	/**
 	 * updates the status on listeners
 	 */
-	public void updateListener() {
+	public synchronized void updateListener() {
 		long currentTime = System.currentTimeMillis();
 		for (Listener l : audience.getAudience(FileTransferListener.class)) {
 			Listener ul = (FileTransferListener) l;
-
 			float currentSpeed = (1000*current/(float)(currentTime - segmentStart))/(float)1024;
 			float currentAvgSpeed = (1000*currentTotal/(float)(currentTime - fileTransferStart))/(float)1024;
 			float currentFilePercent = 100*current/(float)size;

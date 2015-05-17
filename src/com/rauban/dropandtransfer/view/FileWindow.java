@@ -3,6 +3,7 @@ package com.rauban.dropandtransfer.view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.net.URI;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 	private FileTransfer ft; 
 	private JPanel acceptPanel;
 	
-	public FileWindow(final TransferOffer to, final SessionController sc) {
+	public FileWindow(final TransferOffer to, final SessionController sc, final boolean isSending) {
 		this.to = to;
 		this.sc=sc; 
 		setTitle("FileWindow");
@@ -43,78 +44,43 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 		sc.addListener(this);
 		List<ResourceHeader> resourceList = to.getResourcesList();
 		StringBuilder sb = new StringBuilder();
-		long size = 0; 
-		for (int i = 0; i < resourceList.size(); i++) {
-			sb.append(to.getResourcesList().get(i).getResourceName()).append(
-					"\n");
-			size = size + to.getResourcesList().get(i).getSize(); 
+		long size = 0;
+		for( ResourceHeader rh : to.getResourcesList()) {
+			size += rh.getSize();
+			sb.append(String.format("%s : %d kb\n",rh.getResourceName(), rh.getSize() >> 10));
 		}
-		fileInfo = new JTextArea("Filename: " + sb.toString(), 30, 30);
+		fileInfo = new JTextArea(sb.toString(), 30, 30);
 		fileNumber = new JTextField("Number of files: " + to.getResourcesCount()  ,20);
-		fileSize = new JTextField("File transfere size: " +  size/1000 + "KB" , 20);
+		fileSize = new JTextField("Total file size: " +  (size >> 10) + "KB" , 20);
 		panel.add(fileInfo);
 		panel.add(fileNumber);
 		panel.add(fileSize);
-	}
-	public void fileReceiver(){
-
+		final JFrame me = this;
 		JButton acceptFile = new JButton("Accept");
 		acceptFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FileInfo("File transfer accepted");
-				sc.sendTransferResponse(to.getOfferId(), true);
+				if(isSending)
+					sc.sendTransferOffer(to);
+				else
+					sc.sendTransferResponse(to.getOfferId(),true);
+				me.dispatchEvent(new WindowEvent(me, WindowEvent.WINDOW_CLOSING));
 			}
 		});
 		panel.add(acceptFile);
-		
+
 		JButton cancelFile = new JButton("Cancel");
 		cancelFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sc.sendTransferResponse(to.getOfferId(), false);
-				FileInfo("File transfer cancel");
-	//			fileInfo = new FileInfo("File transfer cancel");
-      //          fileInfo.setVisible(true);
-
-				}
+				if(!isSending)
+					sc.sendTransferResponse(to.getOfferId(), false);
+				me.dispatchEvent(new WindowEvent(me, WindowEvent.WINDOW_CLOSING));
+			}
 		});
 		panel.add(cancelFile);
-		
 	}
-	
-	public void FileInfo(String message){
-		panel.setVisible(false); 
-		acceptPanel = new JPanel();
-		setTitle("FileInfo");
-		setSize(800, 600);
-		setLocationRelativeTo(null);
-		JLabel outPutText = new JLabel();
-		outPutText.setText(message);
-		outPutText.setFont(new Font("Verdana", 1, 20));
-		this.add(acceptPanel);
-		acceptPanel.add(outPutText); 
-		JButton exitFile = new JButton("Exit program");
-		
-		exitFile.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-				}
-		});
-		acceptPanel.add(exitFile);
-		
-		JButton backFile = new JButton("Back");
-		acceptPanel.add(backFile);
-		backFile.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				acceptPanel.setVisible(false);
-				panel.setVisible(true); 
-				}
-		});
-		}
-		
+
 
 	@Override
 	public void sessionConnected() {
@@ -130,7 +96,6 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 
 	@Override
 	public void sessionGotResponse(long offerId, boolean accept) {
-		System.out.println("Got responce" + accept);
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,14 +129,13 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 	@Override
 	public void sessionDisconnected() {
 		// TODO Auto-generated method stub
-		
+		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 	@Override
 	public void sessionFileTransferStatusUpdate(long offerId,
 			String currentFile, float currentSpeedInKBytesPerSecond,
 			float currentAvgSpeedInKBytesPerSecond, float currentFilePercent,
 			float currentTransferPercent) {
-		System.out.println(String.format("%s: %02f%% %02fkB/s ", currentFile, currentFilePercent, currentSpeedInKBytesPerSecond));
 
 	}
 }

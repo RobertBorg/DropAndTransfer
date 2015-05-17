@@ -30,4 +30,7 @@ public class SessionController extends ControllerBaseImpl<Session>
         model.sendTransferResponse(offerId, accept);
     }
 
+    public void sendCancelRequest(long offerId) {
+        model.sendCancelRequest(offerId);
+    }
 }

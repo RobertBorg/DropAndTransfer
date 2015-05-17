@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.Semaphore;
 
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
@@ -23,6 +24,7 @@ import com.rauban.dropandtransfer.view.listener.SessionListener;
 import com.rauban.speaker_listener_pattern.listener.Listener;
 import com.rauban.speaker_listener_pattern.speaker.AudienceHolder;
 import com.rauban.speaker_listener_pattern.speaker.Speaker;
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 
 public class Session implements Runnable, Speaker<SessionListener>, SessionListener {
 	private Socket socket;
@@ -31,6 +33,8 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	private CodedInputStream cis;
 	
 	private BufferedOutputStream bos;
+	private Semaphore outStreamSem;
+
 	private BufferedInputStream bis;
 	
 	long nextOutGoingTransferOfferId;
@@ -48,6 +52,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	}
 	private void init(Socket s) {
 		this.socket = s;
+		outStreamSem = new Semaphore(1, true);
 		audience = new AudienceHolder();
 		incomingOfferMap = new HashMap<Long, TransferOffer>();
 		outgoingOfferMap = new HashMap<Long, TransferOffer>();
@@ -56,7 +61,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	}
 	private void cleanUp() {
 		try {
-			cos.flush();
+			bos.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,6 +110,15 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		basePathsForOutGoingOffers.put(to.getOfferId(), base);
 		return to;
 	}
+	public void sendCancelRequest(long offerId) {
+		Packet.Builder pb = Packet.newBuilder();
+		pb.setType(Type.CANCEL);
+		TransferCancel.Builder tc = pb.getCancelBuilder();
+		tc.setOfferId(offerId);
+		sendPacket(pb.build());
+		FileTransfer ft = activeFileTransfers.get(offerId);
+		ft.cancel();
+	}
 
 	public void sendTransferOffer(TransferOffer to) {
 		Packet.Builder pb = Packet.newBuilder();
@@ -115,12 +129,22 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 	}
 
 	private void sendPacket(Packet p) {
+		boolean got = false;
+		try {
+			outStreamSem.acquire();
+			got = true;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		try {
 			p.writeDelimitedTo(bos);
 			bos.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 			cleanUp();
+		} finally {
+			if(got)
+				outStreamSem.release();
 		}
 	}
 
@@ -129,10 +153,7 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 		sessionConnected();
 		try {
 			bis = new BufferedInputStream(socket.getInputStream());
-			cis = CodedInputStream.newInstance(bis);
-
 			bos = new BufferedOutputStream(socket.getOutputStream());
-			cos = CodedOutputStream.newInstance(bos);
 		} catch (IOException e) {
 			sessionDisconnected();
 			e.printStackTrace();
@@ -162,14 +183,16 @@ public class Session implements Runnable, Speaker<SessionListener>, SessionListe
 						FileTransfer ft = new FileTransfer(tor, new File(base), false);
 						sessionFileTransferStarted(ft);
 						activeFileTransfers.put(tr.getOfferId(), ft);
-						ft.start(bos);
+						ft.start(bos, outStreamSem);
 
 					}
 					break;
 				case CANCEL:
 					TransferCancel tc = p.getCancel();
 					TransferOffer rto = incomingOfferMap.remove(tc.getOfferId());
-					sessionGotOfferCancel(rto.getOfferId());
+					FileTransfer ft = activeFileTransfers.get(tc.getOfferId());
+					ft.cancel();
+					sessionGotOfferCancel(tc.getOfferId());
 					break;
 				case CHAT:
 					Chat c = p.getChat();

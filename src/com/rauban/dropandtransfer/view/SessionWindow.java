@@ -1,6 +1,6 @@
 package com.rauban.dropandtransfer.view;
 
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,8 +10,10 @@ import java.util.List;
 import com.rauban.dropandtransfer.controller.SessionController;
 import com.rauban.dropandtransfer.model.io.FileTransfer;
 import com.rauban.dropandtransfer.model.protocol.FileTransfer.TransferOffer;
+import com.rauban.dropandtransfer.view.listener.FileTransferListener;
 import com.rauban.dropandtransfer.view.listener.SessionListener;
 
+import net.miginfocom.swing.MigLayout;
 import org.fourthline.cling.model.meta.RemoteDevice;
 
 import javax.swing.*;
@@ -28,6 +30,7 @@ public class SessionWindow extends JFrame implements SessionListener
     private JTextArea chatLog;
     private JTextField chatInput;
     private FileWindow fileWindow;
+    private JPanel fileTransfers;
 
     public SessionWindow(SessionController sc)
     {
@@ -46,12 +49,12 @@ public class SessionWindow extends JFrame implements SessionListener
 
         panel.removeAll();
         //        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        panel.setLayout(new GridBagLayout());
+
+        //panel.setLayout(new GridBagLayout());
+        panel.setLayout(new MigLayout());
 
         chatLog = new JTextArea("Hi, welcome to chat", 20, 20);
-        panel.add(chatLog);
         chatInput = new JTextField("Enter text", 20);
-        panel.add(chatInput);
 
         JButton sendChat = new JButton("Send Chat");
         sendChat.addActionListener(new ActionListener() {
@@ -65,14 +68,11 @@ public class SessionWindow extends JFrame implements SessionListener
                 }
             }
         });
-        panel.add(sendChat);
 
         JButton selectFileButton = new JButton("Send Files");
-        selectFileButton.addActionListener(new ActionListener()
-        {
+        selectFileButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = new JFileChooser();
                 chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 File f = new File("Desktop");
@@ -80,19 +80,28 @@ public class SessionWindow extends JFrame implements SessionListener
                 chooser.setMultiSelectionEnabled(true);
                 int returnVal = chooser.showOpenDialog(null);
 
-                if (returnVal == JFileChooser.APPROVE_OPTION)
-                {
-                	TransferOffer to = sessionController.createTransferOffer(chooser.getSelectedFiles());
-                	fileWindow = new FileWindow(to, sessionController);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    TransferOffer to = sessionController.createTransferOffer(chooser.getSelectedFiles());
+                    fileWindow = new FileWindow(to, sessionController, true);
                     fileWindow.setVisible(true);
-                	sessionController.sendTransferOffer(to);
                 }
-                
+
             }
         });
-        panel.add(selectFileButton);
+        fileTransfers = new JPanel();
+        fileTransfers.setLayout(new MigLayout("wrap 1"));
+        JScrollPane sp = new JScrollPane(fileTransfers);
+        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        panel.add(chatLog, "cell 0 0 3 3");
+        panel.add(chatInput, "cell 0 3 3 1");
+        panel.add(sendChat, "cell 3 3 1 1");
+        panel.add(sp, "cell 3 0 3 3");
+        panel.add(selectFileButton, "cell 4 3 1 1" );
 
     }
+
 
     @Override
     public void sessionConnected()
@@ -110,8 +119,7 @@ public class SessionWindow extends JFrame implements SessionListener
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                fileWindow = new FileWindow(TO, sessionController);
-                fileWindow.fileReceiver();
+                fileWindow = new FileWindow(TO, sessionController, false);
                 fileWindow.setVisible(true);
             }
         });
@@ -144,8 +152,7 @@ public class SessionWindow extends JFrame implements SessionListener
     @Override
     public void sessionFileTransferStarted(FileTransfer ft)
     {
-        // TODO Auto-generated method stub
-
+        fileTransfers.add(new FileTransferView(ft,sessionController));
     }
 
     @Override

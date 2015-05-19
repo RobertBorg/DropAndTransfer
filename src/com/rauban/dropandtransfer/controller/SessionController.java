@@ -14,23 +14,33 @@ public class SessionController extends ControllerBaseImpl<Session>
         super(model);
     }
 
-    public TransferOffer createTransferOffer(File[] resources) {
+    public TransferOffer createTransferOffer(File[] resources)
+    {
         return model.createTransferOffer(resources);
     }
 
-    public void sendTransferOffer(TransferOffer to) {
+    public void sendTransferOffer(TransferOffer to)
+    {
         model.sendTransferOffer(to);
     }
-    
-    public void sendChat(String message) {
-    	model.sendChat(message);
+
+    public void sendChat(String message)
+    {
+        model.sendChat(message);
     }
 
-    public void sendTransferResponse(long offerId, boolean accept) {
+    public void sendTransferResponse(long offerId, boolean accept)
+    {
         model.sendTransferResponse(offerId, accept);
     }
 
-    public void sendCancelRequest(long offerId) {
+    public void sendCancelRequest(long offerId)
+    {
         model.sendCancelRequest(offerId);
+    }
+
+    public void sendDisconnectRequest()
+    {
+        model.sendDisconnectRequest();
     }
 }

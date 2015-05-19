@@ -17,6 +17,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 
 public class SessionWindow extends JFrame implements SessionListener
@@ -31,6 +33,7 @@ public class SessionWindow extends JFrame implements SessionListener
     private JTextField chatInput;
     private FileWindow fileWindow;
     private JPanel fileTransfers;
+    private boolean disconnected = false;
 
     public SessionWindow(SessionController sc)
     {
@@ -101,6 +104,52 @@ public class SessionWindow extends JFrame implements SessionListener
         panel.add(sendChat, "cell 3 3 1 1");
         panel.add(sp, "cell 3 0 3 3");
         panel.add(selectFileButton, "cell 4 3 1 1");
+
+        this.addWindowListener(new WindowListener()
+        {
+            @Override
+            public void windowOpened(WindowEvent e)
+            {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                if (!disconnected)
+                    sessionController.sendDisconnectRequest();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e)
+            {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e)
+            {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e)
+            {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e)
+            {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e)
+            {
+
+            }
+        });
     }
 
     @Override
@@ -166,7 +215,7 @@ public class SessionWindow extends JFrame implements SessionListener
     @Override
     public void sessionDisconnected()
     {
-        // TODO Auto-generated method stub
-
+        disconnected = true;
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 }

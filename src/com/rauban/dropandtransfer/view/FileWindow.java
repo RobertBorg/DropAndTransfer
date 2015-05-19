@@ -37,7 +37,7 @@ public class FileWindow extends JFrame implements SessionListener, FileTransferL
 	public FileWindow(final TransferOffer to, final SessionController sc, final boolean isSending) {
 		this.to = to;
 		this.sc=sc; 
-		setTitle("FileWindow");
+		setTitle("FileWindow - " + (isSending ? "Sending" : "Receiving"));
 		setSize(800, 600);
 		setLocationRelativeTo(null);
 		panel = new JPanel();
